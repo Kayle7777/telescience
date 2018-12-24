@@ -5,6 +5,9 @@ node_js:
 cache:
     directories:
         - node_modules
+branches:
+    only:
+        - master
 script:
     - yarn test
     - yarn build
