@@ -1,7 +1,8 @@
 {
-    "name": "client",
+    "name": "telescience",
     "version": "0.1.0",
     "private": true,
+    "homepage": "https://kayle777.github.io/telescience",
     "dependencies": {
         "react": "^16.7.0",
         "react-dom": "^16.7.0",
