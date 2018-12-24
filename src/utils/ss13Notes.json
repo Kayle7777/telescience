@@ -1,0 +1,112 @@
+{
+    "recipes": [
+        {
+            "name": "booster enzymes",
+            "ingredients": ["diethylamine", "darbon", "dthanol", "hydrogen", "oxygen", "sulfur", "strange reagent"],
+            "notes": [
+                "heat to 450k",
+                "Heat all except oxygen (or one other ingredient to sulfuric acid), then add missing ingredient"
+            ]
+        },
+        {
+            "name": "mutini",
+            "ingredients": ["mannitol", "martini", "mutadone", "unstable Mutagen", "neurotoxin"]
+        },
+        {
+            "name": "dragon's breath",
+            "ingredients": ["phlogiston", "welding fuel", "ghost chili juice", "bourbon", "pyrosium"],
+            "notes": "get ghost chili juice from Dan's Brimstone BBQ soup"
+        },
+        {
+            "name": "rotting",
+            "ingredients": ["denatured Enzyme", "compost", "something", "????"]
+        },
+        {
+            "name": "ageinium",
+            "ingredients": ["acetone", "chocolate", "formaldehyde", "nicotine", "tea"],
+            "notes": ["heat"]
+        },
+        {
+            "name": "sarin",
+            "ingredients": [
+                "acetone",
+                "atrazine",
+                "welding fuel",
+                "chlorine",
+                "hydrogen",
+                "fluorine",
+                "oxygen",
+                "phosphorous"
+            ],
+            "notes": ["heat", "unconfirmed"]
+        },
+        {
+            "name": "fermids",
+            "ingredients": ["ants", "aranesp", "booster enzymes", "unstable mutagen"]
+        },
+        {
+            "name": "nitroglycerin",
+            "ingredients": [
+                {
+                    "name": "copper nitrate",
+                    "ingredients": ["copper, nitrogen, oxygen"]
+                },
+                {
+                    "name": "nitrogen dioxide",
+                    "ingredients": ["copper nitrate"],
+                    "notes": "heat"
+                },
+                {
+                    "name": "nitric acid",
+                    "ingredients": "nitogen dioxide, water",
+                    "notes": "75% water, 25% nitrogen dioxide"
+                },
+                {
+                    "name": "allyl chloride",
+                    "ingredients": ["oil", "chlorine"],
+                    "notes": ["33% oil, 67% chlorine", "heat"]
+                },
+                {
+                    "name": "epichlorohydrin",
+                    "ingredients": ["allyl chloride", "hydrochloric acid", "sodium", "oxygen", "hydrogen"],
+                    "notes": "two parts oxygen, 1 part everything else"
+                },
+                {
+                    "name": "glycerol",
+                    "ingredients": ["epichlorohydrin", "water"]
+                },
+                "glycerol",
+                "sulfuric acid",
+                "nitric acid"
+            ]
+        }
+    ],
+
+    "engine": {
+        "cogmap1": {
+            "hot loop": {
+                "gas": {
+                    "plasma": 1
+                },
+                "notes": "set gas speed to 1/5 on console"
+            },
+            "cold loop": {
+                "gas": {
+                    "plasma": 1,
+                    "nitrogen": 1
+                },
+                "notes": "set gas speed to 3 or 4"
+            },
+            "combustion chamber": {
+                "gas": {
+                    "plasma": 1,
+                    "oxygen": 1
+                },
+                "notes": ["gas mixture: 66% oxygen, 33% plasma", "40kpa pressure"]
+            },
+            "setup": {
+                "notes": ["RCD tiles below both tanks on the combustion chamber", "RCD one tile in front of generator"]
+            }
+        }
+    }
+}
