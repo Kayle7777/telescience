@@ -8,20 +8,31 @@ const styles = theme => ({
         width: 1200 * 8,
         height: 1200 * 8,
     },
+    image: {
+        verticalAlign: 'middle',
+    },
 });
 
 const Main = props => {
-    const { classes } = props;
+    const { classes, theme } = props;
     const [imgUrls, pushUrls] = useState([]);
+    const [zoom, setZoom] = useState(0.2);
 
     useEffect(() => {
         pushUrls(genUrls());
     }, []);
 
     return (
-        <div className={classes.main}>
+        <div className={classes.main} onWheel={e => console.log(e)}>
             {imgUrls.map(url => {
-                return <img key={url} alt={url} src={require(`../../public/images/maps/cogmap1/${url}.png`)} />;
+                return (
+                    <img
+                        className={classes.image}
+                        key={url}
+                        alt={url}
+                        src={require(`../../public/images/maps/cogmap1/${url}.png`)}
+                    />
+                );
             })}
         </div>
     );
@@ -37,4 +48,4 @@ const Main = props => {
     }
 };
 
-export default withStyles(styles)(Main);
+export default withStyles(styles, { withTheme: true })(Main);
