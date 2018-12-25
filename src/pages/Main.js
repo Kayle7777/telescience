@@ -5,8 +5,6 @@ import spaceTile from '../space.png';
 const styles = theme => ({
     main: {
         backgroundImage: `url(${spaceTile})`,
-        width: 1200 * 8,
-        height: 1200 * 8,
     },
     image: {
         verticalAlign: 'middle',
@@ -14,20 +12,31 @@ const styles = theme => ({
 });
 
 const Main = props => {
-    const { classes, theme } = props;
+    const { classes } = props;
+    const [zoom, setZoom] = useState(20);
     const [imgUrls, pushUrls] = useState([]);
-    const [zoom, setZoom] = useState(0.2);
 
     useEffect(() => {
         pushUrls(genUrls());
     }, []);
 
+    const imgStyle = {
+        width: 1200 * (zoom / 30),
+        height: 1200 * (zoom / 30),
+    };
+
+    const divStyle = {
+        width: 1200 * 8 * (zoom / 30),
+        height: 1200 * 8 * (zoom / 30),
+    };
+
     return (
-        <div className={classes.main} onWheel={e => console.log(e)}>
+        <div className={classes.main} style={divStyle} onWheel={e => wheel(e)}>
             {imgUrls.map(url => {
                 return (
                     <img
                         className={classes.image}
+                        style={imgStyle}
                         key={url}
                         alt={url}
                         src={require(`../../public/images/maps/cogmap1/${url}.png`)}
@@ -36,6 +45,14 @@ const Main = props => {
             })}
         </div>
     );
+
+    function wheel(e) {
+        if (e.deltaY > 0) {
+            setZoom(zoom - 1);
+        } else if (e.deltaY < 0) {
+            setZoom(zoom + 1);
+        }
+    }
 
     function genUrls() {
         const arr = [];
@@ -48,4 +65,4 @@ const Main = props => {
     }
 };
 
-export default withStyles(styles, { withTheme: true })(Main);
+export default withStyles(styles)(Main);
