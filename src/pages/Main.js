@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import spaceTile from '../space.png';
+
+const styles = theme => ({
+    main: {
+        backgroundImage: `url(${spaceTile})`,
+        width: 1200 * 8,
+        height: 1200 * 8,
+    },
+});
 
 const Main = props => {
+    const { classes } = props;
     const [imgUrls, pushUrls] = useState([]);
 
     useEffect(() => {
         pushUrls(genUrls());
     }, []);
 
-    console.log(imgUrls);
-    console.log(process.env.PUBLIC_URL);
     return (
-        <div>
+        <div className={classes.main}>
             {imgUrls.map(url => {
                 return <img key={url} alt={url} src={require(`../../public/images/maps/cogmap1/${url}.png`)} />;
             })}
@@ -29,4 +37,4 @@ const Main = props => {
     }
 };
 
-export default withStyles({})(Main);
+export default withStyles(styles)(Main);
