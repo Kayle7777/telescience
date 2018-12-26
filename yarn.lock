@@ -2738,6 +2738,12 @@ dir-glob@^2.0.0:
     arrify "^1.0.1"
     path-type "^3.0.0"
 
+disable-scroll@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/disable-scroll/-/disable-scroll-0.4.1.tgz#67e20c012a9cdaf235df171cecc2cc121a30f881"
+  dependencies:
+    scrollingelement "^1.5.2"
+
 dns-equal@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/dns-equal/-/dns-equal-1.0.0.tgz#b39e7f1da6eb0a75ba9c17324b34753c47e0654d"
@@ -7652,6 +7658,10 @@ schema-utils@^1.0.0:
     ajv "^6.1.0"
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
+
+scrollingelement@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/scrollingelement/-/scrollingelement-1.5.2.tgz#b63b71114d864e3671ca1e854ea1f93af61f107e"
 
 select-hose@^2.0.0:
   version "2.0.0"
