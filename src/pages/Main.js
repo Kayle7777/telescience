@@ -15,7 +15,7 @@ const styles = theme => ({
 
 const Main = props => {
     const { classes } = props;
-    const [tf, transform] = useState({ initial: [0, 0], offset: [0, 0] });
+    const [tf, transform] = useState({ initial: [0, 0], offset: [-3000, -3000] });
     const [zoom, setZoom] = useState(10);
     const [scrolling, scroll] = useState(false);
     const r = zoom / 10;
@@ -27,7 +27,7 @@ const Main = props => {
     const divStyle = {
         width: 1200 * 8 * r,
         height: 1200 * 8 * r,
-        transform: `matrix(${r}, 0, 0, ${r}, ${tf.offset[0] * r}, ${tf.offset[1] * r})`,
+        transform: `matrix(${r}, 0, 0, ${r}, ${tf.offset[0] * r * (1 + r)}, ${tf.offset[1] * r * (1 + r)})`,
     };
 
     const imgStyle = {
@@ -40,6 +40,7 @@ const Main = props => {
         <div
             className={classes.main}
             style={divStyle}
+            onMouseOut={() => scroll(false)}
             onMouseUp={() => scroll(false)}
             onMouseDown={e => mouseDown(e)}
             onMouseMove={e => mouseMove(e)}
@@ -63,10 +64,8 @@ const Main = props => {
         scroll(true);
         const [xOffset, yOffset] = tf.offset;
         const { clientX, clientY } = e;
-        let initialX = clientX - xOffset,
-            initialY = clientY - yOffset;
         return transform(tf => {
-            tf.initial = [initialX, initialY];
+            tf.initial = [clientX - xOffset, clientY - yOffset];
             return tf;
         });
     }
@@ -85,16 +84,19 @@ const Main = props => {
 
     function mouseWheel(e) {
         let { clientX, clientY } = e;
+        let r;
         if (e.deltaY > 0) {
-            if (zoom === 1) return;
+            if (zoom === 6) return;
+            r = (zoom - 1) / 10;
             setZoom(zoom - 1);
         } else if (e.deltaY < 0) {
+            r = (zoom + 1) / 10;
             setZoom(zoom + 1);
         }
-
         // transform(tf => {
-        //     const [xOffset, yOffset] = tf.offset;
-        //     tf.offset = [xOffset, yOffset];
+        //     let [xOffset, yOffset] = tf.offset;
+        //     const deltaX = xOffset + clientX,
+        //         deltaY = yOffset + clientY;
         //     return tf;
         // });
     }
