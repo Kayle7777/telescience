@@ -18,21 +18,21 @@ const Main = props => {
     const [tf, transform] = useState({ initial: [0, 0], offset: [0, 0] });
     const [zoom, setZoom] = useState(10);
     const [scrolling, scroll] = useState(false);
+    const r = zoom / 10;
 
     useEffect(() => {
         disableScroll.on();
     }, []);
 
-    const r = zoom / 10;
     const divStyle = {
         width: 1200 * 8 * r,
         height: 1200 * 8 * r,
-        transform: `matrix(${r}, 0, 0, ${r}, ${tf.offset[0]}, ${tf.offset[1]})`,
+        transform: `matrix(${r}, 0, 0, ${r}, ${tf.offset[0] * r}, ${tf.offset[1] * r})`,
     };
 
     const imgStyle = {
-        width: 1200 * (zoom / 10),
-        height: 1200 * (zoom / 10),
+        width: 1200 * r,
+        height: 1200 * r,
         WebkitUserDrag: 'none',
     };
 
@@ -43,7 +43,7 @@ const Main = props => {
             onMouseUp={() => scroll(false)}
             onMouseDown={e => mouseDown(e)}
             onMouseMove={e => mouseMove(e)}
-            onWheel={e => wheel(e)}
+            onWheel={e => mouseWheel(e)}
         >
             {genUrls().map(url => {
                 return (
@@ -63,37 +63,40 @@ const Main = props => {
         scroll(true);
         const [xOffset, yOffset] = tf.offset;
         const { clientX, clientY } = e;
-        transform(tf => {
-            tf.initial = [(clientX - xOffset) * (zoom / 10), (clientY - yOffset) * (zoom / 10)];
-            return tf;
-        });
-    }
-
-    function doTransform(e) {
-        let { clientX, clientY } = e;
-        // const [xOffset, yOffset] = tf.offset;
-        const [initialX, initialY] = tf.initial;
-        let currentX = (clientX - initialX) * (zoom / 10),
-            currentY = (clientY - initialY) * (zoom / 10);
+        let initialX = clientX - xOffset,
+            initialY = clientY - yOffset;
         return transform(tf => {
-            tf.offset = [currentX, currentY];
+            tf.initial = [initialX, initialY];
             return tf;
         });
     }
 
     function mouseMove(e) {
         if (!scrolling) return;
-        doTransform(e);
+        let { clientX, clientY } = e;
+        const [initialX, initialY] = tf.initial;
+        let currentX = clientX - initialX,
+            currentY = clientY - initialY;
+        return transform(tf => {
+            tf.offset = [currentX, currentY];
+            return tf;
+        });
     }
 
-    function wheel(e) {
+    function mouseWheel(e) {
+        let { clientX, clientY } = e;
         if (e.deltaY > 0) {
             if (zoom === 1) return;
             setZoom(zoom - 1);
         } else if (e.deltaY < 0) {
             setZoom(zoom + 1);
         }
-        console.log(doTransform(e));
+
+        // transform(tf => {
+        //     const [xOffset, yOffset] = tf.offset;
+        //     tf.offset = [xOffset, yOffset];
+        //     return tf;
+        // });
     }
 
     function genUrls() {
