@@ -15,7 +15,7 @@ const styles = theme => ({
 
 const Main = props => {
     const { classes } = props;
-    const [tf, transform] = useState([0, 0]);
+    const [tf, transform] = useState({ initial: [0, 0], offset: [0, 0] });
     const [zoom, setZoom] = useState(10);
     const [scrolling, scroll] = useState(false);
 
@@ -27,7 +27,7 @@ const Main = props => {
     const divStyle = {
         width: 1200 * 8 * r,
         height: 1200 * 8 * r,
-        transform: `matrix(${r}, 0, 0, ${r}, ${tf[0] * r}, ${tf[1] * r})`,
+        transform: `matrix(${r}, 0, 0, ${r}, ${tf.offset[0]}, ${tf.offset[1]})`,
     };
 
     const imgStyle = {
@@ -41,7 +41,7 @@ const Main = props => {
             className={classes.main}
             style={divStyle}
             onMouseUp={() => scroll(false)}
-            onMouseDown={() => scroll(true)}
+            onMouseDown={e => mouseDown(e)}
             onMouseMove={e => mouseMove(e)}
             onWheel={e => wheel(e)}
         >
@@ -59,15 +59,31 @@ const Main = props => {
         </div>
     );
 
-    function doTransform(e, tf) {
-        // tf = [num, num]
-        // e = event
-        const { pageX, pageY, clientX, clientY } = e;
+    function mouseDown(e) {
+        scroll(true);
+        const [xOffset, yOffset] = tf.offset;
+        const { clientX, clientY } = e;
+        transform(tf => {
+            tf.initial = [(clientX - xOffset) * (zoom / 10), (clientY - yOffset) * (zoom / 10)];
+            return tf;
+        });
+    }
+
+    function doTransform(e) {
+        let { clientX, clientY } = e;
+        // const [xOffset, yOffset] = tf.offset;
+        const [initialX, initialY] = tf.initial;
+        let currentX = (clientX - initialX) * (zoom / 10),
+            currentY = (clientY - initialY) * (zoom / 10);
+        return transform(tf => {
+            tf.offset = [currentX, currentY];
+            return tf;
+        });
     }
 
     function mouseMove(e) {
         if (!scrolling) return;
-        // transform();
+        doTransform(e);
     }
 
     function wheel(e) {
@@ -77,6 +93,7 @@ const Main = props => {
         } else if (e.deltaY < 0) {
             setZoom(zoom + 1);
         }
+        console.log(doTransform(e));
     }
 
     function genUrls() {
