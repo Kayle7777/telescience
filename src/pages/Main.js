@@ -86,7 +86,7 @@ const Main = props => {
         let { clientX, clientY } = e;
         let r;
         if (e.deltaY > 0) {
-            if (zoom === 6) return;
+            if (zoom === 5) return;
             r = (zoom - 1) / 10;
             setZoom(zoom - 1);
         } else if (e.deltaY < 0) {
