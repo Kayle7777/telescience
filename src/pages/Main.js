@@ -40,7 +40,7 @@ const Main = props => {
         <div
             className={classes.main}
             style={divStyle}
-            onMouseOut={() => scroll(false)}
+            onMouseLeave={() => scroll(false)}
             onMouseUp={() => scroll(false)}
             onMouseDown={e => mouseDown(e)}
             onMouseMove={e => mouseMove(e)}
