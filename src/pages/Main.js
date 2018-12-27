@@ -8,13 +8,13 @@ const styles = theme => ({
     main: {
         backgroundImage: `url(${spaceTile})`,
         display: 'block',
-        userSelect: 'none',
-        WebkitUserDrag: 'none',
     },
     image: {
         verticalAlign: 'middle',
         width: 1200,
         height: 1200,
+    },
+    noClick: {
         userSelect: 'none',
         WebkitUserDrag: 'none',
     },
@@ -55,7 +55,18 @@ const Main = props => {
     };
 
     const Svg = () => (
-        <svg width={32 * scale} height={32 * scale} style={iStyles.svgStyle}>
+        <svg
+            onClick={() =>
+                transform(tf => {
+                    tf.selectedTile = [0, 0];
+                    return tf;
+                })
+            }
+            className={classes.noClick}
+            width={32 * scale}
+            height={32 * scale}
+            style={iStyles.svgStyle}
+        >
             <rect
                 width={`${32 * scale}px`}
                 height={`${32 * scale}px`}
@@ -70,7 +81,7 @@ const Main = props => {
         <>
             <Svg />
             <div
-                className={classes.main}
+                className={`${classes.main} ${classes.noClick}`}
                 style={iStyles.divStyle}
                 onMouseLeave={() => click(false)}
                 onMouseUp={e => mouseUp(e)}
@@ -78,7 +89,7 @@ const Main = props => {
                 onMouseMove={e => mouseMove(e)}
                 onWheel={e => mouseWheel(e)}
             >
-                <Images image={classes.image} selectedMap={selectedMap} />
+                <Images image={`${classes.image} ${classes.noClick}`} selectedMap={selectedMap} />
             </div>
         </>
     );
