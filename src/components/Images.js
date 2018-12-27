@@ -18,7 +18,7 @@ const Images = ({ selectedMap, image }) => {
                         className={image}
                         key={url}
                         alt={url}
-                        src={require(`../../public/images/maps/cogmap1/${url}.png`)}
+                        src={require(`../../public/images/maps/${selectedMap}/${url}.png`)}
                     />
                 );
             })}
@@ -27,6 +27,10 @@ const Images = ({ selectedMap, image }) => {
     function mapInfo(selectedMap) {
         const info = {
             cogmap1: {
+                nW: 8,
+                nH: 8,
+            },
+            faintSignal: {
                 nW: 8,
                 nH: 8,
             },
