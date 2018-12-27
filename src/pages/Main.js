@@ -23,7 +23,8 @@ const Main = props => {
     const { classes } = props;
     const [tf, transform] = useState({ initial: [0, 0], pos: [-1300, -1300] });
     const [zoom, setZoom] = useState(5);
-    const [mousedown, scroll] = useState(false);
+    const [moved, move] = useState(false);
+    const [mousedown, drag] = useState(false);
     const [selectedTile, clickTile] = useState([-1000, -1000]);
     const [selectedMap, selectMap] = useState('cogmap1');
     const scale = zoom / 10;
@@ -66,9 +67,8 @@ const Main = props => {
             <div
                 className={classes.main}
                 style={iStyles.divStyle}
-                onClick={e => mouseClick(e)}
-                onMouseLeave={() => scroll(false)}
-                onMouseUp={() => scroll(false)}
+                onMouseLeave={() => drag(false)}
+                onMouseUp={e => mouseUp(e)}
                 onMouseDown={e => mouseDown(e)}
                 onMouseMove={e => mouseMove(e)}
                 onWheel={e => mouseWheel(e)}
@@ -96,9 +96,12 @@ const Main = props => {
         </>
     );
 
-    function mouseClick(e) {
-        if (mousedown) return;
+    function mouseUp(e) {
+        drag(false);
         const { clientX, clientY } = e;
+        if (moved) return move(false);
+        else move(false);
+        console.log('test');
         // Seemingly tiles are 32 pixels at 1.0 scale
         // amount of pixels in the entire image
         let pixelNum = 1200 * 8 * 1200 * 8;
@@ -108,7 +111,7 @@ const Main = props => {
     }
 
     function mouseDown(e) {
-        scroll(true);
+        drag(true);
         const { clientX, clientY } = e;
         return transform(tf => {
             tf.initial = [clientX - tf.pos[0], clientY - tf.pos[1]];
@@ -118,6 +121,7 @@ const Main = props => {
 
     function mouseMove(e) {
         if (!mousedown) return;
+        move(true);
         const { clientX, clientY } = e;
         return transform(tf => {
             tf.pos = [clientX - tf.initial[0], clientY - tf.initial[1]];
