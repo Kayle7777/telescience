@@ -15,7 +15,7 @@ const styles = theme => ({
 
 const Main = props => {
     const { classes } = props;
-    const [tf, transform] = useState({ initial: [0, 0], pos: [0, 0], zoomTarget: [0, 0], zoomPoint: [0, 0] });
+    const [tf, transform] = useState({ initial: [0, 0], pos: [0, 0], zoomTarget: [0, 0] });
     const [zoom, setZoom] = useState(10);
     const [scrolling, scroll] = useState(false);
     const scale = zoom / 10;
@@ -95,12 +95,11 @@ const Main = props => {
 
         let newScale = (deltaY > 0 ? zoom - 1 : zoom + 1) / 10;
         return transform(tf => {
-            tf.zoomPoint[0] = clientX;
-            tf.zoomPoint[1] = clientY;
-            tf.zoomTarget[0] = (tf.zoomPoint[0] - tf.pos[0]) / scale;
-            tf.zoomTarget[1] = (tf.zoomPoint[1] - tf.pos[1]) / scale;
-            tf.pos[0] = -tf.zoomTarget[0] * newScale + tf.zoomPoint[0];
-            tf.pos[1] = -tf.zoomTarget[1] * newScale + tf.zoomPoint[1];
+            // Zoom target = your mouse coord relative to the image, I.E clientX - tf.pos[0], at the OLD scale.
+            const zoomTarget = [(clientX - tf.pos[0]) / scale, (clientY - tf.pos[1]) / scale];
+            // Apply the new scale to the zoom target, and add the clientX / clientY, because we subtracted it in zoomTarget.
+            tf.pos[0] = -zoomTarget[0] * newScale + clientX;
+            tf.pos[1] = -zoomTarget[1] * newScale + clientY;
             return tf;
         });
     }
