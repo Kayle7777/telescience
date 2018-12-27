@@ -24,7 +24,7 @@ const Main = props => {
     const [tf, transform] = useState({ initial: [0, 0], pos: [-1300, -1300] });
     const [zoom, setZoom] = useState(5);
     const [moved, move] = useState(false);
-    const [mousedown, drag] = useState(false);
+    const [mousedown, click] = useState(false);
     const [selectedTile, clickTile] = useState([-1000, -1000]);
     const [selectedMap, selectMap] = useState('cogmap1');
     const scale = zoom / 10;
@@ -67,7 +67,7 @@ const Main = props => {
             <div
                 className={classes.main}
                 style={iStyles.divStyle}
-                onMouseLeave={() => drag(false)}
+                onMouseLeave={() => click(false)}
                 onMouseUp={e => mouseUp(e)}
                 onMouseDown={e => mouseDown(e)}
                 onMouseMove={e => mouseMove(e)}
@@ -97,21 +97,23 @@ const Main = props => {
     );
 
     function mouseUp(e) {
-        drag(false);
+        click(false);
         const { clientX, clientY } = e;
+        // This works because mouseMove never fires unless you actually move the mouse. If mouseMove fires, we don't want to continue the rest of this.
         if (moved) return move(false);
         else move(false);
-        console.log('test');
+
         // Seemingly tiles are 32 pixels at 1.0 scale
         // amount of pixels in the entire image
         let pixelNum = 1200 * 8 * 1200 * 8;
         // get mouse coordinates on image, relative to scale
         // These are the "true" pixel coordinates of the mouse on the image and 1.0 scale -- though do I even need this?
+        // clickTile is the function for to move the SVG. Needs to accept an array of coordinates, which have to be calculated here
         const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
     }
 
     function mouseDown(e) {
-        drag(true);
+        click(true);
         const { clientX, clientY } = e;
         return transform(tf => {
             tf.initial = [clientX - tf.pos[0], clientY - tf.pos[1]];
