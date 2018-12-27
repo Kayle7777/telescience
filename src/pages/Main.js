@@ -25,6 +25,7 @@ const Main = props => {
     const [zoom, setZoom] = useState(5);
     const [mousedown, scroll] = useState(false);
     const [selectedTile, clickTile] = useState([-1000, -1000]);
+    const [selectedMap, selectMap] = useState('cogmap1');
     const scale = zoom / 10;
 
     useEffect(() => {
@@ -74,7 +75,15 @@ const Main = props => {
                 onMouseMove={e => mouseMove(e)}
                 onWheel={e => mouseWheel(e)}
             >
-                {genUrls().map(url => {
+                {(() => {
+                    const arr = [];
+                    for (let i = 0; i < mapInfo(selectedMap).nW; i++) {
+                        for (let g = 0; g < mapInfo(selectedMap).nH; g++) {
+                            arr.push(`${i},${g}`);
+                        }
+                    }
+                    return arr;
+                })().map(url => {
                     return (
                         <img
                             className={classes.image}
@@ -140,14 +149,14 @@ const Main = props => {
         });
     }
 
-    function genUrls() {
-        const arr = [];
-        for (let i = 0; i < 8; i++) {
-            for (let g = 0; g < 8; g++) {
-                arr.push(`${i},${g}`);
-            }
-        }
-        return arr;
+    function mapInfo(selectedMap) {
+        const info = {
+            cogmap1: {
+                nW: 8,
+                nH: 8,
+            },
+        };
+        return info[selectedMap];
     }
 };
 
