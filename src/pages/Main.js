@@ -15,7 +15,7 @@ const styles = theme => ({
 
 const Main = props => {
     const { classes } = props;
-    const [tf, transform] = useState({ initial: [0, 0], pos: [0, 0], zoomTarget: [0, 0] });
+    const [tf, transform] = useState({ initial: [0, 0], pos: [0, 0] });
     const [zoom, setZoom] = useState(10);
     const [scrolling, scroll] = useState(false);
     const scale = zoom / 10;
@@ -45,8 +45,7 @@ const Main = props => {
             onMouseUp={() => scroll(false)}
             onMouseDown={e => mouseDown(e)}
             onMouseMove={e => mouseMove(e)}
-            onWheel={e => mouseWheel(e)}
-        >
+            onWheel={e => mouseWheel(e)}>
             {genUrls().map(url => {
                 return (
                     <img
@@ -85,7 +84,6 @@ const Main = props => {
 
     function mouseWheel(e) {
         let { deltaY, clientX, clientY } = e;
-        deltaY = Math.max(-1, Math.min(1, deltaY));
         if (deltaY > 0) {
             if (zoom === 3) return;
             setZoom(zoom - 1);
