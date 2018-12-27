@@ -48,8 +48,6 @@ const Main = props => {
         },
     };
 
-    // Here, [..., 30, 30] need to be calculated based on the rendered height / width of tiles
-    // console.log(1200 * 8 * 38, 'number of "tiles"');
     const Svg = () => (
         <svg width={32 * scale} height={32 * scale} style={iStyles.svgStyle}>
             <rect
@@ -76,9 +74,10 @@ const Main = props => {
                 onWheel={e => mouseWheel(e)}
             >
                 {(() => {
+                    const info = mapInfo(selectedMap);
                     const arr = [];
-                    for (let i = 0; i < mapInfo(selectedMap).nW; i++) {
-                        for (let g = 0; g < mapInfo(selectedMap).nH; g++) {
+                    for (let i = 0; i < info.nW; i++) {
+                        for (let g = 0; g < info.nH; g++) {
                             arr.push(`${i},${g}`);
                         }
                     }
