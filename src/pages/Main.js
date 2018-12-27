@@ -24,6 +24,7 @@ const Main = props => {
     const [tf, transform] = useState({ initial: [0, 0], pos: [-1300, -1300] });
     const [zoom, setZoom] = useState(5);
     const [mousedown, scroll] = useState(false);
+    const [selectedTile, clickTile] = useState([-1000, -1000]);
     const scale = zoom / 10;
 
     useEffect(() => {
@@ -41,21 +42,18 @@ const Main = props => {
         svgStyle: {
             zIndex: 1,
             position: 'absolute',
-            top: 0,
-            left: 0,
+            top: selectedTile[0],
+            left: selectedTile[1],
         },
     };
 
     // Here, [..., 30, 30] need to be calculated based on the rendered height / width of tiles
     // console.log(1200 * 8 * 38, 'number of "tiles"');
-    const [minX, minY, width, height] = [0, 0, 30, 30];
     const Svg = () => (
-        <svg width={width} height={height} style={iStyles.svgStyle}>
+        <svg width={32 * scale} height={32 * scale} style={iStyles.svgStyle}>
             <rect
-                x={`${minX}px`}
-                y={`${minY}px`}
-                width={`${width}px`}
-                height={`${height}px`}
+                width={`${32 * scale}px`}
+                height={`${32 * scale}px`}
                 stroke="white"
                 fill="transparent"
                 strokeWidth="4"
@@ -92,13 +90,12 @@ const Main = props => {
 
     function mouseClick(e) {
         if (mousedown) return;
+        const { clientX, clientY } = e;
+        // Seemingly tiles are 32 pixels at 1.0 scale
         // amount of pixels in the entire image
         let pixelNum = 1200 * 8 * 1200 * 8;
-        let numOfTiles = pixelNum / 36;
-        console.log(numOfTiles);
-        const { clientX, clientY } = e;
         // get mouse coordinates on image, relative to scale
-        // These are the "true" pixel coordinates of the mouse on the image and true scale
+        // These are the "true" pixel coordinates of the mouse on the image and 1.0 scale -- though do I even need this?
         const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
     }
 
