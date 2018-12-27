@@ -93,6 +93,7 @@ const Main = props => {
             setZoom(zoom + 1);
         }
 
+        // This is because setZoom is async, but we want to use it right now. So we just build it ourselves
         let newScale = (deltaY > 0 ? zoom - 1 : zoom + 1) / 10;
         return transform(tf => {
             // Zoom target = your mouse coord relative to the image, I.E clientX - tf.pos[0], at the OLD scale.
