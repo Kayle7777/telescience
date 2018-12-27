@@ -24,10 +24,10 @@ const Main = props => {
     const { classes } = props;
     const [tf, transform] = useState({
         initial: [0, 0],
-        pos: [130, 130],
+        pos: [-1300, -1300],
         selectedTile: [0, 0],
     });
-    const [zoom, setZoom] = useState(10);
+    const [zoom, setZoom] = useState(5);
     const scale = zoom / 10;
     const [moved, move] = useState(false);
     const [mousedown, click] = useState(false);
