@@ -15,8 +15,8 @@ const styles = theme => ({
 
 const Main = props => {
     const { classes } = props;
-    const [tf, transform] = useState({ initial: [0, 0], pos: [0, 0] });
-    const [zoom, setZoom] = useState(10);
+    const [tf, transform] = useState({ initial: [0, 0], pos: [-1300, -1300] });
+    const [zoom, setZoom] = useState(5);
     const [scrolling, scroll] = useState(false);
     const scale = zoom / 10;
 
@@ -45,7 +45,8 @@ const Main = props => {
             onMouseUp={() => scroll(false)}
             onMouseDown={e => mouseDown(e)}
             onMouseMove={e => mouseMove(e)}
-            onWheel={e => mouseWheel(e)}>
+            onWheel={e => mouseWheel(e)}
+        >
             {genUrls().map(url => {
                 return (
                     <img
@@ -62,27 +63,24 @@ const Main = props => {
 
     function mouseDown(e) {
         scroll(true);
-        const [xpos, ypos] = tf.pos;
         const { clientX, clientY } = e;
         return transform(tf => {
-            tf.initial = [clientX - xpos, clientY - ypos];
+            tf.initial = [clientX - tf.pos[0], clientY - tf.pos[1]];
             return tf;
         });
     }
 
     function mouseMove(e) {
         if (!scrolling) return;
-        let { clientX, clientY } = e;
-        const [initialX, initialY] = tf.initial;
-        let currentX = clientX - initialX,
-            currentY = clientY - initialY;
+        const { clientX, clientY } = e;
         return transform(tf => {
-            tf.pos = [currentX, currentY];
+            tf.pos = [clientX - tf.initial[0], clientY - tf.initial[1]];
             return tf;
         });
     }
 
     function mouseWheel(e) {
+        if (scrolling) return;
         let { deltaY, clientX, clientY } = e;
         if (deltaY > 0) {
             if (zoom === 3) return;
