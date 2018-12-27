@@ -24,10 +24,10 @@ const Main = props => {
     const { classes } = props;
     const [tf, transform] = useState({
         initial: [0, 0],
-        pos: [-1300, -1300],
+        pos: [130, 130],
         selectedTile: [0, 0],
     });
-    const [zoom, setZoom] = useState(5);
+    const [zoom, setZoom] = useState(10);
     const scale = zoom / 10;
     const [moved, move] = useState(false);
     const [mousedown, click] = useState(false);
@@ -49,8 +49,8 @@ const Main = props => {
         svgStyle: {
             zIndex: 1,
             position: 'absolute',
-            left: tf.selectedTile[0] + tf.pos[0],
-            top: tf.selectedTile[1] + tf.pos[1],
+            left: tf.selectedTile[0] * 32 * scale + tf.pos[0],
+            top: tf.selectedTile[1] * 32 * scale + tf.pos[1],
         },
     };
 
@@ -89,14 +89,13 @@ const Main = props => {
         // This works because mouseMove never fires unless you actually move the mouse. If mouseMove fires, we don't want to continue the rest of this.
         if (moved) return move(false);
         else moved && move(false);
-
-        // Seemingly tiles are 32 pixels at 1.0 scale
-        // amount of pixels in the entire image
-        let pixelNum = 1200 * 8 * 1200 * 8;
         // get mouse coordinates on image, relative to scale
-        // These are the "true" pixel coordinates of the mouse on the image and 1.0 scale -- though do I even need this?
-        // clickTile is the function for to move the SVG. Needs to accept an array of coordinates, which have to be calculated here
         const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
+        // clickTile is the function for to move the SVG. Needs to accept an array of coordinates, which have to be calculated here
+        transform(tf => {
+            tf.selectedTile = [(imageX - (imageX % 32)) / 32, (imageY - (imageY % 32)) / 32];
+            return tf;
+        });
     }
 
     function mouseDown(e) {
