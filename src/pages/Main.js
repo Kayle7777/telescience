@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import spaceTile from '../space.png';
 import disableScroll from 'disable-scroll';
+import Images from '../components/Images';
 
 const styles = theme => ({
     main: {
@@ -73,25 +74,7 @@ const Main = props => {
                 onMouseMove={e => mouseMove(e)}
                 onWheel={e => mouseWheel(e)}
             >
-                {(() => {
-                    const info = mapInfo(selectedMap);
-                    const arr = [];
-                    for (let i = 0; i < info.nW; i++) {
-                        for (let g = 0; g < info.nH; g++) {
-                            arr.push(`${i},${g}`);
-                        }
-                    }
-                    return arr;
-                })().map(url => {
-                    return (
-                        <img
-                            className={classes.image}
-                            key={url}
-                            alt={url}
-                            src={require(`../../public/images/maps/cogmap1/${url}.png`)}
-                        />
-                    );
-                })}
+                <Images image={classes.image} selectedMap={selectedMap} />
             </div>
         </>
     );
@@ -152,16 +135,6 @@ const Main = props => {
             tf.pos[1] = -imageY * newScale + clientY;
             return tf;
         });
-    }
-
-    function mapInfo(selectedMap) {
-        const info = {
-            cogmap1: {
-                nW: 8,
-                nH: 8,
-            },
-        };
-        return info[selectedMap];
     }
 };
 
