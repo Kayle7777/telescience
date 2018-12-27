@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Images = props => {
+const Images = ({ selectedMap, image }) => {
     return (
         <>
             {(() => {
-                const info = mapInfo(props.selectedMap);
+                const info = mapInfo(selectedMap);
                 const arr = [];
                 for (let i = 0; i < info.nW; i++) {
                     for (let g = 0; g < info.nH; g++) {
@@ -15,7 +15,7 @@ const Images = props => {
             })().map(url => {
                 return (
                     <img
-                        className={props.image}
+                        className={image}
                         key={url}
                         alt={url}
                         src={require(`../../public/images/maps/cogmap1/${url}.png`)}

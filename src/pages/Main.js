@@ -22,13 +22,17 @@ const styles = theme => ({
 
 const Main = props => {
     const { classes } = props;
-    const [tf, transform] = useState({ initial: [0, 0], pos: [-1300, -1300] });
+    const [tf, transform] = useState({
+        initial: [0, 0],
+        pos: [-1300, -1300],
+        selectedTile: [0, 0],
+    });
     const [zoom, setZoom] = useState(5);
+    const scale = zoom / 10;
     const [moved, move] = useState(false);
     const [mousedown, click] = useState(false);
-    const [selectedTile, clickTile] = useState([-1000, -1000]);
+    //eslint-disable-next-line
     const [selectedMap, selectMap] = useState('cogmap1');
-    const scale = zoom / 10;
 
     useEffect(() => {
         disableScroll.on();
@@ -45,8 +49,8 @@ const Main = props => {
         svgStyle: {
             zIndex: 1,
             position: 'absolute',
-            top: selectedTile[0],
-            left: selectedTile[1],
+            left: tf.selectedTile[0] + tf.pos[0],
+            top: tf.selectedTile[1] + tf.pos[1],
         },
     };
 
@@ -84,7 +88,7 @@ const Main = props => {
         const { clientX, clientY } = e;
         // This works because mouseMove never fires unless you actually move the mouse. If mouseMove fires, we don't want to continue the rest of this.
         if (moved) return move(false);
-        else move(false);
+        else moved && move(false);
 
         // Seemingly tiles are 32 pixels at 1.0 scale
         // amount of pixels in the entire image
@@ -123,13 +127,12 @@ const Main = props => {
         } else {
             setZoom(zoom + 1);
         }
-
-        // This is because setZoom is async, but we want to use it right now. So we just build it ourselves
-        let newScale = (deltaY > 0 ? zoom - 1 : zoom + 1) / 10;
         return transform(tf => {
-            // get mouse coordinates on image, relative to current scale
-            // These are the "true" pixel coordinates of the mouse on the image
+            // This is because setZoom is async, but we want to use it right now. So we just build it ourselves
+            const newScale = (deltaY > 0 ? zoom - 1 : zoom + 1) / 10;
+            // These are the true pixel coordinates of the mouse on the image at normal scale
             const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
+            const [tileX, tileY] = [clientX - tf.selectedTile[0], clientY - tf.selectedTile[0]].map(i => i / scale);
             // Apply the new scale to the true pixel coords, and add the clientX / clientY, because we subtracted it in zoomTarget.
             tf.pos[0] = -imageX * newScale + clientX;
             tf.pos[1] = -imageY * newScale + clientY;
