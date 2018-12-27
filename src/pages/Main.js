@@ -15,24 +15,25 @@ const styles = theme => ({
 
 const Main = props => {
     const { classes } = props;
-    const [tf, transform] = useState({ initial: [0, 0], offset: [-3000, -3000] });
+    const [tf, transform] = useState({ initial: [0, 0], pos: [0, 0], zoomTarget: [0, 0], zoomPoint: [0, 0] });
     const [zoom, setZoom] = useState(10);
     const [scrolling, scroll] = useState(false);
-    const r = zoom / 10;
+    const scale = zoom / 10;
 
     useEffect(() => {
         disableScroll.on();
     }, []);
 
     const divStyle = {
-        width: 1200 * 8 * r,
-        height: 1200 * 8 * r,
-        transform: `matrix(${r}, 0, 0, ${r}, ${tf.offset[0] * r * (1 + r)}, ${tf.offset[1] * r * (1 + r)})`,
+        width: 1200 * 8,
+        height: 1200 * 8,
+        transformOrigin: `0 0`,
+        transform: `translate3D(${tf.pos[0]}px, ${tf.pos[1]}px, 0) scale(${scale})`,
     };
 
     const imgStyle = {
-        width: 1200 * r,
-        height: 1200 * r,
+        width: 1200,
+        height: 1200,
         WebkitUserDrag: 'none',
     };
 
@@ -62,10 +63,10 @@ const Main = props => {
 
     function mouseDown(e) {
         scroll(true);
-        const [xOffset, yOffset] = tf.offset;
+        const [xpos, ypos] = tf.pos;
         const { clientX, clientY } = e;
         return transform(tf => {
-            tf.initial = [clientX - xOffset, clientY - yOffset];
+            tf.initial = [clientX - xpos, clientY - ypos];
             return tf;
         });
     }
@@ -77,28 +78,31 @@ const Main = props => {
         let currentX = clientX - initialX,
             currentY = clientY - initialY;
         return transform(tf => {
-            tf.offset = [currentX, currentY];
+            tf.pos = [currentX, currentY];
             return tf;
         });
     }
 
     function mouseWheel(e) {
-        let { clientX, clientY } = e;
-        let r;
-        if (e.deltaY > 0) {
-            if (zoom === 5) return;
-            r = (zoom - 1) / 10;
+        let { deltaY, clientX, clientY } = e;
+        deltaY = Math.max(-1, Math.min(1, deltaY));
+        if (deltaY > 0) {
+            if (zoom === 3) return;
             setZoom(zoom - 1);
-        } else if (e.deltaY < 0) {
-            r = (zoom + 1) / 10;
+        } else {
             setZoom(zoom + 1);
         }
-        // transform(tf => {
-        //     let [xOffset, yOffset] = tf.offset;
-        //     const deltaX = xOffset + clientX,
-        //         deltaY = yOffset + clientY;
-        //     return tf;
-        // });
+
+        let newScale = (deltaY > 0 ? zoom - 1 : zoom + 1) / 10;
+        return transform(tf => {
+            tf.zoomPoint[0] = clientX;
+            tf.zoomPoint[1] = clientY;
+            tf.zoomTarget[0] = (tf.zoomPoint[0] - tf.pos[0]) / scale;
+            tf.zoomTarget[1] = (tf.zoomPoint[1] - tf.pos[1]) / scale;
+            tf.pos[0] = -tf.zoomTarget[0] * newScale + tf.zoomPoint[0];
+            tf.pos[1] = -tf.zoomTarget[1] * newScale + tf.zoomPoint[1];
+            return tf;
+        });
     }
 
     function genUrls() {
