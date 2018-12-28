@@ -19,13 +19,6 @@ const styles = theme => ({
         userSelect: 'none',
         WebkitUserDrag: 'none',
     },
-    doMathPos: {
-        zIndex: 2,
-        position: 'fixed',
-        marginLeft: theme.spacing.unit * 3,
-        marginTop: theme.spacing.unit * 3,
-        maxWidth: 600 + theme.spacing.unit * 8,
-    },
 });
 
 const Main = props => {
@@ -87,7 +80,7 @@ const Main = props => {
 
     return (
         <>
-            <DoMath selectedTile={tf.selectedTile} position={classes.doMathPos} />
+            <DoMath selectedTile={tf.selectedTile} transform={transform} />
             <div
                 className={`${classes.main} ${classes.noClick}`}
                 style={iStyles.divStyle}
