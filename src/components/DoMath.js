@@ -78,6 +78,28 @@ const DoMath = props => {
                             </TableCell>
                         </TableRow>
 
+                        {/* CONSOLE Y1 // ACTUAL Y1 */}
+
+                        <TableRow>
+                            <TableCell>
+                                <TextField
+                                    className={classes.textField}
+                                    onChange={e => update(e, 'input', 1)}
+                                    value={gpsValues.input[1]}
+                                    InputProps={{
+                                        startAdornment: <InputAdornment position="start">Y1</InputAdornment>,
+                                    }}
+                                />
+                            </TableCell>
+                            <TableCell>
+                                <TextField
+                                    className={classes.textField}
+                                    onChange={e => update(e, 'actualY', 0)}
+                                    value={gpsValues.actualY[0]}
+                                />
+                            </TableCell>
+                        </TableRow>
+
                         {/* CONSOLE X2 // ACTUAL X2 */}
 
                         <TableRow>
@@ -97,28 +119,6 @@ const DoMath = props => {
                                     className={classes.textField}
                                     onChange={e => update(e, 'actualX', 1)}
                                     value={gpsValues.actualX[1]}
-                                />
-                            </TableCell>
-                        </TableRow>
-
-                        {/* CONSOLE Y1 // ACTUAL Y1 */}
-
-                        <TableRow>
-                            <TableCell>
-                                <TextField
-                                    className={classes.textField}
-                                    onChange={e => update(e, 'input', 1)}
-                                    value={gpsValues.input[1]}
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start">Y1</InputAdornment>,
-                                    }}
-                                />
-                            </TableCell>
-                            <TableCell>
-                                <TextField
-                                    className={classes.textField}
-                                    onChange={e => update(e, 'actualY', 0)}
-                                    value={gpsValues.actualY[0]}
                                 />
                             </TableCell>
                         </TableRow>
