@@ -41,7 +41,9 @@ const MapSelect = props => {
                 }}
             >
                 <MenuItem value="cogmap1">Cogmap 1</MenuItem>
+                <MenuItem value="cogmap2">Cogmap 2</MenuItem>
                 <MenuItem value="faintSignal">Debris Field</MenuItem>
+                <MenuItem value="oshan">Oshan</MenuItem>
             </TextField>
         </Paper>
     );

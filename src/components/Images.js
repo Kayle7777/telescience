@@ -24,10 +24,20 @@ const Images = ({ selectedMap, image }) => {
                 nH: 8,
                 url: `https://goonhub.com/images/maps/cogmap/z1`,
             },
+            cogmap2: {
+                nW: 8,
+                nH: 8,
+                url: `https://goonhub.com/images/maps/cogmap2/z1`,
+            },
             faintSignal: {
                 nW: 8,
                 nH: 8,
                 url: `https://goonhub.com/images/maps/cogmap2/z3`,
+            },
+            oshan: {
+                nW: 8,
+                nH: 8,
+                url: `https://goonhub.com/images/maps/oshan/z1`,
             },
         };
         return info[selectedMap];
