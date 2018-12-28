@@ -19,6 +19,13 @@ const styles = theme => ({
         userSelect: 'none',
         WebkitUserDrag: 'none',
     },
+    doMathPos: {
+        zIndex: 1,
+        position: 'fixed',
+        marginLeft: theme.spacing.unit * 3,
+        marginTop: theme.spacing.unit * 3,
+        maxWidth: 600 + theme.spacing.unit * 8,
+    },
 });
 
 const Main = props => {
@@ -80,7 +87,7 @@ const Main = props => {
 
     return (
         <>
-            <DoMath selectedTile={tf.selectedTile} />
+            <DoMath selectedTile={tf.selectedTile} position={classes.doMathPos} />
             <Svg />
             <div
                 className={`${classes.main} ${classes.noClick}`}

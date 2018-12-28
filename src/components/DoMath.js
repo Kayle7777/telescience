@@ -13,23 +13,16 @@ import {
 } from '@material-ui/core';
 
 const styles = theme => ({
-    root: {
-        zIndex: 1,
-        position: 'fixed',
-        marginLeft: theme.spacing.unit * 3,
-        marginTop: theme.spacing.unit * 3,
-        maxWidth: 600 + theme.spacing.unit * 8,
-    },
     textField: {
         width: 55,
     },
 });
 
 const DoMath = props => {
-    const { classes } = props;
+    const { classes, position, selectedTile } = props;
     const [gpsValues, setValue] = useState({ input: [100, 50], actualX: [6, 7], actualY: [49, 51] });
     return (
-        <Paper className={classes.root}>
+        <Paper className={position}>
             <Typography variant="h6" align="center" id="tableTitle">
                 Do yer math
             </Typography>
@@ -41,20 +34,15 @@ const DoMath = props => {
                         <TableCell align="center">GPS coord</TableCell>
                     </TableRow>
                 </TableHead>
+                {/* God damn this is messy. There's gotta be a better way, but they all need unique updater functions... */}
                 <TableBody>
                     {/* CONSOLE X1 // ACTUAL X1 */}
+
                     <TableRow>
                         <TableCell>
                             <TextField
                                 className={classes.textField}
-                                onChange={e => {
-                                    let val = parseInt(e.target.value);
-                                    if (!val) val = 0;
-                                    setValue(prev => {
-                                        prev.input[0] = val;
-                                        return prev;
-                                    });
-                                }}
+                                onChange={e => update(e, 'input', 0)}
                                 value={gpsValues.input[0]}
                                 InputProps={{
                                     startAdornment: <InputAdornment position="start">X1</InputAdornment>,
@@ -64,14 +52,7 @@ const DoMath = props => {
                         <TableCell>
                             <TextField
                                 className={classes.textField}
-                                onChange={e => {
-                                    let val = parseInt(e.target.value);
-                                    if (!val) val = 0;
-                                    setValue(prev => {
-                                        prev.actualX[0] = val;
-                                        return prev;
-                                    });
-                                }}
+                                onChange={e => update(e, 'actualX', 0)}
                                 value={gpsValues.actualX[0]}
                             />
                         </TableCell>
@@ -94,14 +75,7 @@ const DoMath = props => {
                         <TableCell>
                             <TextField
                                 className={classes.textField}
-                                onChange={e => {
-                                    let val = parseInt(e.target.value);
-                                    if (!val) val = 0;
-                                    setValue(prev => {
-                                        prev.actualX[1] = val;
-                                        return prev;
-                                    });
-                                }}
+                                onChange={e => update(e, 'actualX', 1)}
                                 value={gpsValues.actualX[1]}
                             />
                         </TableCell>
@@ -113,14 +87,7 @@ const DoMath = props => {
                         <TableCell>
                             <TextField
                                 className={classes.textField}
-                                onChange={e => {
-                                    let val = parseInt(e.target.value);
-                                    if (!val) val = 0;
-                                    setValue(prev => {
-                                        prev.input[1] = val;
-                                        return prev;
-                                    });
-                                }}
+                                onChange={e => update(e, 'input', 1)}
                                 value={gpsValues.input[1]}
                                 InputProps={{
                                     startAdornment: <InputAdornment position="start">Y1</InputAdornment>,
@@ -130,14 +97,7 @@ const DoMath = props => {
                         <TableCell>
                             <TextField
                                 className={classes.textField}
-                                onChange={e => {
-                                    let val = parseInt(e.target.value);
-                                    if (!val) val = 0;
-                                    setValue(prev => {
-                                        prev.actualY[0] = val;
-                                        return prev;
-                                    });
-                                }}
+                                onChange={e => update(e, 'actualY', 0)}
                                 value={gpsValues.actualY[0]}
                             />
                         </TableCell>
@@ -160,14 +120,7 @@ const DoMath = props => {
                             <TextField
                                 className={classes.textField}
                                 value={gpsValues.actualY[1]}
-                                onChange={e => {
-                                    let val = parseInt(e.target.value);
-                                    if (!val) val = 0;
-                                    setValue(prev => {
-                                        prev.actualY[1] = val;
-                                        return prev;
-                                    });
-                                }}
+                                onChange={e => update(e, 'actualY', 1)}
                             />
                         </TableCell>
                     </TableRow>
@@ -175,6 +128,14 @@ const DoMath = props => {
             </Table>
         </Paper>
     );
+    function update(e, target, index) {
+        let val = parseInt(e.target.value);
+        if (!val) val = 0;
+        setValue(prev => {
+            prev[target][index] = val;
+            return prev;
+        });
+    }
 };
 
 export default withStyles(styles)(DoMath);
