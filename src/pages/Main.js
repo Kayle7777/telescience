@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import spaceTile from '../space.png';
 import disableScroll from 'disable-scroll';
 import Images from '../components/Images';
+import DoMath from '../components/DoMath';
 
 const styles = theme => ({
     main: {
@@ -79,6 +80,7 @@ const Main = props => {
 
     return (
         <>
+            <DoMath selectedTile={tf.selectedTile} />
             <Svg />
             <div
                 className={`${classes.main} ${classes.noClick}`}
@@ -142,7 +144,6 @@ const Main = props => {
             const newScale = (deltaY > 0 ? zoom - 1 : zoom + 1) / 10;
             // These are the true pixel coordinates of the mouse on the image at normal scale
             const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
-            const [tileX, tileY] = [clientX - tf.selectedTile[0], clientY - tf.selectedTile[0]].map(i => i / scale);
             // Apply the new scale to the true pixel coords, and add the clientX / clientY, because we subtracted it in zoomTarget.
             tf.pos[0] = -imageX * newScale + clientX;
             tf.pos[1] = -imageY * newScale + clientY;
