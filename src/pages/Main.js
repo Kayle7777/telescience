@@ -4,6 +4,7 @@ import spaceTile from '../space.png';
 import disableScroll from 'disable-scroll';
 import Images from '../components/Images';
 import DoMath from '../components/DoMath';
+import MapSelect from '../components/MapSelect';
 
 const styles = theme => ({
     main: {
@@ -32,7 +33,6 @@ const Main = props => {
     const scale = zoom / 10;
     const [moved, move] = useState(false);
     const [mousedown, click] = useState(false);
-    //eslint-disable-next-line
     const [selectedMap, selectMap] = useState('cogmap1');
 
     useEffect(() => {
@@ -80,6 +80,7 @@ const Main = props => {
 
     return (
         <>
+            <MapSelect selectMap={selectMap} selectedMap={selectedMap} />
             <DoMath selectedTile={tf.selectedTile} transform={transform} />
             <div
                 className={`${classes.main} ${classes.noClick}`}

@@ -1,10 +1,10 @@
 import React from 'react';
 
 const Images = ({ selectedMap, image }) => {
+    const info = mapInfo(selectedMap);
     return (
         <>
             {(() => {
-                const info = mapInfo(selectedMap);
                 const arr = [];
                 for (let i = 0; i < info.nW; i++) {
                     for (let g = 0; g < info.nH; g++) {
@@ -13,14 +13,7 @@ const Images = ({ selectedMap, image }) => {
                 }
                 return arr;
             })().map(url => {
-                return (
-                    <img
-                        className={image}
-                        key={url}
-                        alt={url}
-                        src={require(`../../public/images/maps/${selectedMap}/${url}.png`)}
-                    />
-                );
+                return <img className={image} key={url} alt={url} src={`${info.url}/${url}.png`} />;
             })}
         </>
     );
@@ -29,10 +22,12 @@ const Images = ({ selectedMap, image }) => {
             cogmap1: {
                 nW: 8,
                 nH: 8,
+                url: `https://goonhub.com/images/maps/cogmap/z1`,
             },
             faintSignal: {
                 nW: 8,
                 nH: 8,
+                url: `https://goonhub.com/images/maps/cogmap2/z3`,
             },
         };
         return info[selectedMap];

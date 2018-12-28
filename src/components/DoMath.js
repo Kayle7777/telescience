@@ -27,8 +27,8 @@ const styles = theme => ({
     resultsPos: {
         zIndex: 2,
         position: 'fixed',
+        width: 249,
         marginLeft: theme.spacing.unit,
-        width: 281,
         marginTop: 3 * theme.spacing.unit + 281,
     },
 });
@@ -47,7 +47,7 @@ const DoMath = props => {
                 <Typography variant="overline" align="center" id="tableTitle">
                     Do telescience math
                 </Typography>
-                <Table>
+                <Table padding="dense">
                     <TableHead>
                         {/* HEADER */}
                         <TableRow>
@@ -151,7 +151,7 @@ const DoMath = props => {
                 <Typography variant="overline" align="center" id="tableTitle">
                     Real Coordinates
                 </Typography>
-                <Table>
+                <Table padding="dense">
                     <TableBody>
                         <TableRow>
                             <TableCell>
