@@ -27,7 +27,7 @@ const Main = props => {
     const [tf, transform] = useState({
         initial: [0, 0],
         pos: [-1300, -1300],
-        selectedTile: [0, 0],
+        selectedTile: [0, 299],
     });
     const [zoom, setZoom] = useState(5);
     const scale = zoom / 10;
