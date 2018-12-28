@@ -14,7 +14,7 @@ import {
 
 const styles = theme => ({
     textField: {
-        width: 55,
+        width: 75,
     },
 });
 

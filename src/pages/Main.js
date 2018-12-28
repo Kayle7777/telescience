@@ -20,7 +20,7 @@ const styles = theme => ({
         WebkitUserDrag: 'none',
     },
     doMathPos: {
-        zIndex: 1,
+        zIndex: 2,
         position: 'fixed',
         marginLeft: theme.spacing.unit * 3,
         marginTop: theme.spacing.unit * 3,
