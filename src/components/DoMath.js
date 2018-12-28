@@ -194,13 +194,13 @@ const DoMath = props => {
                 <Typography variant="overline" align="center">
                     Console Coordinates
                 </Typography>
-                <Table>
+                <Table padding="dense">
                     <TableBody>
                         <TableRow>
                             <TableCell>
                                 <TextField
                                     disabled
-                                    className={classes.TextField}
+                                    className={classes.textField}
                                     value={(1 + selectedTile[0]) / xDivisor + xModifier}
                                     InputProps={{
                                         startAdornment: <InputAdornment position="start">X</InputAdornment>,
@@ -210,7 +210,7 @@ const DoMath = props => {
                             <TableCell>
                                 <TextField
                                     disabled
-                                    className={classes.TextField}
+                                    className={classes.textField}
                                     value={(300 - selectedTile[1]) / yDivisor + yModifier}
                                     InputProps={{
                                         startAdornment: <InputAdornment position="start">Y</InputAdornment>,
