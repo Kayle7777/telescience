@@ -201,7 +201,7 @@ const DoMath = props => {
                                 <TextField
                                     disabled
                                     className={classes.textField}
-                                    value={(1 + selectedTile[0]) / xDivisor + xModifier}
+                                    value={selectedTile[0] / xDivisor + xModifier}
                                     InputProps={{
                                         startAdornment: <InputAdornment position="start">X</InputAdornment>,
                                     }}
@@ -211,7 +211,7 @@ const DoMath = props => {
                                 <TextField
                                     disabled
                                     className={classes.textField}
-                                    value={(300 - selectedTile[1]) / yDivisor + yModifier}
+                                    value={selectedTile[1] / yDivisor + yModifier}
                                     InputProps={{
                                         startAdornment: <InputAdornment position="start">Y</InputAdornment>,
                                     }}

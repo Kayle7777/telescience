@@ -27,7 +27,7 @@ const Main = props => {
     const [tf, transform] = useState({
         initial: [0, 0],
         pos: [-1300, -1300],
-        selectedTile: [0, 299],
+        selectedTile: [1, 1],
     });
     const [zoom, setZoom] = useState(5);
     const scale = zoom / 10;
@@ -50,8 +50,8 @@ const Main = props => {
         svgStyle: {
             zIndex: 1,
             position: 'absolute',
-            left: tf.selectedTile[0] * 32 * scale + tf.pos[0],
-            top: tf.selectedTile[1] * 32 * scale + tf.pos[1],
+            left: (tf.selectedTile[0] - 1) * 32 * scale + tf.pos[0],
+            top: -(tf.selectedTile[1] - 300) * 32 * scale + tf.pos[1],
         },
     };
 
@@ -59,7 +59,7 @@ const Main = props => {
         <svg
             onClick={() =>
                 transform(tf => {
-                    tf.selectedTile = [0, 0];
+                    tf.selectedTile = [1, 1];
                     return tf;
                 })
             }
@@ -107,7 +107,7 @@ const Main = props => {
         const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
         // clickTile is the function for to move the SVG. Needs to accept an array of coordinates, which have to be calculated here
         transform(tf => {
-            tf.selectedTile = [(imageX - (imageX % 32)) / 32, (imageY - (imageY % 32)) / 32];
+            tf.selectedTile = [1 + (imageX - (imageX % 32)) / 32, 300 - (imageY - (imageY % 32)) / 32];
             return tf;
         });
     }
