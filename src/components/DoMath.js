@@ -24,7 +24,7 @@ const DoMath = props => {
     return (
         <Paper className={position}>
             <Typography variant="h6" align="center" id="tableTitle">
-                Do yer math
+                Do telescience math
             </Typography>
             <Table>
                 <TableHead>
@@ -34,7 +34,6 @@ const DoMath = props => {
                         <TableCell align="center">GPS coord</TableCell>
                     </TableRow>
                 </TableHead>
-                {/* God damn this is messy. There's gotta be a better way, but they all need unique updater functions... */}
                 <TableBody>
                     {/* CONSOLE X1 // ACTUAL X1 */}
 

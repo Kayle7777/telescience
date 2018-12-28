@@ -88,7 +88,6 @@ const Main = props => {
     return (
         <>
             <DoMath selectedTile={tf.selectedTile} position={classes.doMathPos} />
-            <Svg />
             <div
                 className={`${classes.main} ${classes.noClick}`}
                 style={iStyles.divStyle}
@@ -100,6 +99,7 @@ const Main = props => {
             >
                 <Images image={`${classes.image} ${classes.noClick}`} selectedMap={selectedMap} />
             </div>
+            <Svg />
         </>
     );
 
