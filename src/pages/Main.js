@@ -32,11 +32,28 @@ const Main = props => {
     const [zoom, setZoom] = useState(5);
     const scale = zoom / 10;
     const [moved, move] = useState(false);
-    const [mousedown, click] = useState(false);
+    const [mousedown, clickDown] = useState(false);
     const [selectedMap, selectMap] = useState('cogmap1');
 
     useEffect(() => {
         disableScroll.on();
+        window.onload = function(e) {
+            var evt = e || window.event, // define event (cross browser)
+                imgs, // images collection
+                i; // used in local loop
+            // if preventDefault exists, then define onmousedown event handlers
+            if (evt.preventDefault) {
+                // collect all images on the page
+                imgs = document.getElementsByTagName('img');
+                // loop through fetched images
+                for (i = 0; i < imgs.length; i++) {
+                    // and define onmousedown event handler
+                    imgs[i].onmousedown = function(e) {
+                        e.preventDefault();
+                    };
+                }
+            }
+        };
     }, []);
 
     const iStyles = {
@@ -46,7 +63,6 @@ const Main = props => {
             transformOrigin: `0 0`,
             transform: `translate3D(${tf.pos[0]}px, ${tf.pos[1]}px, 0) scale(${scale})`,
         },
-        // Here top and left need to be placed upon the image
         svgStyle: {
             zIndex: 1,
             position: 'absolute',
@@ -85,7 +101,7 @@ const Main = props => {
             <div
                 className={classes.main}
                 style={iStyles.divStyle}
-                onMouseLeave={() => click(false)}
+                onMouseLeave={() => clickDown(false)}
                 onMouseUp={e => mouseUp(e)}
                 onMouseDown={e => mouseDown(e)}
                 onMouseMove={e => mouseMove(e)}
@@ -98,22 +114,21 @@ const Main = props => {
     );
 
     function mouseUp(e) {
-        click(false);
-        const { clientX, clientY } = e;
+        clickDown(false);
         // This works because mouseMove never fires unless you actually move the mouse. If mouseMove fires, we don't want to continue the rest of this.
         if (moved) return move(false);
         else moved && move(false);
-        // get mouse coordinates on image, relative to scale
+        const { clientX, clientY } = e;
         const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
-        // clickTile is the function for to move the SVG. Needs to accept an array of coordinates, which have to be calculated here
         transform(tf => {
+            // Select each "tile", where each tile is 32 pixels by 32 pixels. Also, the game grid begins at [1,1] from the bottom left. Weird right?
             tf.selectedTile = [1 + (imageX - (imageX % 32)) / 32, 300 - (imageY - (imageY % 32)) / 32];
             return tf;
         });
     }
 
     function mouseDown(e) {
-        click(true);
+        clickDown(true);
         const { clientX, clientY } = e;
         return transform(tf => {
             tf.initial = [clientX - tf.pos[0], clientY - tf.pos[1]];
