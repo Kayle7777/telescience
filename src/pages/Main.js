@@ -37,16 +37,15 @@ const Main = props => {
 
     useEffect(() => {
         disableScroll.on();
+        // Firefox crap, why can't they just have a CSS solution like everyone else?
         window.onload = function(e) {
-            var evt = e || window.event, // define event (cross browser)
-                imgs, // images collection
-                i; // used in local loop
-            // if preventDefault exists, then define onmousedown event handlers
+            let evt = e || window.event, // define event (cross browser)
+                imgs; // images collection
             if (evt.preventDefault) {
                 // collect all images on the page
                 imgs = document.getElementsByTagName('img');
                 // loop through fetched images
-                for (i = 0; i < imgs.length; i++) {
+                for (let i = 0; i < imgs.length; i++) {
                     // and define onmousedown event handler
                     imgs[i].onmousedown = function(e) {
                         e.preventDefault();
@@ -79,6 +78,7 @@ const Main = props => {
                     return tf;
                 })
             }
+            onWheel={e => mouseWheel(e)}
             className={classes.noClick}
             width={32 * scale}
             height={32 * scale}
