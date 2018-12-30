@@ -13,7 +13,16 @@ const Images = ({ selectedMap, image }) => {
                 }
                 return arr;
             })().map(url => {
-                return <img className={image} key={url} alt={url} src={`${info.url}/${url}.png`} />;
+                return (
+                    <img
+                        // Disable click dragging for firefox. Why can't it just be a CSS Solution?
+                        onMouseDown={e => e.preventDefault()}
+                        className={image}
+                        key={url}
+                        alt={url}
+                        src={`${info.url}/${url}.png`}
+                    />
+                );
             })}
         </>
     );
