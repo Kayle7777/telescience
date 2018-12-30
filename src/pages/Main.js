@@ -150,9 +150,10 @@ const Main = props => {
         if (mousedown) return;
         let { deltaY, clientX, clientY } = e;
         if (deltaY > 0) {
-            if (zoom === 3) return;
+            if (zoom === 2) return;
             setZoom(zoom - 1);
         } else {
+            if (zoom === 25) return;
             setZoom(zoom + 1);
         }
         return transform(tf => {
