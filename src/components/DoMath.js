@@ -23,12 +23,13 @@ const styles = theme => ({
         marginLeft: theme.spacing.unit,
         marginTop: theme.spacing.unit,
         maxWidth: 600 + theme.spacing.unit * 8,
+        width: 249,
+        userSelect: 'none',
     },
     resultsPos: {
         zIndex: 2,
         position: 'relative',
         marginTop: theme.spacing.unit * 2,
-        width: 249,
     },
 });
 
