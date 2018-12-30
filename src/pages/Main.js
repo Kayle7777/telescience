@@ -79,11 +79,11 @@ const Main = props => {
     );
 
     return (
-        <>
+        <div className={classes.noClick}>
             <MapSelect selectMap={selectMap} selectedMap={selectedMap} />
             <DoMath selectedTile={tf.selectedTile} transform={transform} />
             <div
-                className={`${classes.main} ${classes.noClick}`}
+                className={classes.main}
                 style={iStyles.divStyle}
                 onMouseLeave={() => click(false)}
                 onMouseUp={e => mouseUp(e)}
@@ -94,7 +94,7 @@ const Main = props => {
                 <Images image={`${classes.image} ${classes.noClick}`} selectedMap={selectedMap} />
             </div>
             <Svg />
-        </>
+        </div>
     );
 
     function mouseUp(e) {

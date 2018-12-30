@@ -24,7 +24,6 @@ const styles = theme => ({
         marginTop: theme.spacing.unit,
         maxWidth: 600 + theme.spacing.unit * 8,
         width: 249,
-        userSelect: 'none',
     },
     resultsPos: {
         zIndex: 2,
