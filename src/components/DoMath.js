@@ -11,7 +11,9 @@ import {
     TextField,
     InputAdornment,
     Typography,
+    IconButton,
 } from '@material-ui/core';
+import { Help, KeyboardArrowDown as Arrow } from '@material-ui/icons';
 
 const styles = theme => ({
     textField: {
@@ -22,13 +24,28 @@ const styles = theme => ({
         position: 'fixed',
         marginLeft: theme.spacing.unit,
         marginTop: theme.spacing.unit,
-        maxWidth: 600 + theme.spacing.unit * 8,
-        width: 249,
+        width: 257,
     },
     resultsPos: {
         zIndex: 2,
         position: 'relative',
         marginTop: theme.spacing.unit * 2,
+    },
+    arrow: {
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    arrowShift: {
+        transform: 'rotate(180deg)',
+        transition: theme.transitions.create(['transform'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    headerText: {
+        marginLeft: theme.spacing.unit * 2,
     },
 });
 
@@ -43,10 +60,19 @@ const DoMath = props => {
 
     return (
         <div className={classes.main}>
-            <Collapse in={mathIn} collapsedHeight={'31px'}>
+            <Collapse in={mathIn} collapsedHeight={'48px'}>
                 <Paper>
-                    <Typography onClick={() => toggleMath(!mathIn)} variant="overline" align="center" id="tableTitle">
+                    <Typography
+                        className={classes.headerText}
+                        onClick={() => toggleMath(!mathIn)}
+                        variant="overline"
+                        align="center"
+                        id="tableTitle"
+                    >
                         Do telescience math
+                        <IconButton disabled className={mathIn ? classes.arrow : classes.arrowShift}>
+                            <Arrow />
+                        </IconButton>
                     </Typography>
                     <Table padding="dense">
                         <TableHead>
@@ -150,8 +176,11 @@ const DoMath = props => {
                 </Paper>
             </Collapse>
             <Paper className={classes.resultsPos}>
-                <Typography variant="overline" align="center" id="tableTitle">
+                <Typography className={classes.headerText} variant="overline" align="center" id="tableTitle">
                     Real Coordinates
+                    <IconButton disabled>
+                        <Help />
+                    </IconButton>
                 </Typography>
                 <Table padding="dense">
                     <TableBody>

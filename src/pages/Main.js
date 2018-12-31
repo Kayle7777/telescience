@@ -18,7 +18,6 @@ const styles = theme => ({
     },
     noClick: {
         userSelect: 'none',
-        WebkitUserDrag: 'none',
     },
 });
 
