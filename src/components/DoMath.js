@@ -15,7 +15,7 @@ import {
     Popover,
     Button,
 } from '@material-ui/core';
-import { Help, KeyboardArrowDown as Arrow } from '@material-ui/icons';
+import { Help, KeyboardArrowDown as Arrow, VerticalAlignBottom as GoTo } from '@material-ui/icons';
 
 const styles = theme => ({
     textField: {
@@ -56,10 +56,14 @@ const styles = theme => ({
         margin: theme.spacing.unit,
         maxWidth: 257 + theme.spacing.unit * 5,
     },
+    goto: {
+        zIndex: 2,
+        transform: 'translate(102px, -127px)',
+    },
 });
 
 const DoMath = props => {
-    const { classes, selectedTile } = props;
+    const { classes, selectedTile, centerFunc } = props;
     const [anchorEl, doAnchor] = useState(null);
     const [gpsValues, setValue] = useState({ input: [100, 50], actualX: [6, 7], actualY: [49, 51] });
     const [mathIn, toggleMath] = useState(true);
@@ -298,8 +302,21 @@ const DoMath = props => {
                         you, and your new console coordinates will be shown under "CONSOLE COORDINATES"
                     </p>
                     <p>When you're done, you can close the math table by clicking the "DO TELESCIENCE MATH" header.</p>
+                    <p>
+                        If you want to center the screen on custom coordinates, input any coordinate you want under the
+                        "REAL COORDINATES" table, then click the center button icon, inbetween the two rows.
+                    </p>
                 </Typography>
             </Popover>
+            <IconButton
+                className={classes.goto}
+                onClick={() => {
+                    // Want this to center the screen on the coordinates, and set the zoom level
+                    return centerFunc();
+                }}
+            >
+                <GoTo />
+            </IconButton>
         </div>
     );
     function update(e, target, index) {

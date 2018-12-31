@@ -10,6 +10,8 @@ const styles = theme => ({
     main: {
         backgroundImage: `url(${spaceTile})`,
         display: 'block',
+        width: 1200 * 8,
+        height: 1200 * 8,
     },
     image: {
         verticalAlign: 'middle',
@@ -26,7 +28,7 @@ const Main = props => {
     const [tf, transform] = useState({
         initial: [0, 0],
         pos: [-1300, -1300],
-        selectedTile: [1, 1],
+        selectedTile: [137, 146],
     });
     const [zoom, setZoom] = useState(5);
     const scale = zoom / 10;
@@ -40,8 +42,6 @@ const Main = props => {
 
     const iStyles = {
         divStyle: {
-            width: 1200 * 8,
-            height: 1200 * 8,
             transformOrigin: `0 0`,
             transform: `translate3D(${tf.pos[0]}px, ${tf.pos[1]}px, 0) scale(${scale})`,
         },
@@ -80,7 +80,7 @@ const Main = props => {
     return (
         <div className={classes.noClick}>
             <MapSelect selectMap={selectMap} selectedMap={selectedMap} />
-            <DoMath selectedTile={tf.selectedTile} transform={transform} />
+            <DoMath selectedTile={tf.selectedTile} transform={transform} centerFunc={centerCoords} />
             <div
                 className={classes.main}
                 style={iStyles.divStyle}
@@ -147,6 +147,19 @@ const Main = props => {
             // Apply the new scale to the true pixel coords, and add the clientX / clientY, because we subtracted it in zoomTarget.
             tf.pos[0] = -imageX * newScale + clientX;
             tf.pos[1] = -imageY * newScale + clientY;
+            return tf;
+        });
+    }
+
+    function centerCoords(centerScale = 15) {
+        // Default to max 1.5 scale, optional arg to change this
+        setZoom(centerScale);
+        const newScale = centerScale / 10;
+        const [tileX, tileY] = [(tf.selectedTile[0] - 1) * 32 * newScale, -(tf.selectedTile[1] - 303) * 32 * newScale];
+        const [centerX, centerY] = [window.screen.width / 2, window.screen.height / 2];
+        return transform(tf => {
+            tf.pos[0] = -tileX + centerX;
+            tf.pos[1] = -tileY + centerY;
             return tf;
         });
     }
