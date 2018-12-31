@@ -12,6 +12,7 @@ import {
     InputAdornment,
     Typography,
     IconButton,
+    Popover,
 } from '@material-ui/core';
 import { Help, KeyboardArrowDown as Arrow } from '@material-ui/icons';
 
@@ -47,10 +48,18 @@ const styles = theme => ({
     headerText: {
         marginLeft: theme.spacing.unit * 2,
     },
+    popOver: {
+        marginLeft: theme.spacing.unit,
+    },
+    popOverText: {
+        margin: theme.spacing.unit,
+        maxWidth: 257,
+    },
 });
 
 const DoMath = props => {
     const { classes, selectedTile } = props;
+    const [anchorEl, doAnchor] = useState(null);
     const [gpsValues, setValue] = useState({ input: [100, 50], actualX: [6, 7], actualY: [49, 51] });
     const [mathIn, toggleMath] = useState(true);
     const xDivisor = gpsValues.actualX[1] - gpsValues.actualX[0],
@@ -176,7 +185,16 @@ const DoMath = props => {
                 </Paper>
             </Collapse>
             <Paper className={classes.resultsPos}>
-                <Typography className={classes.headerText} variant="overline" align="center" id="tableTitle">
+                <Typography
+                    className={classes.headerText}
+                    variant="overline"
+                    align="center"
+                    id="tableTitle"
+                    onClick={event => {
+                        let val = event.currentTarget;
+                        doAnchor(val);
+                    }}
+                >
                     Real Coordinates
                     <IconButton disabled>
                         <Help />
@@ -252,6 +270,22 @@ const DoMath = props => {
                     </TableBody>
                 </Table>
             </Paper>
+            <Popover
+                className={classes.popOver}
+                aria-label="Math help"
+                id="math-tips"
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                onClose={() => doAnchor(null)}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+            >
+                <Typography className={classes.popOverText}>
+                    Placeholder, do helper text here, test test test test test test
+                </Typography>
+            </Popover>
         </div>
     );
     function update(e, target, index) {
