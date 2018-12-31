@@ -13,6 +13,7 @@ import {
     Typography,
     IconButton,
     Popover,
+    Button,
 } from '@material-ui/core';
 import { Help, KeyboardArrowDown as Arrow } from '@material-ui/icons';
 
@@ -53,7 +54,7 @@ const styles = theme => ({
     },
     popOverText: {
         margin: theme.spacing.unit,
-        maxWidth: 257,
+        maxWidth: 257 + theme.spacing.unit * 5,
     },
 });
 
@@ -282,8 +283,21 @@ const DoMath = props => {
                     horizontal: 'right',
                 }}
             >
-                <Typography className={classes.popOverText}>
-                    Placeholder, do helper text here, test test test test test test
+                <Typography align="center" variant="caption" className={classes.popOverText}>
+                    Stuck? Check the SS13 wiki on
+                    <Button
+                        size="small"
+                        href="https://wiki.ss13.co/Telescience#Decoding_the_teleporter"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        decoding the teleporter
+                    </Button>
+                    <p>
+                        Fill in the relevant fields under "DO TELESCIENCE MATH". The website will handle the math for
+                        you, and your new console coordinates will be shown under "CONSOLE COORDINATES"
+                    </p>
+                    <p>When you're done, you can close the math table by clicking the "DO TELESCIENCE MATH" header.</p>
                 </Typography>
             </Popover>
         </div>

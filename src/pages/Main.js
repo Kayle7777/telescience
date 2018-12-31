@@ -136,7 +136,7 @@ const Main = props => {
             if (zoom === 2) return;
             setZoom(zoom - 1);
         } else {
-            if (zoom === 25) return;
+            if (zoom === 15) return;
             setZoom(zoom + 1);
         }
         return transform(tf => {
