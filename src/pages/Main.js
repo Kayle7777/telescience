@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import spaceTile from '../space.png';
-import disableScroll from 'disable-scroll';
 import Images from '../components/Images';
 import DoMath from '../components/DoMath';
 import MapSelect from '../components/MapSelect';
@@ -35,10 +34,6 @@ const Main = props => {
     const [moved, move] = useState(false);
     const [mousedown, clickDown] = useState(false);
     const [selectedMap, selectMap] = useState('cogmap1');
-
-    useEffect(() => {
-        disableScroll.on();
-    }, []);
 
     const iStyles = {
         divStyle: {
