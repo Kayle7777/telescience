@@ -16,6 +16,7 @@ import {
     Button,
 } from '@material-ui/core';
 import { Help, KeyboardArrowDown as Arrow, VerticalAlignBottom as GoTo } from '@material-ui/icons';
+import Locations from './Locations';
 
 const styles = theme => ({
     textField: {
@@ -31,7 +32,7 @@ const styles = theme => ({
     resultsPos: {
         zIndex: 2,
         position: 'relative',
-        marginTop: theme.spacing.unit * 2,
+        marginTop: theme.spacing.unit,
     },
     arrow: {
         transition: theme.transitions.create(['transform'], {
@@ -74,20 +75,20 @@ const DoMath = props => {
 
     return (
         <div className={classes.main}>
-            <Collapse in={mathIn} collapsedHeight={'48px'}>
-                <Paper>
-                    <Typography
-                        className={classes.headerText}
-                        onClick={() => toggleMath(!mathIn)}
-                        variant="overline"
-                        align="center"
-                        id="tableTitle"
-                    >
-                        Do telescience math
-                        <IconButton disabled className={mathIn ? classes.arrow : classes.arrowShift}>
-                            <Arrow />
-                        </IconButton>
-                    </Typography>
+            <Paper>
+                <Typography
+                    className={classes.headerText}
+                    onClick={() => toggleMath(!mathIn)}
+                    variant="overline"
+                    align="center"
+                    id="tableTitle"
+                >
+                    Do telescience math
+                    <IconButton disabled className={mathIn ? classes.arrow : classes.arrowShift}>
+                        <Arrow />
+                    </IconButton>
+                </Typography>
+                <Collapse in={mathIn}>
                     <Table padding="dense">
                         <TableHead>
                             {/* HEADER */}
@@ -193,8 +194,8 @@ const DoMath = props => {
                             </TableRow>
                         </TableBody>
                     </Table>
-                </Paper>
-            </Collapse>
+                </Collapse>
+            </Paper>
             <Paper className={classes.resultsPos}>
                 <Typography
                     className={classes.headerText}
@@ -312,6 +313,10 @@ const DoMath = props => {
                         If you want to center the screen on custom coordinates, input any coordinate you want under the
                         "REAL COORDINATES" table, then click the center button icon, inbetween the two rows.
                     </p>
+                    <p>
+                        Click the "EXPEDITION LOCATIONS" header for a list of telescience expedition locations, their
+                        values will already have the math applied to them.
+                    </p>
                 </Typography>
             </Popover>
             <IconButton
@@ -324,6 +329,7 @@ const DoMath = props => {
             >
                 <GoTo />
             </IconButton>
+            <Locations math={{ divisors: [xDivisor, yDivisor], modifiers: [xModifier, yModifier] }} />
         </div>
     );
     function update(e, target, index) {
