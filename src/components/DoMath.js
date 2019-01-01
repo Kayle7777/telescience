@@ -15,7 +15,7 @@ import {
     Popover,
     Button,
 } from '@material-ui/core';
-import { Help, KeyboardArrowDown as Arrow, VerticalAlignBottom as GoTo } from '@material-ui/icons';
+import { Help, KeyboardArrowDown as Arrow, VerticalAlignCenter as GoTo } from '@material-ui/icons';
 import Locations from './Locations';
 
 const styles = theme => ({
