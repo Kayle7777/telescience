@@ -26,6 +26,7 @@ const MapSelect = props => {
     return (
         <Paper className={classes.paper}>
             <TextField
+                InputProps={{ inputProps: { tabIndex: -1 } }}
                 className={classes.textField}
                 select
                 label="Select Map"

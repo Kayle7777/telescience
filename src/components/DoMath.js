@@ -103,6 +103,7 @@ const DoMath = props => {
                                 <TableCell>
                                     <TextField
                                         className={classes.textField}
+                                        disabled={!mathIn}
                                         onChange={e => update(e, 'input', 0)}
                                         value={gpsValues.input[0]}
                                         InputProps={{
@@ -113,6 +114,7 @@ const DoMath = props => {
                                 <TableCell>
                                     <TextField
                                         className={classes.textField}
+                                        disabled={!mathIn}
                                         onChange={e => update(e, 'actualX', 0)}
                                         value={gpsValues.actualX[0]}
                                     />
@@ -125,6 +127,7 @@ const DoMath = props => {
                                 <TableCell>
                                     <TextField
                                         className={classes.textField}
+                                        disabled={!mathIn}
                                         onChange={e => update(e, 'input', 1)}
                                         value={gpsValues.input[1]}
                                         InputProps={{
@@ -135,6 +138,7 @@ const DoMath = props => {
                                 <TableCell>
                                     <TextField
                                         className={classes.textField}
+                                        disabled={!mathIn}
                                         onChange={e => update(e, 'actualY', 0)}
                                         value={gpsValues.actualY[0]}
                                     />
@@ -158,6 +162,7 @@ const DoMath = props => {
                                 <TableCell>
                                     <TextField
                                         className={classes.textField}
+                                        disabled={!mathIn}
                                         onChange={e => update(e, 'actualX', 1)}
                                         value={gpsValues.actualX[1]}
                                     />
@@ -180,8 +185,9 @@ const DoMath = props => {
                                 <TableCell>
                                     <TextField
                                         className={classes.textField}
-                                        value={gpsValues.actualY[1]}
+                                        disabled={!mathIn}
                                         onChange={e => update(e, 'actualY', 1)}
+                                        value={gpsValues.actualY[1]}
                                     />
                                 </TableCell>
                             </TableRow>
@@ -309,6 +315,7 @@ const DoMath = props => {
                 </Typography>
             </Popover>
             <IconButton
+                tabIndex={-1}
                 className={classes.goto}
                 onClick={() => {
                     // Want this to center the screen on the coordinates, and set the zoom level
