@@ -67,7 +67,7 @@ const Locations = props => {
                             loc.location[0] = loc.location[0] / xDivisor + xModifier;
                             loc.location[1] = loc.location[1] / yDivisor + yModifier;
                             return (
-                                <li>
+                                <li key={`${loc.name}_${loc.location.toString()}`}>
                                     <p className={classes.line}>{loc.name.toUpperCase()}</p>
                                     {`X: ${loc.location[0]}, Y: ${loc.location[1]}`}
                                 </li>
