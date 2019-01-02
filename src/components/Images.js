@@ -3,7 +3,7 @@ import React from 'react';
 const Images = ({ selectedMap, image }) => {
     const info = mapInfo(selectedMap);
     return (
-        <>
+        <div onDragStart={e => e.preventDefault()}>
             {(() => {
                 const arr = [];
                 for (let i = 0; i < info.nW; i++) {
@@ -13,18 +13,9 @@ const Images = ({ selectedMap, image }) => {
                 }
                 return arr;
             })().map(url => {
-                return (
-                    <img
-                        // Disable click dragging for firefox. Why can't it just be a CSS Solution?
-                        onMouseDown={e => e.preventDefault()}
-                        className={image}
-                        key={url}
-                        alt={url}
-                        src={`${info.url}/${url}.png`}
-                    />
-                );
+                return <img className={image} key={url} alt={url} src={`${info.url}/${url}.png`} />;
             })}
-        </>
+        </div>
     );
     function mapInfo(selectedMap) {
         const info = {

@@ -33,6 +33,7 @@ const Main = props => {
     const scale = zoom / 10;
     const [moved, move] = useState(false);
     const [mousedown, clickDown] = useState(false);
+    const [focussed, focus] = useState(false);
     const [selectedMap, selectMap] = useState('cogmap1');
 
     const iStyles = {
@@ -57,6 +58,7 @@ const Main = props => {
                 })
             }
             onWheel={e => mouseWheel(e)}
+            onMouseEnter={() => focus(true)}
             className={classes.noClick}
             width={32 * scale}
             height={32 * scale}
@@ -73,13 +75,17 @@ const Main = props => {
     );
 
     return (
-        <div className={classes.noClick}>
+        <div className={classes.noClick} onKeyDown={e => keyDown(e)} tabIndex={0}>
             <MapSelect selectMap={selectMap} selectedMap={selectedMap} />
             <DoMath selectedTile={tf.selectedTile} transform={transform} centerFunc={centerCoords} />
             <div
                 className={classes.main}
                 style={iStyles.divStyle}
-                onMouseLeave={() => clickDown(false)}
+                onMouseLeave={() => {
+                    clickDown(false);
+                    focus(false);
+                }}
+                onMouseEnter={() => focus(true)}
                 onMouseUp={e => mouseUp(e)}
                 onMouseDown={e => mouseDown(e)}
                 onMouseMove={e => mouseMove(e)}
@@ -157,6 +163,38 @@ const Main = props => {
             tf.pos[1] = -tileY + centerY;
             return tf;
         });
+    }
+
+    function keyDown(e) {
+        if (!focussed) return;
+        let { key } = e;
+        let acceptableKeys = {
+            w: [0, 1],
+            a: [-1, 0],
+            s: [0, -1],
+            d: [1, 0],
+            ArrowUp: [0, 1],
+            ArrowLeft: [-1, 0],
+            ArrowDown: [0, -1],
+            ArrowRight: [1, 0],
+            '1': [-1, -1],
+            '2': [0, -1],
+            '3': [1, -1],
+            '4': [-1, 0],
+            '6': [1, 0],
+            '7': [-1, 1],
+            '8': [0, 1],
+            '9': [1, 1],
+        };
+        if (!Object.keys(acceptableKeys).includes(key)) return;
+        else {
+            const val = acceptableKeys[key];
+            return transform(tf => {
+                tf.selectedTile[0] += val[0];
+                tf.selectedTile[1] += val[1];
+                return tf;
+            });
+        }
     }
 };
 
