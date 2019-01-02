@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { Info } from '@material-ui/icons';
 import spaceTile from '../space.png';
 import Images from '../components/Images';
 import DoMath from '../components/DoMath';
@@ -60,6 +61,14 @@ const Main = props => {
             left: (tf.selectedTile[0] - 1) * 32 * scale + tf.pos[0],
             top: -(tf.selectedTile[1] - 300) * 32 * scale + tf.pos[1],
         },
+        oceanMan: {
+            zIndex: 2,
+            position: 'absolute',
+            left: 149 * 32 * scale + tf.pos[0],
+            top: -(149 - 300) * 32 * scale + tf.pos[1],
+            width: 32 * scale,
+            height: 32 * scale,
+        },
     };
 
     const Svg = () => (
@@ -89,14 +98,25 @@ const Main = props => {
 
     return (
         <div className={classes.noClick} onKeyDown={e => keyDown(e)} tabIndex={0}>
+            {selectedMap === 'oshan' && (
+                <a
+                    style={{ color: 'inherit' }}
+                    href="https://www.youtube.com/watch?v=6E5m_XtCX3c"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    <Info style={iStyles.oceanMan} />
+                </a>
+            )}
             <div className={classes.rightPanel}>
                 <MapSelect selectMap={selectMap} selectedMap={selectedMap} />
-                <Favorites
+                {/* <Favorites
+                    zoom={zoom}
                     favs={favorites}
                     modFavorites={modFavorites}
                     transform={transform}
                     centerFunc={centerCoords}
-                />
+                /> */}
             </div>
             <DoMath selectedTile={tf.selectedTile} transform={transform} centerFunc={centerCoords} />
             <div

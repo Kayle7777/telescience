@@ -29,7 +29,7 @@ const styles = theme => ({
 });
 
 const Favorites = props => {
-    const { classes, favs, modFavorites, transform, centerFunc } = props;
+    const { classes, favs, modFavorites, transform, centerFunc, zoom } = props;
     const [collapseIn, handleCollapse] = useState(false);
     const [anchor, setAnchor] = useState({ name: '', anchorEl: null });
     return (
@@ -58,8 +58,8 @@ const Favorites = props => {
                                 button
                                 key={`[${each.location.toString()}]`}
                                 id={`${each.name}_${each.location.toString()}`}
-                                onClick={e => ListItemClick(e, each)}
-                                onContextMenu={e => ListItemClick(e, each, `${each.name}_${each.location.toString()}`)}
+                                onClick={e => listItemClick(e, each)}
+                                onContextMenu={e => listItemClick(e, each, `${each.name}_${each.location.toString()}`)}
                             >
                                 <ListItemText primary={each.name} secondary={`[${each.location.toString()}]`} />
                                 <Menu
@@ -86,7 +86,7 @@ const Favorites = props => {
             </Collapse>
         </Paper>
     );
-    function ListItemClick(e, each, id) {
+    function listItemClick(e, each, id) {
         // 'click' || 'contextmenu'
         if (e.type === 'contextmenu') {
             e.preventDefault();
@@ -94,7 +94,7 @@ const Favorites = props => {
             return;
         } else {
             if (anchor.anchorEl) return;
-            centerFunc(10, [0, 0], each.location);
+            centerFunc(zoom, [0, 0], each.location);
             return transform(tf => {
                 tf.selectedTile = each.location;
                 return tf;
