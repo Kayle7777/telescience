@@ -157,8 +157,8 @@ const Main = props => {
         setZoom(centerScale);
         const newScale = centerScale / 10;
         const [tileX, tileY] = [
-            (tf.selectedTile[0] - 1 - modifier[0]) * 32 * newScale,
-            -(tf.selectedTile[1] - 303 - modifier[1]) * 32 * newScale,
+            (tf.selectedTile[0] - 1 + modifier[0]) * 32 * newScale,
+            -(tf.selectedTile[1] - 303 + modifier[1]) * 32 * newScale,
         ];
         const [centerX, centerY] = [window.screen.width / 2, window.screen.height / 2];
         return transform(tf => {
