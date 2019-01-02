@@ -130,19 +130,19 @@ const Main = props => {
         });
     }
 
-    function mouseWheel(e) {
+    function mouseWheel(e, val = 1) {
         if (mousedown) return;
         let { deltaY, clientX, clientY } = e;
         if (deltaY > 0) {
             if (zoom === 2) return;
-            setZoom(zoom - 1);
+            setZoom(zoom - val);
         } else {
             if (zoom === 15) return;
-            setZoom(zoom + 1);
+            setZoom(zoom + val);
         }
         return transform(tf => {
             // This is because setZoom is async, but we want to use it right now. So we just build it ourselves
-            const newScale = (deltaY > 0 ? zoom - 1 : zoom + 1) / 10;
+            const newScale = (deltaY > 0 ? zoom - val : zoom + val) / 10;
             // These are the true pixel coordinates of the mouse on the image at normal scale
             const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
             // Apply the new scale to the true pixel coords, and add the clientX / clientY, because we subtracted it in zoomTarget.
@@ -189,10 +189,18 @@ const Main = props => {
             '7': [-1, 1],
             '8': [0, 1],
             '9': [1, 1],
+            '+': 2,
+            '-': -2,
         };
         if (!Object.keys(acceptableKeys).includes(key)) return;
         else {
             const val = acceptableKeys[key];
+            if (key === '+' || key === '-') {
+                if (key === '+' && zoom >= 15) return;
+                if (key === '-' && zoom <= 3) return;
+                setZoom(zoom + val);
+                return centerCoords(zoom + val);
+            }
             // I wonder if this will look good on prod? It doesn't on dev, because it's slow. But everything is faster on live production...
             centerCoords(zoom, val);
             return transform(tf => {
