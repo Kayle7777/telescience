@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Collapse, List, ListItem, ListItemText, Paper, Typography, IconButton, Menu, Button } from '@material-ui/core';
-import { KeyboardArrowDown as Arrow } from '@material-ui/icons';
+import {
+    Collapse,
+    List,
+    ListItem,
+    Paper,
+    Typography,
+    IconButton,
+    Menu,
+    Button,
+    TextField,
+    InputAdornment,
+} from '@material-ui/core';
+import { KeyboardArrowDown as Arrow, Create, MyLocation } from '@material-ui/icons';
 
 const styles = theme => ({
     paper: {
         position: 'relative',
         marginTop: theme.spacing.unit * 2,
         marginRight: theme.spacing.unit,
-        width: 200,
     },
     headerText: {
         marginRight: theme.spacing.unit * 6,
@@ -29,7 +39,13 @@ const styles = theme => ({
 });
 
 const Favorites = props => {
-    const { classes, favs, modFavorites, transform, centerFunc, zoom } = props;
+    const { classes, transform, centerFunc, zoom, addedFavorites } = props;
+    const [favorites, modFavorites] = useState([
+        { name: 'AI Core', location: [137, 146], enabled: false },
+        { name: 'Cloning', location: [136, 101], enabled: false },
+        ...addedFavorites,
+    ]);
+
     const [collapseIn, handleCollapse] = useState(false);
     const [anchor, setAnchor] = useState({ name: '', anchorEl: null });
     return (
@@ -41,7 +57,7 @@ const Favorites = props => {
                 variant="overline"
                 align="center"
                 onClick={() => {
-                    if (!favs.length) return handleCollapse(false);
+                    if (!favorites.length) return handleCollapse(false);
                     else return handleCollapse(!collapseIn);
                 }}
             >
@@ -52,32 +68,61 @@ const Favorites = props => {
             </Typography>
             <Collapse in={collapseIn}>
                 <List id="favorites-menu">
-                    {favs.map((each, index) => {
+                    {favorites.map((each, index) => {
                         return (
                             <ListItem
-                                button
-                                key={`[${each.location.toString()}]`}
-                                id={`${each.name}_${each.location.toString()}`}
-                                onClick={e => listItemClick(e, each)}
+                                key={`${each.location}_key`}
                                 onContextMenu={e => listItemClick(e, each, `${each.name}_${each.location.toString()}`)}
                             >
-                                <ListItemText primary={each.name} secondary={`[${each.location.toString()}]`} />
+                                <TextField
+                                    disabled={!each.enabled}
+                                    value={each.name}
+                                    onChange={e => {
+                                        let val = e.target.value;
+                                        modFavorites(favorites => {
+                                            favorites[index].name = val;
+                                            return favorites;
+                                        });
+                                    }}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <IconButton
+                                                    onClick={() =>
+                                                        modFavorites(favorites => {
+                                                            favorites[index].enabled = !favorites[index].enabled;
+                                                            return favorites;
+                                                        })
+                                                    }
+                                                    aria-label="edit name"
+                                                >
+                                                    <Create />
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton onClick={e => listItemClick(e, each)} aria-label="go to">
+                                                    <MyLocation />
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
                                 <Menu
                                     open={anchor.name === `${each.name}_${each.location.toString()}`}
                                     anchorEl={anchor.anchorEl}
                                     onClose={() => setAnchor({ name: '', anchorEl: null })}
                                 >
-                                    {/* // remove functionality here vvv */}
                                     <Button
                                         size="small"
                                         onClick={() => {
-                                            if (favs.length === 1) handleCollapse(false);
+                                            if (favorites.length === 1) handleCollapse(false);
                                             modFavorites(favs => favs.filter(items => items !== each));
                                         }}
                                     >
                                         remove
                                     </Button>
-                                    {/* // rename functionality here vvv */}
                                 </Menu>
                             </ListItem>
                         );

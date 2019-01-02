@@ -7,14 +7,10 @@ const styles = theme => ({
         position: 'relative',
         marginTop: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 200,
     },
     textField: {
         margin: theme.spacing.unit,
-        width: 200 - theme.spacing.unit * 2,
-    },
-    menu: {
-        width: 200,
+        width: `calc(100% - ${theme.spacing.unit * 2}px)`,
     },
 });
 

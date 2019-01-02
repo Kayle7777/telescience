@@ -27,6 +27,7 @@ const styles = theme => ({
         position: 'absolute',
         top: 0,
         right: 0,
+        width: 250,
     },
 });
 
@@ -34,21 +35,15 @@ const Main = props => {
     const { classes } = props;
     const [tf, transform] = useState({
         initial: [0, 0],
+        mouse: [0, 0],
         pos: [-1300, -1300],
         selectedTile: [137, 146],
     });
     const [zoom, setZoom] = useState(5);
     const scale = zoom / 10;
-    // Consider putting in one "status" state
-    const [moved, move] = useState(false);
     const [mousedown, clickDown] = useState(false);
     const [focussed, focus] = useState(false);
-    // Consider putting in one "status" state
     const [selectedMap, selectMap] = useState('cogmap1');
-    const [favorites, modFavorites] = useState([
-        { name: 'AI Core', location: [137, 146] },
-        { name: 'Cloning', location: [136, 101] },
-    ]);
 
     const iStyles = {
         divStyle: {
@@ -65,7 +60,7 @@ const Main = props => {
             zIndex: 2,
             position: 'absolute',
             left: 149 * 32 * scale + tf.pos[0],
-            top: -(149 - 300) * 32 * scale + tf.pos[1],
+            top: 150 * 32 * scale + tf.pos[1],
             width: 32 * scale,
             height: 32 * scale,
         },
@@ -81,6 +76,7 @@ const Main = props => {
             }
             onWheel={e => mouseWheel(e)}
             onMouseEnter={() => focus(true)}
+            onContextMenu={e => e.preventDefault()}
             className={classes.noClick}
             width={32 * scale}
             height={32 * scale}
@@ -110,13 +106,7 @@ const Main = props => {
             )}
             <div className={classes.rightPanel}>
                 <MapSelect selectMap={selectMap} selectedMap={selectedMap} />
-                {/* <Favorites
-                    zoom={zoom}
-                    favs={favorites}
-                    modFavorites={modFavorites}
-                    transform={transform}
-                    centerFunc={centerCoords}
-                /> */}
+                {/* <Favorites zoom={zoom} transform={transform} centerFunc={centerCoords} addedFavorites={[]} /> */}
             </div>
             <DoMath selectedTile={tf.selectedTile} transform={transform} centerFunc={centerCoords} />
             <div
@@ -127,8 +117,10 @@ const Main = props => {
                     focus(false);
                 }}
                 onMouseEnter={() => focus(true)}
-                onMouseUp={e => mouseUp(e)}
+                onContextMenu={e => contextMenu(e)}
+                onClick={e => mouseClick(e)}
                 onMouseDown={e => mouseDown(e)}
+                onMouseUp={() => clickDown(false)}
                 onMouseMove={e => mouseMove(e)}
                 onWheel={e => mouseWheel(e)}
             >
@@ -138,12 +130,13 @@ const Main = props => {
         </div>
     );
 
-    function mouseUp(e) {
-        clickDown(false);
-        // This works because mouseMove never fires unless you actually move the mouse. If mouseMove fires, we don't want to continue the rest of this.
-        if (moved) return move(false);
-        else moved && move(false);
+    function contextMenu(e) {
+        e.preventDefault();
+    }
+
+    function mouseClick(e) {
         const { clientX, clientY } = e;
+        if (tf.mouse[0] !== clientX || tf.mouse[1] !== clientY) return;
         const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
         transform(tf => {
             // Select each "tile", where each tile is 32 pixels by 32 pixels. Also, the game grid begins at [1,1] from the bottom left. Weird right?
@@ -156,6 +149,7 @@ const Main = props => {
         clickDown(true);
         const { clientX, clientY } = e;
         return transform(tf => {
+            tf.mouse = [clientX, clientY];
             tf.initial = [clientX - tf.pos[0], clientY - tf.pos[1]];
             return tf;
         });
@@ -163,7 +157,6 @@ const Main = props => {
 
     function mouseMove(e) {
         if (!mousedown) return;
-        move(true);
         const { clientX, clientY } = e;
         return transform(tf => {
             tf.pos = [clientX - tf.initial[0], clientY - tf.initial[1]];
@@ -213,7 +206,7 @@ const Main = props => {
     function keyDown(e) {
         if (!focussed) return;
         let { key } = e;
-        if (key === '5') return centerCoords(zoom);
+        if (key === '5' || key === ' ') return centerCoords(zoom);
         let acceptableKeys = {
             w: [0, 1],
             a: [-1, 0],
