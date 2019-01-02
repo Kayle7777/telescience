@@ -152,7 +152,7 @@ const Main = props => {
         });
     }
 
-    function centerCoords(centerScale = 15) {
+    function centerCoords(centerScale = 12) {
         // Default to max 1.5 scale, optional arg to change this
         setZoom(centerScale);
         const newScale = centerScale / 10;
@@ -168,6 +168,7 @@ const Main = props => {
     function keyDown(e) {
         if (!focussed) return;
         let { key } = e;
+        if (key === '5') return centerCoords(zoom);
         let acceptableKeys = {
             w: [0, 1],
             a: [-1, 0],

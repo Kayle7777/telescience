@@ -315,7 +315,7 @@ const DoMath = props => {
                     </p>
                     <p>
                         You can move the tile selector by keyboard as long as the mouse is not in the control panel. Try
-                        WASD, Arrow Keys, or Numpad.
+                        WASD, Arrow Keys, or Numpad. Numpad 5 will center screen
                     </p>
                     <p>
                         Click the "EXPEDITION LOCATIONS" header for a list of telescience expedition locations, their
