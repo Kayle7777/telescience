@@ -4,6 +4,7 @@ import spaceTile from '../space.png';
 import Images from '../components/Images';
 import DoMath from '../components/DoMath';
 import MapSelect from '../components/MapSelect';
+import Favorites from '../components/Favorites';
 
 const styles = theme => ({
     main: {
@@ -20,6 +21,12 @@ const styles = theme => ({
     noClick: {
         userSelect: 'none',
     },
+    rightPanel: {
+        zIndex: 2,
+        position: 'absolute',
+        top: 0,
+        right: 0,
+    },
 });
 
 const Main = props => {
@@ -31,10 +38,16 @@ const Main = props => {
     });
     const [zoom, setZoom] = useState(5);
     const scale = zoom / 10;
+    // Consider putting in one "status" state
     const [moved, move] = useState(false);
     const [mousedown, clickDown] = useState(false);
     const [focussed, focus] = useState(false);
+    // Consider putting in one "status" state
     const [selectedMap, selectMap] = useState('cogmap1');
+    const [favorites, modFavorites] = useState([
+        { name: 'AI Core', location: [137, 146] },
+        { name: 'Cloning', location: [136, 101] },
+    ]);
 
     const iStyles = {
         divStyle: {
@@ -76,7 +89,15 @@ const Main = props => {
 
     return (
         <div className={classes.noClick} onKeyDown={e => keyDown(e)} tabIndex={0}>
-            <MapSelect selectMap={selectMap} selectedMap={selectedMap} />
+            <div className={classes.rightPanel}>
+                <MapSelect selectMap={selectMap} selectedMap={selectedMap} />
+                <Favorites
+                    favs={favorites}
+                    modFavorites={modFavorites}
+                    transform={transform}
+                    centerFunc={centerCoords}
+                />
+            </div>
             <DoMath selectedTile={tf.selectedTile} transform={transform} centerFunc={centerCoords} />
             <div
                 className={classes.main}
@@ -152,13 +173,14 @@ const Main = props => {
         });
     }
 
-    function centerCoords(centerScale = 12, modifier = [0, 0]) {
-        // Default to max 1.5 scale, optional arg to change this
+    function centerCoords(centerScale = 12, modifier = [0, 0], newTile) {
+        const tile = newTile ? newTile : tf.selectedTile;
+        // Default to max 1.2 scale, optional arg to change this
         setZoom(centerScale);
         const newScale = centerScale / 10;
         const [tileX, tileY] = [
-            (tf.selectedTile[0] - 1 + modifier[0]) * 32 * newScale,
-            -(tf.selectedTile[1] - 303 + modifier[1]) * 32 * newScale,
+            (tile[0] - 1 + modifier[0]) * 32 * newScale,
+            -(tile[1] - 303 + modifier[1]) * 32 * newScale,
         ];
         const [centerX, centerY] = [window.screen.width / 2, window.screen.height / 2];
         return transform(tf => {
@@ -201,7 +223,6 @@ const Main = props => {
                 setZoom(zoom + val);
                 return centerCoords(zoom + val);
             }
-            // I wonder if this will look good on prod? It doesn't on dev, because it's slow. But everything is faster on live production...
             centerCoords(zoom, val);
             return transform(tf => {
                 tf.selectedTile[0] += val[0];

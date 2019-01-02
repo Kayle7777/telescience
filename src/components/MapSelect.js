@@ -4,17 +4,14 @@ import { TextField, MenuItem, Paper } from '@material-ui/core';
 
 const styles = theme => ({
     paper: {
-        zIndex: 2,
-        position: 'absolute',
-        top: 0,
-        right: 0,
+        position: 'relative',
         marginTop: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 150,
+        width: 200,
     },
     textField: {
         margin: theme.spacing.unit,
-        width: 150 - theme.spacing.unit * 2,
+        width: 200 - theme.spacing.unit * 2,
     },
     menu: {
         width: 200,
