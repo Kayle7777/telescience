@@ -152,11 +152,14 @@ const Main = props => {
         });
     }
 
-    function centerCoords(centerScale = 12) {
+    function centerCoords(centerScale = 12, modifier = [0, 0]) {
         // Default to max 1.5 scale, optional arg to change this
         setZoom(centerScale);
         const newScale = centerScale / 10;
-        const [tileX, tileY] = [(tf.selectedTile[0] - 1) * 32 * newScale, -(tf.selectedTile[1] - 303) * 32 * newScale];
+        const [tileX, tileY] = [
+            (tf.selectedTile[0] - 1 - modifier[0]) * 32 * newScale,
+            -(tf.selectedTile[1] - 303 - modifier[1]) * 32 * newScale,
+        ];
         const [centerX, centerY] = [window.screen.width / 2, window.screen.height / 2];
         return transform(tf => {
             tf.pos[0] = -tileX + centerX;
@@ -190,6 +193,8 @@ const Main = props => {
         if (!Object.keys(acceptableKeys).includes(key)) return;
         else {
             const val = acceptableKeys[key];
+            // I wonder if this will look good on prod? It doesn't on dev, because it's slow. But everything is faster on live production...
+            centerCoords(zoom, val);
             return transform(tf => {
                 tf.selectedTile[0] += val[0];
                 tf.selectedTile[1] += val[1];
