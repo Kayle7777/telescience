@@ -28,13 +28,14 @@ const styles = theme => ({
 });
 
 const FavoritesMenu = props => {
-    const { classes, centerCoords, zoom, favorites, modFavorites, math } = props;
+    const { classes, centerCoords, zoom, favorites, modFavorites, math, selectedMap } = props;
     const [collapseIn, handleCollapse] = useState(false);
     const [permaCollapse, doPermaCollapse] = useState(false);
 
     useEffect(
         () => {
-            if (favorites.length === 1 && !collapseIn && !permaCollapse) handleCollapse(true);
+            if (favorites[selectedMap].length === 1 && !collapseIn && !permaCollapse) return handleCollapse(true);
+            else if (favorites[selectedMap].length < 1) return handleCollapse(false);
         },
         [props]
     );
@@ -48,7 +49,7 @@ const FavoritesMenu = props => {
                 variant="overline"
                 align="center"
                 onClick={() => {
-                    if (!favorites.length) return handleCollapse(false);
+                    if (!favorites[selectedMap].length) return handleCollapse(false);
                     else {
                         doPermaCollapse(true);
                         return handleCollapse(!collapseIn);
@@ -62,7 +63,7 @@ const FavoritesMenu = props => {
             </Typography>
             <Collapse in={collapseIn}>
                 <List id="favorites-menu">
-                    {favorites.map((each, index) => {
+                    {favorites[selectedMap].map((each, index) => {
                         return (
                             <ListItem
                                 key={`${each.location}_key`}
@@ -95,7 +96,12 @@ const FavoritesMenu = props => {
                                                 <IconButton
                                                     onClick={() => {
                                                         if (favorites.length === 1) handleCollapse(false);
-                                                        modFavorites(favs => favs.filter(items => items !== each));
+                                                        modFavorites(favs => {
+                                                            favs[selectedMap] = favs[selectedMap].filter(
+                                                                items => items !== each
+                                                            );
+                                                            return favs;
+                                                        });
                                                     }}
                                                     aria-label="delete"
                                                 >

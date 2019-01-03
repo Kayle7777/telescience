@@ -336,6 +336,7 @@ const DoMath = props => {
                     zoom={zoom}
                     centerCoords={centerCoords}
                     favorites={favorites}
+                    selectedMap={selectedMap}
                     modFavorites={modFavorites}
                     math={{ divisors: [xDivisor, yDivisor], modifiers: [xModifier, yModifier] }}
                 />

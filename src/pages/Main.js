@@ -37,7 +37,7 @@ const Main = props => {
     const [focussed, focus] = useState(false);
     const [menu, doMenu] = useState({ mouse: [0, 0], target: null, removeTarget: null });
     const [selectedMap, selectMap] = useState('cogmap1');
-    const [favorites, modFavorites] = useState([]);
+    const [favorites, modFavorites] = useState({ cogmap1: [], cogmap2: [], faintSignal: [], oshan: [], clarion: [] });
 
     const iStyles = {
         divStyle: {
@@ -145,8 +145,8 @@ const Main = props => {
                     favorite
                 </Button>
             </Menu>
-            {favorites.length > 0 &&
-                favorites.map(fav => {
+            {favorites[selectedMap].length > 0 &&
+                favorites[selectedMap].map(fav => {
                     return (
                         <div
                             key={`${fav.location.toString()}_SVG`}
@@ -296,8 +296,8 @@ const Main = props => {
         const [imageX, imageY] = [menu.mouse[0] - tf.pos[0], menu.mouse[1] - tf.pos[1]].map(i => i / scale);
         // Add to favorites here
         modFavorites(prev => {
-            prev.push({
-                name: `Favorite # ${prev.length + 1}`,
+            prev[selectedMap].push({
+                name: `Favorite # ${prev[selectedMap].length + 1}`,
                 location: [1 + (imageX - (imageX % 32)) / 32, 300 - (imageY - (imageY % 32)) / 32],
             });
             return prev;
