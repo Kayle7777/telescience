@@ -5,8 +5,6 @@ import { Info } from '@material-ui/icons';
 import spaceTile from '../space.png';
 import Images from '../components/Images';
 import DoMath from '../components/DoMath';
-import MapSelect from '../components/MapSelect';
-import Favorites from '../components/Favorites';
 
 const styles = theme => ({
     main: {
@@ -23,13 +21,6 @@ const styles = theme => ({
     noClick: {
         userSelect: 'none',
     },
-    rightPanel: {
-        position: 'absolute',
-        zIndex: 2,
-        top: 0,
-        right: 0,
-        width: 250,
-    },
 });
 
 const Main = props => {
@@ -44,15 +35,16 @@ const Main = props => {
     const scale = zoom / 10;
     const [mousedown, clickDown] = useState(false);
     const [focussed, focus] = useState(false);
-    const [menu, doMenu] = useState({ mouse: [0, 0], target: null });
+    const [menu, doMenu] = useState({ mouse: [0, 0], target: null, removeTarget: null });
     const [selectedMap, selectMap] = useState('cogmap1');
+    const [favorites, modFavorites] = useState([]);
 
     const iStyles = {
         divStyle: {
             transformOrigin: `0 0`,
             transform: `translate3D(${tf.pos[0]}px, ${tf.pos[1]}px, 0) scale(${scale})`,
         },
-        svgStyle: {
+        selectorStyle: {
             zIndex: 1,
             position: 'absolute',
             left: (tf.selectedTile[0] - 1) * 32 * scale + tf.pos[0],
@@ -67,27 +59,21 @@ const Main = props => {
             height: 32 * scale,
         },
     };
-
-    const Svg = () => (
+    const Svg = props => (
         <svg
-            onClick={() =>
-                transform(tf => {
-                    tf.selectedTile = [1, 1];
-                    return tf;
-                })
-            }
+            onClick={props.onClick}
             onWheel={e => mouseWheel(e)}
             onMouseEnter={() => focus(true)}
             onContextMenu={e => e.preventDefault()}
             className={classes.noClick}
             width={32 * scale}
             height={32 * scale}
-            style={iStyles.svgStyle}
+            style={props.style}
         >
             <rect
                 width={`${32 * scale}px`}
                 height={`${32 * scale}px`}
-                stroke="white"
+                stroke={props.color}
                 fill="transparent"
                 strokeWidth="4"
             />
@@ -106,11 +92,16 @@ const Main = props => {
                     <Info style={iStyles.oceanMan} />
                 </a>
             )}
-            <div className={classes.rightPanel}>
-                <MapSelect selectMap={selectMap} selectedMap={selectedMap} />
-                <Favorites zoom={zoom} transform={transform} centerFunc={centerCoords} addedFavorites={[]} />
-            </div>
-            <DoMath selectedTile={tf.selectedTile} transform={transform} centerFunc={centerCoords} />
+            <DoMath
+                selectedTile={tf.selectedTile}
+                transform={transform}
+                centerCoords={centerCoords}
+                selectMap={selectMap}
+                selectedMap={selectedMap}
+                zoom={zoom}
+                favorites={favorites}
+                modFavorites={modFavorites}
+            />
             <div
                 className={classes.main}
                 style={iStyles.divStyle}
@@ -128,7 +119,16 @@ const Main = props => {
             >
                 <Images image={`${classes.image} ${classes.noClick}`} selectedMap={selectedMap} />
             </div>
-            <Svg />
+            <Svg
+                color="white"
+                style={iStyles.selectorStyle}
+                onClick={() =>
+                    transform(tf => {
+                        tf.selectedTile = [1, 1];
+                        return tf;
+                    })
+                }
+            />
             <Menu
                 MenuListProps={{ disablePadding: true }}
                 open={Boolean(menu.target)}
@@ -145,6 +145,32 @@ const Main = props => {
                     favorite
                 </Button>
             </Menu>
+            {favorites.length > 0 &&
+                favorites.map(fav => {
+                    return (
+                        <div
+                            key={`${fav.location.toString()}_SVG`}
+                            onContextMenu={e => {
+                                const { target, clientX, clientY } = e;
+                                doMenu(prev => {
+                                    prev.removeTarget = target;
+                                    prev.mouse = [clientX, clientY];
+                                    return prev;
+                                });
+                            }}
+                        >
+                            <Svg
+                                color="#39FF14"
+                                style={{
+                                    zIndex: 1,
+                                    position: 'fixed',
+                                    left: (fav.location[0] - 1) * 32 * scale + tf.pos[0],
+                                    top: -(fav.location[1] - 300) * 32 * scale + tf.pos[1],
+                                }}
+                            />
+                        </div>
+                    );
+                })}
         </div>
     );
 
@@ -153,7 +179,6 @@ const Main = props => {
         if (tf.mouse[0] !== clientX || tf.mouse[1] !== clientY) return;
         const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
         transform(tf => {
-            // Select each "tile", where each tile is 32 pixels by 32 pixels. Also, the game grid begins at [1,1] from the bottom left. Weird right?
             tf.selectedTile = [1 + (imageX - (imageX % 32)) / 32, 300 - (imageY - (imageY % 32)) / 32];
             return tf;
         });
@@ -189,11 +214,8 @@ const Main = props => {
             setZoom(zoom + val);
         }
         return transform(tf => {
-            // This is because setZoom is async, but we want to use it right now. So we just build it ourselves
             const newScale = (deltaY > 0 ? zoom - val : zoom + val) / 10;
-            // These are the true pixel coordinates of the mouse on the image at normal scale
             const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
-            // Apply the new scale to the true pixel coords, and add the clientX / clientY, because we subtracted it in zoomTarget.
             tf.pos[0] = -imageX * newScale + clientX;
             tf.pos[1] = -imageY * newScale + clientY;
             return tf;
@@ -271,11 +293,21 @@ const Main = props => {
 
     function menuButtonClick(e) {
         closeMenu();
+        const [imageX, imageY] = [menu.mouse[0] - tf.pos[0], menu.mouse[1] - tf.pos[1]].map(i => i / scale);
+        // Add to favorites here
+        modFavorites(prev => {
+            prev.push({
+                name: `Favorite # ${prev.length + 1}`,
+                location: [1 + (imageX - (imageX % 32)) / 32, 300 - (imageY - (imageY % 32)) / 32],
+            });
+            return prev;
+        });
     }
 
     function closeMenu() {
         doMenu(prev => {
             prev.target = null;
+            prev.removeTarget = null;
             return prev;
         });
     }

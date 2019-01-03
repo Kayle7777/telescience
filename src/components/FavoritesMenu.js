@@ -1,18 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {
-    Collapse,
-    List,
-    ListItem,
-    Paper,
-    Typography,
-    IconButton,
-    Menu,
-    Button,
-    TextField,
-    InputAdornment,
-} from '@material-ui/core';
-import { KeyboardArrowDown as Arrow, Create, MyLocation } from '@material-ui/icons';
+import { Collapse, List, ListItem, Paper, Typography, IconButton, TextField, InputAdornment } from '@material-ui/core';
+import { KeyboardArrowDown as Arrow, Close, MyLocation } from '@material-ui/icons';
 
 const styles = theme => ({
     paper: {
@@ -38,16 +27,18 @@ const styles = theme => ({
     },
 });
 
-const Favorites = props => {
-    const { classes, transform, centerFunc, zoom, addedFavorites } = props;
-    const [favorites, modFavorites] = useState([
-        { name: 'AI Core', location: [137, 146], enabled: false },
-        { name: 'Cloning', location: [136, 101], enabled: false },
-        ...addedFavorites,
-    ]);
-
+const FavoritesMenu = props => {
+    const { classes, centerCoords, zoom, favorites, modFavorites, math } = props;
     const [collapseIn, handleCollapse] = useState(false);
-    const [anchor, setAnchor] = useState({ name: '', anchorEl: null });
+    const [permaCollapse, doPermaCollapse] = useState(false);
+
+    useEffect(
+        () => {
+            if (favorites.length === 1 && !collapseIn && !permaCollapse) handleCollapse(true);
+        },
+        [props]
+    );
+
     return (
         <Paper className={classes.paper}>
             <Typography
@@ -58,7 +49,10 @@ const Favorites = props => {
                 align="center"
                 onClick={() => {
                     if (!favorites.length) return handleCollapse(false);
-                    else return handleCollapse(!collapseIn);
+                    else {
+                        doPermaCollapse(true);
+                        return handleCollapse(!collapseIn);
+                    }
                 }}
             >
                 <IconButton disabled className={collapseIn ? classes.arrow : classes.arrowShift}>
@@ -75,7 +69,6 @@ const Favorites = props => {
                                 onContextMenu={e => listItemClick(e, each, `${each.name}_${each.location.toString()}`)}
                             >
                                 <TextField
-                                    disabled={!each.enabled}
                                     value={each.name}
                                     onChange={e => {
                                         let val = e.target.value;
@@ -84,46 +77,34 @@ const Favorites = props => {
                                             return favorites;
                                         });
                                     }}
+                                    FormHelperTextProps={{ style: { textAlign: 'center' } }}
+                                    helperText={`Real: [${each.location.toString()}] ----- Console: [${each
+                                        .location[0] /
+                                        math.divisors[0] +
+                                        math.modifiers[0]},${each.location[1] / math.divisors[1] + math.modifiers[1]}]`}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
-                                                <IconButton
-                                                    onClick={() =>
-                                                        modFavorites(favorites => {
-                                                            favorites[index].enabled = !favorites[index].enabled;
-                                                            return favorites;
-                                                        })
-                                                    }
-                                                    aria-label="edit name"
-                                                >
-                                                    <Create />
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                        endAdornment: (
-                                            <InputAdornment position="end">
                                                 <IconButton onClick={e => listItemClick(e, each)} aria-label="go to">
                                                     <MyLocation />
                                                 </IconButton>
                                             </InputAdornment>
                                         ),
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    onClick={() => {
+                                                        if (favorites.length === 1) handleCollapse(false);
+                                                        modFavorites(favs => favs.filter(items => items !== each));
+                                                    }}
+                                                    aria-label="delete"
+                                                >
+                                                    <Close />
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
                                     }}
                                 />
-                                <Menu
-                                    open={anchor.name === `${each.name}_${each.location.toString()}`}
-                                    anchorEl={anchor.anchorEl}
-                                    onClose={() => setAnchor({ name: '', anchorEl: null })}
-                                >
-                                    <Button
-                                        size="small"
-                                        onClick={() => {
-                                            if (favorites.length === 1) handleCollapse(false);
-                                            modFavorites(favs => favs.filter(items => items !== each));
-                                        }}
-                                    >
-                                        remove
-                                    </Button>
-                                </Menu>
                             </ListItem>
                         );
                     })}
@@ -135,17 +116,11 @@ const Favorites = props => {
         // 'click' || 'contextmenu'
         if (e.type === 'contextmenu') {
             e.preventDefault();
-            setAnchor({ name: id, anchorEl: e.target });
             return;
         } else {
-            if (anchor.anchorEl) return;
-            centerFunc(zoom, [0, 0], each.location);
-            return transform(tf => {
-                tf.selectedTile = each.location;
-                return tf;
-            });
+            centerCoords(zoom, [0, 0], each.location);
         }
     }
 };
 
-export default withStyles(styles)(Favorites);
+export default withStyles(styles)(FavoritesMenu);
