@@ -74,7 +74,7 @@ const FavoritesMenu = props => {
                                     onChange={e => {
                                         let val = e.target.value;
                                         modFavorites(favorites => {
-                                            favorites[index].name = val;
+                                            favorites[selectedMap][index].name = val;
                                             return favorites;
                                         });
                                     }}
