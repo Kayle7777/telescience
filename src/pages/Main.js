@@ -74,7 +74,7 @@ const Main = props => {
             onClick={props.onClick}
             onWheel={e => mouseWheel(e)}
             onMouseEnter={() => focus(true)}
-            onContextMenu={e => e.preventDefault()}
+            onContextMenu={props.onContextMenu ? props.onContextMenu : e => e.preventDefault()}
             className={classes.noClick}
             width={32 * scale}
             height={32 * scale}
@@ -177,12 +177,13 @@ const Main = props => {
                                     left: (fav.location[0] - 1) * 32 * scale + tf.pos[0],
                                     top: -(fav.location[1] - 300) * 32 * scale + tf.pos[1],
                                 }}
-                                onClick={() =>
-                                    modFavorites(prev => {
+                                onContextMenu={e => {
+                                    e.preventDefault();
+                                    return modFavorites(prev => {
                                         prev[selectedMap] = prev[selectedMap].filter(items => items !== fav);
                                         return prev;
-                                    })
-                                }
+                                    });
+                                }}
                             />
                         </div>
                     );
