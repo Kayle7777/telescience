@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { Menu, Button } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
 import spaceTile from '../space.png';
 import Images from '../components/Images';
@@ -23,8 +24,8 @@ const styles = theme => ({
         userSelect: 'none',
     },
     rightPanel: {
-        zIndex: 2,
         position: 'absolute',
+        zIndex: 2,
         top: 0,
         right: 0,
         width: 250,
@@ -43,6 +44,7 @@ const Main = props => {
     const scale = zoom / 10;
     const [mousedown, clickDown] = useState(false);
     const [focussed, focus] = useState(false);
+    const [menu, doMenu] = useState({ mouse: [0, 0], target: null });
     const [selectedMap, selectMap] = useState('cogmap1');
 
     const iStyles = {
@@ -106,7 +108,7 @@ const Main = props => {
             )}
             <div className={classes.rightPanel}>
                 <MapSelect selectMap={selectMap} selectedMap={selectedMap} />
-                {/* <Favorites zoom={zoom} transform={transform} centerFunc={centerCoords} addedFavorites={[]} /> */}
+                <Favorites zoom={zoom} transform={transform} centerFunc={centerCoords} addedFavorites={[]} />
             </div>
             <DoMath selectedTile={tf.selectedTile} transform={transform} centerFunc={centerCoords} />
             <div
@@ -127,12 +129,24 @@ const Main = props => {
                 <Images image={`${classes.image} ${classes.noClick}`} selectedMap={selectedMap} />
             </div>
             <Svg />
+            <Menu
+                MenuListProps={{ disablePadding: true }}
+                open={Boolean(menu.target)}
+                anchorEl={menu.target}
+                anchorPosition={{ top: menu.mouse[1], left: menu.mouse[0] }}
+                anchorReference={'anchorPosition'}
+                onContextMenu={e => {
+                    e.preventDefault();
+                    closeMenu();
+                }}
+                onClose={() => closeMenu()}
+            >
+                <Button size="small" onClick={e => menuButtonClick(e)}>
+                    favorite
+                </Button>
+            </Menu>
         </div>
     );
-
-    function contextMenu(e) {
-        e.preventDefault();
-    }
 
     function mouseClick(e) {
         const { clientX, clientY } = e;
@@ -243,6 +257,27 @@ const Main = props => {
                 return tf;
             });
         }
+    }
+
+    function contextMenu(e) {
+        e.preventDefault();
+        const { clientX, clientY, target } = e;
+        doMenu(prev => {
+            prev.target = target;
+            prev.mouse = [clientX, clientY];
+            return prev;
+        });
+    }
+
+    function menuButtonClick(e) {
+        closeMenu();
+    }
+
+    function closeMenu() {
+        doMenu(prev => {
+            prev.target = null;
+            return prev;
+        });
     }
 };
 
