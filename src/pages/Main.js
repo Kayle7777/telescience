@@ -72,7 +72,7 @@ const Main = props => {
     const Svg = props => (
         <svg
             onClick={props.onClick}
-            onWheel={e => mouseWheel(e)}
+            onWheel={mouseWheel}
             onMouseEnter={() => focus(true)}
             onContextMenu={props.onContextMenu ? props.onContextMenu : e => e.preventDefault()}
             className={classes.noClick}
@@ -120,12 +120,12 @@ const Main = props => {
                     focus(false);
                 }}
                 onMouseEnter={() => focus(true)}
-                onContextMenu={e => contextMenu(e)}
-                onClick={e => mouseClick(e)}
-                onMouseDown={e => mouseDown(e)}
+                onContextMenu={contextMenu}
+                onClick={mouseClick}
+                onMouseDown={mouseDown}
                 onMouseUp={() => clickDown(false)}
-                onMouseMove={e => mouseMove(e)}
-                onWheel={e => mouseWheel(e)}
+                onMouseMove={mouseMove}
+                onWheel={mouseWheel}
             >
                 <Images image={`${classes.image} ${classes.noClick}`} selectedMap={selectedMap} />
             </div>
@@ -151,7 +151,7 @@ const Main = props => {
                 }}
                 onClose={() => closeMenu()}
             >
-                <Button size="small" onClick={e => menuButtonClick(e)}>
+                <Button size="small" onClick={menuButtonClick}>
                     favorite
                 </Button>
             </Menu>
