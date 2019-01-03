@@ -4,7 +4,7 @@ import { Menu, Button } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
 import spaceTile from '../space.png';
 import Images from '../components/Images';
-import DoMath from '../components/DoMath';
+import Overlay from '../components/Overlay';
 
 const styles = theme => ({
     main: {
@@ -38,11 +38,15 @@ const Main = props => {
     const [menu, doMenu] = useState({ mouse: [0, 0], target: null, removeTarget: null });
     const [selectedMap, selectMap] = useState('cogmap1');
     const [favorites, modFavorites] = useState({
-        cogmap1: [{ name: 'AI core', location: [137, 146] }, { name: "Captain's Locker", location: [85, 166] }],
-        cogmap2: [{ name: 'AI core', location: [190, 220] }],
+        cogmap1: [
+            { name: 'Telescience', location: [112, 123] },
+            { name: 'AI core', location: [137, 146] },
+            { name: "Captain's Locker", location: [85, 166] },
+        ],
+        cogmap2: [{ name: 'Telescience', location: [104, 120] }, { name: 'AI core', location: [190, 220] }],
         faintSignal: [{ name: 'RobustTec Implants', location: [266, 132] }, { name: 'Phaser', location: [285, 162] }],
-        oshan: [],
-        clarion: [],
+        oshan: [{ name: 'Telescience', location: [181, 174] }],
+        clarion: [{ name: 'Telescience', location: [153, 107] }],
     });
 
     const iStyles = {
@@ -98,7 +102,7 @@ const Main = props => {
                     <Info style={iStyles.oceanMan} />
                 </a>
             )}
-            <DoMath
+            <Overlay
                 selectedTile={tf.selectedTile}
                 transform={transform}
                 centerCoords={centerCoords}
@@ -173,6 +177,12 @@ const Main = props => {
                                     left: (fav.location[0] - 1) * 32 * scale + tf.pos[0],
                                     top: -(fav.location[1] - 300) * 32 * scale + tf.pos[1],
                                 }}
+                                onClick={() =>
+                                    modFavorites(prev => {
+                                        prev[selectedMap] = prev[selectedMap].filter(items => items !== fav);
+                                        return prev;
+                                    })
+                                }
                             />
                         </div>
                     );
@@ -300,10 +310,9 @@ const Main = props => {
     function menuButtonClick(e) {
         closeMenu();
         const [imageX, imageY] = [menu.mouse[0] - tf.pos[0], menu.mouse[1] - tf.pos[1]].map(i => i / scale);
-        // Add to favorites here
         modFavorites(prev => {
             prev[selectedMap].push({
-                name: `Favorite # ${prev[selectedMap].length + 1}`,
+                name: `Favorite #${prev[selectedMap].length + 1}`,
                 location: [1 + (imageX - (imageX % 32)) / 32, 300 - (imageY - (imageY % 32)) / 32],
             });
             return prev;

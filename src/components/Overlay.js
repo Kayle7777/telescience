@@ -73,7 +73,7 @@ const styles = theme => ({
     },
 });
 
-const DoMath = props => {
+const Overlay = props => {
     const { classes, selectedTile, centerCoords, selectMap, selectedMap, zoom, favorites, modFavorites } = props;
     const [anchorEl, doAnchor] = useState(null);
     const [gpsValues, setValue] = useState({ input: [100, 50], actualX: [6, 7], actualY: [49, 51] });
@@ -353,4 +353,4 @@ const DoMath = props => {
     }
 };
 
-export default withStyles(styles)(DoMath);
+export default withStyles(styles)(Overlay);
