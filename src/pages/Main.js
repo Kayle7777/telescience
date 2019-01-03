@@ -37,7 +37,13 @@ const Main = props => {
     const [focussed, focus] = useState(false);
     const [menu, doMenu] = useState({ mouse: [0, 0], target: null, removeTarget: null });
     const [selectedMap, selectMap] = useState('cogmap1');
-    const [favorites, modFavorites] = useState({ cogmap1: [], cogmap2: [], faintSignal: [], oshan: [], clarion: [] });
+    const [favorites, modFavorites] = useState({
+        cogmap1: [{ name: 'AI core', location: [137, 146] }, { name: "Captain's Locker", location: [85, 166] }],
+        cogmap2: [{ name: 'AI core', location: [190, 220] }],
+        faintSignal: [{ name: 'RobustTec Implants', location: [266, 132] }, { name: 'Phaser', location: [285, 162] }],
+        oshan: [],
+        clarion: [],
+    });
 
     const iStyles = {
         divStyle: {
