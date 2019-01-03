@@ -34,7 +34,7 @@ const FavoritesMenu = props => {
 
     useEffect(
         () => {
-            if (favorites[selectedMap].length === 1 && !collapseIn && !permaCollapse) return handleCollapse(true);
+            if (favorites[selectedMap].length >= 1 && !collapseIn && !permaCollapse) return handleCollapse(true);
             else if (favorites[selectedMap].length < 1) return handleCollapse(false);
         },
         [props]
