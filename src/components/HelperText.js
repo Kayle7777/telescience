@@ -2,7 +2,7 @@ import React from 'react';
 
 const HelperText = () => {
     return (
-        <div>
+        <>
             <p>
                 Fill in the relevant fields under "DO TELESCIENCE MATH". The website will handle the math for you, and
                 your new console coordinates will be shown under "CONSOLE COORDINATES"
@@ -24,7 +24,7 @@ const HelperText = () => {
                 Right click anywhere on the map to add a favorite. You can quick go-to it or remove it from the
                 favorites menu
             </p>
-        </div>
+        </>
     );
 };
 

@@ -75,9 +75,11 @@ const styles = theme => ({
 
 const Overlay = props => {
     const { classes, selectedTile, centerCoords, selectMap, selectedMap, zoom, favorites, modFavorites } = props;
+    // anchorEl / doAnchor used for HelperText popover
     const [anchorEl, doAnchor] = useState(null);
-    const [gpsValues, setValue] = useState({ input: [100, 50], actualX: [6, 7], actualY: [49, 51] });
+    // mathIn / toggleMath used for math menu collapse
     const [mathIn, toggleMath] = useState(true);
+    const [gpsValues, setValue] = useState({ input: [100, 50], actualX: [6, 7], actualY: [49, 51] });
     const xDivisor = gpsValues.actualX[1] - gpsValues.actualX[0],
         yDivisor = gpsValues.actualY[1] - gpsValues.actualY[0],
         xModifier = gpsValues.input[0] - gpsValues.actualX[0] / xDivisor,

@@ -25,17 +25,13 @@ const styles = theme => ({
 
 const Main = props => {
     const { classes } = props;
+    // tf.mouse is used to determine if the mouse moved during onClick
     const [tf, transform] = useState({
         initial: [0, 0],
         mouse: [0, 0],
         pos: [-1300, -1300],
         selectedTile: [137, 146],
     });
-    const [zoom, setZoom] = useState(5);
-    const scale = zoom / 10;
-    const [mousedown, clickDown] = useState(false);
-    const [focussed, focus] = useState(false);
-    const [menu, doMenu] = useState({ mouse: [0, 0], target: null, removeTarget: null });
     const [selectedMap, selectMap] = useState('cogmap1');
     const [favorites, modFavorites] = useState({
         cogmap1: [
@@ -48,6 +44,14 @@ const Main = props => {
         oshan: [{ name: 'Telescience', location: [181, 174] }],
         clarion: [{ name: 'Telescience', location: [153, 107] }],
     });
+    const [zoom, setZoom] = useState(5);
+    const scale = zoom / 10;
+    // mousedown / clickDown used for wheel and mousemove events
+    const [mousedown, clickDown] = useState(false);
+    // focussed / focus used for keydown events.
+    const [focussed, focus] = useState(false);
+    // menu / doMenu used for menu events (obviously)
+    const [menu, doMenu] = useState({ mouse: [0, 0], target: null });
 
     const iStyles = {
         divStyle: {
@@ -72,7 +76,8 @@ const Main = props => {
     const Svg = props => (
         <svg
             onClick={props.onClick}
-            onWheel={mouseWheel}
+            onWheel={props.onWheel ? props.onWheel : mouseWheel}
+            onMouseDown={props.mouseDown}
             onMouseEnter={() => focus(true)}
             onContextMenu={props.onContextMenu ? props.onContextMenu : e => e.preventDefault()}
             className={classes.noClick}
@@ -113,8 +118,6 @@ const Main = props => {
                 modFavorites={modFavorites}
             />
             <div
-                className={classes.main}
-                style={iStyles.divStyle}
                 onMouseLeave={() => {
                     clickDown(false);
                     focus(false);
@@ -127,7 +130,42 @@ const Main = props => {
                 onMouseMove={mouseMove}
                 onWheel={mouseWheel}
             >
-                <Images image={`${classes.image} ${classes.noClick}`} selectedMap={selectedMap} />
+                <div className={classes.main} style={iStyles.divStyle}>
+                    <Images image={`${classes.image} ${classes.noClick}`} selectedMap={selectedMap} />
+                </div>
+                {favorites[selectedMap].length > 0 &&
+                    favorites[selectedMap].map(fav => {
+                        return (
+                            <svg
+                                key={`${fav.location.toString()}_SVG`}
+                                onContextMenu={e => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    return modFavorites(prev => {
+                                        prev[selectedMap] = prev[selectedMap].filter(items => items !== fav);
+                                        return prev;
+                                    });
+                                }}
+                                style={{
+                                    zIndex: 1,
+                                    position: 'fixed',
+                                    left: (fav.location[0] - 1) * 32 * scale + tf.pos[0],
+                                    top: -(fav.location[1] - 300) * 32 * scale + tf.pos[1],
+                                }}
+                                className={classes.noClick}
+                                width={32 * scale}
+                                height={32 * scale}
+                            >
+                                <rect
+                                    width={`${32 * scale}px`}
+                                    height={`${32 * scale}px`}
+                                    stroke="#39FF14"
+                                    fill="transparent"
+                                    strokeWidth="4"
+                                />
+                            </svg>
+                        );
+                    })}
             </div>
             <Svg
                 color="white"
@@ -155,44 +193,12 @@ const Main = props => {
                     favorite
                 </Button>
             </Menu>
-            {favorites[selectedMap].length > 0 &&
-                favorites[selectedMap].map(fav => {
-                    return (
-                        <div
-                            key={`${fav.location.toString()}_SVG`}
-                            onContextMenu={e => {
-                                const { target, clientX, clientY } = e;
-                                doMenu(prev => {
-                                    prev.removeTarget = target;
-                                    prev.mouse = [clientX, clientY];
-                                    return prev;
-                                });
-                            }}
-                        >
-                            <Svg
-                                color="#39FF14"
-                                style={{
-                                    zIndex: 1,
-                                    position: 'fixed',
-                                    left: (fav.location[0] - 1) * 32 * scale + tf.pos[0],
-                                    top: -(fav.location[1] - 300) * 32 * scale + tf.pos[1],
-                                }}
-                                onContextMenu={e => {
-                                    e.preventDefault();
-                                    return modFavorites(prev => {
-                                        prev[selectedMap] = prev[selectedMap].filter(items => items !== fav);
-                                        return prev;
-                                    });
-                                }}
-                            />
-                        </div>
-                    );
-                })}
         </div>
     );
 
     function mouseClick(e) {
         const { clientX, clientY } = e;
+        // Detect if we moved
         if (tf.mouse[0] !== clientX || tf.mouse[1] !== clientY) return;
         const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
         transform(tf => {
@@ -323,7 +329,6 @@ const Main = props => {
     function closeMenu() {
         doMenu(prev => {
             prev.target = null;
-            prev.removeTarget = null;
             return prev;
         });
     }
