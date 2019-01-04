@@ -65,10 +65,7 @@ const FavoritesMenu = props => {
                 <List id="favorites-menu">
                     {favorites[selectedMap].map((each, index) => {
                         return (
-                            <ListItem
-                                key={`${each.location}_key`}
-                                onContextMenu={e => listItemClick(e, each, `${each.name}_${each.location.toString()}`)}
-                            >
+                            <ListItem key={`${each.location}_key`}>
                                 <TextField
                                     value={each.name}
                                     onChange={e => {
@@ -118,14 +115,8 @@ const FavoritesMenu = props => {
             </Collapse>
         </Paper>
     );
-    function listItemClick(e, each, id) {
-        // 'click' || 'contextmenu'
-        if (e.type === 'contextmenu') {
-            e.preventDefault();
-            return;
-        } else {
-            centerCoords(zoom, [0, 0], each.location);
-        }
+    function listItemClick(e, each) {
+        centerCoords(zoom, [0, 0], each.location);
     }
 };
 

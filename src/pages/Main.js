@@ -61,8 +61,7 @@ const Main = props => {
         selectorStyle: {
             zIndex: 1,
             position: 'absolute',
-            left: (tf.selectedTile[0] - 1) * 32 * scale + tf.pos[0],
-            top: -(tf.selectedTile[1] - 300) * 32 * scale + tf.pos[1],
+            ...tilePosition(tf.selectedTile),
         },
         oceanMan: {
             zIndex: 2,
@@ -94,7 +93,6 @@ const Main = props => {
             />
         </svg>
     );
-
     return (
         <div className={classes.noClick} onKeyDown={e => keyDown(e)} tabIndex={0}>
             {selectedMap === 'oshan' && (
@@ -149,8 +147,7 @@ const Main = props => {
                                 style={{
                                     zIndex: 1,
                                     position: 'fixed',
-                                    left: (fav.location[0] - 1) * 32 * scale + tf.pos[0],
-                                    top: -(fav.location[1] - 300) * 32 * scale + tf.pos[1],
+                                    ...tilePosition(fav.location),
                                 }}
                                 className={classes.noClick}
                                 width={32 * scale}
@@ -200,9 +197,9 @@ const Main = props => {
         const { clientX, clientY } = e;
         // Detect if we moved
         if (tf.mouse[0] !== clientX || tf.mouse[1] !== clientY) return;
-        const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
+        const [imageX, imageY] = imgCoords(clientX, clientY);
         transform(tf => {
-            tf.selectedTile = [1 + (imageX - (imageX % 32)) / 32, 300 - (imageY - (imageY % 32)) / 32];
+            tf.selectedTile = tileMath(imageX, imageY);
             return tf;
         });
     }
@@ -212,7 +209,7 @@ const Main = props => {
         const { clientX, clientY } = e;
         return transform(tf => {
             tf.mouse = [clientX, clientY];
-            tf.initial = [clientX - tf.pos[0], clientY - tf.pos[1]];
+            tf.initial = imgCoords(clientX, clientY, 1);
             return tf;
         });
     }
@@ -221,7 +218,7 @@ const Main = props => {
         if (!mousedown) return;
         const { clientX, clientY } = e;
         return transform(tf => {
-            tf.pos = [clientX - tf.initial[0], clientY - tf.initial[1]];
+            tf.pos = imgCoords(clientX, clientY, 1, tf.initial);
             return tf;
         });
     }
@@ -238,7 +235,7 @@ const Main = props => {
         }
         return transform(tf => {
             const newScale = (deltaY > 0 ? zoom - val : zoom + val) / 10;
-            const [imageX, imageY] = [clientX - tf.pos[0], clientY - tf.pos[1]].map(i => i / scale);
+            const [imageX, imageY] = imgCoords(clientX, clientY);
             tf.pos[0] = -imageX * newScale + clientX;
             tf.pos[1] = -imageY * newScale + clientY;
             return tf;
@@ -316,11 +313,11 @@ const Main = props => {
 
     function menuButtonClick(e) {
         closeMenu();
-        const [imageX, imageY] = [menu.mouse[0] - tf.pos[0], menu.mouse[1] - tf.pos[1]].map(i => i / scale);
+        const [imageX, imageY] = imgCoords(menu.mouse[0], menu.mouse[1]);
         modFavorites(prev => {
             prev[selectedMap].push({
                 name: `Favorite #${prev[selectedMap].length + 1}`,
-                location: [1 + (imageX - (imageX % 32)) / 32, 300 - (imageY - (imageY % 32)) / 32],
+                location: tileMath(imageX, imageY),
             });
             return prev;
         });
@@ -331,6 +328,22 @@ const Main = props => {
             prev.target = null;
             return prev;
         });
+    }
+
+    function tileMath(x, y) {
+        return [1 + (x - (x % 32)) / 32, 300 - (y - (y % 32)) / 32];
+    }
+
+    function tilePosition(x, y) {
+        if (!y && typeof x === 'object') [x, y] = x;
+        return {
+            left: (x - 1) * 32 * scale + tf.pos[0],
+            top: -(y - 300) * 32 * scale + tf.pos[1],
+        };
+    }
+
+    function imgCoords(x, y, funcScale = scale, pos = tf.pos) {
+        return [x - pos[0], y - pos[1]].map(i => i / funcScale);
     }
 };
 
