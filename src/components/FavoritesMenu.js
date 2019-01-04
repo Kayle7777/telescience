@@ -29,6 +29,7 @@ const styles = theme => ({
 
 const FavoritesMenu = props => {
     const { classes, centerCoords, zoom, favorites, modFavorites, math, selectedMap } = props;
+    // This is to handle a sort of auto open, auto close thing
     const [collapseIn, handleCollapse] = useState(false);
     const [permaCollapse, doPermaCollapse] = useState(false);
 
@@ -70,7 +71,7 @@ const FavoritesMenu = props => {
                                     value={each.name}
                                     onChange={e => {
                                         let val = e.target.value;
-                                        modFavorites(favorites => {
+                                        return modFavorites(favorites => {
                                             favorites[selectedMap][index].name = val;
                                             return favorites;
                                         });
@@ -83,7 +84,10 @@ const FavoritesMenu = props => {
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
-                                                <IconButton onClick={e => listItemClick(e, each)} aria-label="go to">
+                                                <IconButton
+                                                    onClick={() => centerCoords(zoom, [0, 0], each.location)}
+                                                    aria-label="go to"
+                                                >
                                                     <MyLocation />
                                                 </IconButton>
                                             </InputAdornment>
@@ -93,7 +97,7 @@ const FavoritesMenu = props => {
                                                 <IconButton
                                                     onClick={() => {
                                                         if (favorites.length === 1) handleCollapse(false);
-                                                        modFavorites(favs => {
+                                                        return modFavorites(favs => {
                                                             favs[selectedMap] = favs[selectedMap].filter(
                                                                 items => items !== each
                                                             );
@@ -115,9 +119,6 @@ const FavoritesMenu = props => {
             </Collapse>
         </Paper>
     );
-    function listItemClick(e, each) {
-        centerCoords(zoom, [0, 0], each.location);
-    }
 };
 
 export default withStyles(styles)(FavoritesMenu);

@@ -235,7 +235,7 @@ const Overlay = props => {
                                         onChange={e => {
                                             let val = parseInt(e.target.value);
                                             if (!val) val = 0;
-                                            props.transform(prev => {
+                                            return props.transform(prev => {
                                                 prev.selectedTile[0] = val;
                                                 return prev;
                                             });
@@ -252,7 +252,7 @@ const Overlay = props => {
                                         onChange={e => {
                                             let val = parseInt(e.target.value);
                                             if (!val) val = 0;
-                                            props.transform(prev => {
+                                            return props.transform(prev => {
                                                 prev.selectedTile[1] = val;
                                                 return prev;
                                             });
@@ -320,14 +320,7 @@ const Overlay = props => {
                         <HelperText />
                     </Typography>
                 </Popover>
-                <IconButton
-                    tabIndex={-1}
-                    className={classes.goto}
-                    onClick={() => {
-                        // Want this to center the screen on the coordinates, and set the zoom level
-                        return centerCoords();
-                    }}
-                >
+                <IconButton tabIndex={-1} className={classes.goto} onClick={() => centerCoords()}>
                     <GoTo />
                 </IconButton>
                 <Locations math={{ divisors: [xDivisor, yDivisor], modifiers: [xModifier, yModifier] }} />
@@ -348,7 +341,7 @@ const Overlay = props => {
     function update(e, target, index) {
         let val = parseInt(e.target.value);
         if (!val) val = 0;
-        setValue(prev => {
+        return setValue(prev => {
             prev[target][index] = val;
             return prev;
         });

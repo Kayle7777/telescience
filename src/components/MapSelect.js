@@ -26,7 +26,7 @@ const MapSelect = props => {
                 value={selectedMap}
                 onChange={e => {
                     let val = e.target.value;
-                    selectMap(val);
+                    return selectMap(val);
                 }}
                 SelectProps={{
                     MenuProps: {

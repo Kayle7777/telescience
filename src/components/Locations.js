@@ -54,7 +54,7 @@ const Locations = props => {
                     <ul>
                         {[
                             { name: 'meat station', location: [209, 23] },
-                            { name: 'sun observatory', location: [99, 85] },
+                            { name: 'solar observatory', location: [99, 85] },
                             { name: 'lava moon', location: [88, 106] },
                             { name: 'mars', location: [191, 135] },
                             { name: 'ice moon', location: [15, 150] },

@@ -29,8 +29,8 @@ const Main = props => {
     const [tf, transform] = useState({
         initial: [0, 0],
         mouse: [0, 0],
-        pos: [-1300, -1300],
-        selectedTile: [137, 146],
+        pos: [-2200, -2000],
+        selectedTile: [139, 192],
     });
     const [selectedMap, selectMap] = useState('cogmap1');
     const [favorites, modFavorites] = useState({
@@ -41,10 +41,10 @@ const Main = props => {
         ],
         cogmap2: [{ name: 'Telescience', location: [104, 120] }, { name: 'AI core', location: [190, 220] }],
         faintSignal: [{ name: 'RobustTec Implants', location: [266, 132] }, { name: 'Phaser', location: [285, 162] }],
-        oshan: [{ name: 'Telescience', location: [181, 174] }],
-        clarion: [{ name: 'Telescience', location: [153, 107] }],
+        oshan: [{ name: 'AI Core', location: [196, 160] }, { name: 'Telescience', location: [181, 174] }],
+        clarion: [{ name: 'AI Core', location: [133, 99] }, { name: 'Telescience', location: [153, 107] }],
     });
-    const [zoom, setZoom] = useState(5);
+    const [zoom, setZoom] = useState(7);
     const scale = zoom / 10;
     // mousedown / clickDown used for wheel and mousemove events
     const [mousedown, clickDown] = useState(false);
@@ -60,7 +60,7 @@ const Main = props => {
         },
         selectorStyle: {
             zIndex: 1,
-            position: 'absolute',
+            position: 'fixed',
             ...tilePosition(tf.selectedTile),
         },
         oceanMan: {
@@ -118,7 +118,7 @@ const Main = props => {
             <div
                 onMouseLeave={() => {
                     clickDown(false);
-                    focus(false);
+                    return focus(false);
                 }}
                 onMouseEnter={() => focus(true)}
                 onContextMenu={contextMenu}
@@ -182,7 +182,7 @@ const Main = props => {
                 anchorReference={'anchorPosition'}
                 onContextMenu={e => {
                     e.preventDefault();
-                    closeMenu();
+                    return closeMenu();
                 }}
                 onClose={() => closeMenu()}
             >
@@ -198,7 +198,7 @@ const Main = props => {
         // Detect if we moved
         if (tf.mouse[0] !== clientX || tf.mouse[1] !== clientY) return;
         const [imageX, imageY] = imgCoords(clientX, clientY);
-        transform(tf => {
+        return transform(tf => {
             tf.selectedTile = tileMath(imageX, imageY);
             return tf;
         });
@@ -304,7 +304,7 @@ const Main = props => {
     function contextMenu(e) {
         e.preventDefault();
         const { clientX, clientY, target } = e;
-        doMenu(prev => {
+        return doMenu(prev => {
             prev.target = target;
             prev.mouse = [clientX, clientY];
             return prev;
@@ -314,7 +314,7 @@ const Main = props => {
     function menuButtonClick(e) {
         closeMenu();
         const [imageX, imageY] = imgCoords(menu.mouse[0], menu.mouse[1]);
-        modFavorites(prev => {
+        return modFavorites(prev => {
             prev[selectedMap].push({
                 name: `Favorite #${prev[selectedMap].length + 1}`,
                 location: tileMath(imageX, imageY),
@@ -324,7 +324,7 @@ const Main = props => {
     }
 
     function closeMenu() {
-        doMenu(prev => {
+        return doMenu(prev => {
             prev.target = null;
             return prev;
         });
