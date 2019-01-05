@@ -53,13 +53,14 @@ const Main = props => {
     // menu / doMenu used for menu events (obviously)
     const [menu, doMenu] = useState({ mouse: [0, 0], target: null });
 
-    // Check for an existing cookie, if it is different than the existing state cookie, set it as the state.
+    // Check for an existing localStorage item, if it is different than the existing state localStorage item, set it as the state.
+    // This part is likely unneccessary. I'm not really saving any resources by deciding to use the existing state AFTER I've already checked the localStorage one for differences. The work has been done
     useEffect(() => {
-        const data = checkStorage();
+        const data = getStorage();
         if (data) modFavorites(data);
     }, []);
 
-    // Set a new cookie every time a favorite is added or removed
+    // Set a new localStorage item every time a favorite is added or removed
     useEffect(
         () => {
             setStorage(favorites);
@@ -212,12 +213,10 @@ const Main = props => {
         localStorage.setItem('telescienceFavorites', favs);
     }
 
-    function checkStorage() {
+    function getStorage() {
         let data = localStorage.getItem('telescienceFavorites');
         if (!data) return false;
-        const stateFavString = JSON.stringify(favorites);
-        if (data !== stateFavString) return JSON.parse(data);
-        return false;
+        return JSON.parse(data);
     }
 
     function mouseClick(e) {

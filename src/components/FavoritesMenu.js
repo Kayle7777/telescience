@@ -25,6 +25,10 @@ const styles = theme => ({
             duration: theme.transitions.duration.enteringScreen,
         }),
     },
+    listHeight: {
+        maxHeight: 538 - 48 * 2 - theme.spacing.unit * 5,
+        overflowY: 'auto',
+    },
 });
 
 const FavoritesMenu = props => {
@@ -63,7 +67,7 @@ const FavoritesMenu = props => {
                 Favorites
             </Typography>
             <Collapse in={collapseIn}>
-                <List id="favorites-menu">
+                <List id="favorites-menu" className={classes.listHeight}>
                     {favorites[selectedMap].map((each, index) => {
                         return (
                             <ListItem key={`${each.location}_key`}>
