@@ -55,14 +55,13 @@ const Main = props => {
 
     // Check for an existing cookie, if it is different than the existing state cookie, set it as the state.
     useEffect(() => {
-        const data = checkCookie();
+        const data = checkStorage();
         if (data) modFavorites(data);
     }, []);
 
     // Set a new cookie every time a favorite is added or removed
     useEffect(() => {
-        const data = checkCookie();
-        if (data) setCookie(favorites);
+        setStorage(favorites);
     }, Object.keys(favorites).map(key => favorites[key].length));
 
     const iStyles = {
@@ -105,7 +104,6 @@ const Main = props => {
             />
         </svg>
     );
-    checkCookie();
     return (
         <div className={classes.noClick} onKeyDown={e => keyDown(e)} tabIndex={0}>
             {selectedMap === 'oshan' && (
@@ -206,14 +204,15 @@ const Main = props => {
         </div>
     );
 
-    function setCookie(favs) {
+    function setStorage(favs) {
         if (typeof favs !== 'string') favs = JSON.stringify(favs);
-        document.cookie = `favorites=${favs}`;
+        localStorage.setItem('telescienceFavorites', favs);
     }
 
-    function checkCookie() {
-        let data = document.cookie.split('favorites=')[1].split(';')[0];
+    function checkStorage() {
+        let data = localStorage.getItem('telescienceFavorites');
         const stateFavString = JSON.stringify(favorites);
+        if (!data) return false;
         for (let i = 0; i < data.length; i++) {
             if (data[i] !== stateFavString[i]) return JSON.parse(data);
         }
