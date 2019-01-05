@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Menu, Button } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
@@ -52,6 +52,18 @@ const Main = props => {
     const [focussed, focus] = useState(false);
     // menu / doMenu used for menu events (obviously)
     const [menu, doMenu] = useState({ mouse: [0, 0], target: null });
+
+    // Check for an existing cookie, if it is different than the existing state cookie, set it as the state.
+    useEffect(() => {
+        const data = checkCookie();
+        if (data) modFavorites(data);
+    }, []);
+
+    // Set a new cookie every time a favorite is added or removed
+    useEffect(() => {
+        const data = checkCookie();
+        if (data) setCookie(favorites);
+    }, Object.keys(favorites).map(key => favorites[key].length));
 
     const iStyles = {
         divStyle: {
@@ -192,6 +204,20 @@ const Main = props => {
             </Menu>
         </div>
     );
+
+    function setCookie(favs) {
+        if (typeof favs !== 'string') favs = JSON.stringify(favs);
+        document.cookie = `favorites=${favs}`;
+    }
+
+    function checkCookie() {
+        const data = document.cookie.split('favorites=')[1];
+        const stateFavString = JSON.stringify(favorites);
+        for (let i = 0; i < data.length; i++) {
+            if (data[i] !== stateFavString[i]) return JSON.parse(data);
+        }
+        return false;
+    }
 
     function mouseClick(e) {
         const { clientX, clientY } = e;
