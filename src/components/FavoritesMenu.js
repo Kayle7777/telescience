@@ -26,7 +26,7 @@ const styles = theme => ({
         }),
     },
     listHeight: {
-        maxHeight: 538 - 48 * 2 - theme.spacing.unit * 5,
+        maxHeight: 538 - 48 * 2 - theme.spacing.unit * 4,
         overflowY: 'auto',
     },
 });
