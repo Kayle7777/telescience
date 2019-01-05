@@ -60,9 +60,12 @@ const Main = props => {
     }, []);
 
     // Set a new cookie every time a favorite is added or removed
-    useEffect(() => {
-        setStorage(favorites);
-    }, Object.keys(favorites).map(key => favorites[key].length));
+    useEffect(
+        () => {
+            setStorage(favorites);
+        },
+        [JSON.stringify(favorites)]
+    );
 
     const iStyles = {
         divStyle: {
