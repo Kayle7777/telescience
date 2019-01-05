@@ -105,6 +105,7 @@ const Main = props => {
             />
         </svg>
     );
+    checkCookie();
     return (
         <div className={classes.noClick} onKeyDown={e => keyDown(e)} tabIndex={0}>
             {selectedMap === 'oshan' && (
@@ -211,7 +212,7 @@ const Main = props => {
     }
 
     function checkCookie() {
-        const data = document.cookie.split('favorites=')[1];
+        let data = document.cookie.split('favorites=')[1].split(';')[0];
         const stateFavString = JSON.stringify(favorites);
         for (let i = 0; i < data.length; i++) {
             if (data[i] !== stateFavString[i]) return JSON.parse(data);
