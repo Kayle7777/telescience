@@ -214,11 +214,9 @@ const Main = props => {
 
     function checkStorage() {
         let data = localStorage.getItem('telescienceFavorites');
-        const stateFavString = JSON.stringify(favorites);
         if (!data) return false;
-        for (let i = 0; i < data.length; i++) {
-            if (data[i] !== stateFavString[i]) return JSON.parse(data);
-        }
+        const stateFavString = JSON.stringify(favorites);
+        if (data !== stateFavString) return JSON.parse(data);
         return false;
     }
 
