@@ -1,68 +1,84 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Goonstation SS13 [Telescience Map]
 
-## Available Scripts
+This is a map designed for doing telescience on SS13, specifically on the Goonstation servers.
 
-In the project directory, you can run:
+### What is SS13?
 
-### `npm start`
+Space Station 13 is a unique multiplayer game, built by its own community for 10+ years. Over time, it has managed to attract thousands of players, and offer an experience no other game can.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+A typical space station round will start with the promise of a good time, and end in hilarious chaos, all before being reset to try again.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+### How can I play?
 
-### `npm test`
+1. [Install Byond](#extra-info)
+2. Select your [favorite](#extra-info) Space Station 13 server
+3. Ask questions in game -- it is notiriously complicated to learn, due simply to the fact that over the years tons of content has been generated. People will usually be glad to help you.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Where does this map come in?
 
-### `npm run build`
+This is an out of game helper app for one specific aspect of the game. Scientist players have access to a "Telescience" machine, which if calibrated correctly, can send or receive any item, player, bomb, beaker of acid, or hideous alien anywhere they choose.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Every round, a new set of X and Y modifiers and divisors are added to obfuscate the "true coordinates" for the game grid in the telescience computer. A set of algebraic equations can be used to solve these, which my website will handily do for you.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Simply send one GPS through to any set of working coordinates, record where it actually went in the relevant table, then do then send another GPS to a set of coordinates exactly n+1. I.E, send one at 50X, 100Y, then another at 51X, 100Y.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Extra Info
 
-### `npm run eject`
+1. [BYOND game platform][byond]
+2. [SS13 Wiki][ss13 wiki]
+3. [Telescience Information][telescience info]
+4. [Server Links][goonhub]
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### How does this site work?
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+A relatively complicated state controls the scale and offset numbers, which are applied to the translate CSS for the container of all of the images depending on what the user does - scroll, zoom, re-center, et cetera.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This is an example of some of the math needed.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```javascript
+function tileMath(x, y) {
+    return [1 + (x - (x % 32)) / 32, 300 - (y - (y % 32)) / 32];
+}
 
-## Learn More
+function tilePosition(x, y) {
+    if (!y && typeof x === 'object') [x, y] = x;
+    return {
+        left: (x - 1) * 32 * scale + tf.pos[0],
+        top: -(y - 300) * 32 * scale + tf.pos[1],
+    };
+}
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+function imgCoords(x, y, funcScale = scale, pos = tf.pos) {
+    return [x - pos[0], y - pos[1]].map(i => i / funcScale);
+}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Credits
 
-### Code Splitting
+-   [Travis-CI][travis] for their excellent continuous deployment services.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+-   [Material UI][material-ui] for their set of higher level react components and pretty CSS like the dark theme, typography, etc.
 
-### Analyzing the Bundle Size
+-   [Goonhub.com][goonhub] for supplying the pngs for these maps.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+---
 
-### Making a Progressive Web App
+## Author
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+-   **Jesse Webb** => _All JS, html, Custom CSS_ => [Kayle7777][github link]
 
-### Advanced Configuration
+### Code Links
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+-   **Code repository** => hosted on [Github][github repo]
 
-### Deployment
+-   **Live webpage** => hosted on [Github Pages][github pages]
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+[travis]: https://travis-ci.org/
+[goonhub]: https://goonhub.com/
+[material-ui]: https://material-ui.com/
+[byond]: http://www.byond.com/
+[telescience info]: https://wiki.ss13.co/Telescience
+[ss13 wiki]: https://wiki.ss13.co/Main_Page
+[github link]: https://github.com/kayle7777
+[github repo]: https://github.com/Kayle7777/telescience
+[github pages]: https://kayle7777.github.io/telescience/
