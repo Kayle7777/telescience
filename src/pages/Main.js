@@ -54,7 +54,6 @@ const Main = props => {
     const [menu, doMenu] = useState({ mouse: [0, 0], target: null });
 
     // Check for an existing localStorage item, if it is different than the existing state localStorage item, set it as the state.
-    // This part is likely unneccessary. I'm not really saving any resources by deciding to use the existing state AFTER I've already checked the localStorage one for differences. The work has been done
     useEffect(() => {
         const data = getStorage();
         if (data) modFavorites(data);
@@ -188,6 +187,7 @@ const Main = props => {
                         return tf;
                     })
                 }
+                onContextMenu={contextMenu}
             />
             <Menu
                 MenuListProps={{ disablePadding: true }}
@@ -208,24 +208,28 @@ const Main = props => {
         </div>
     );
 
-    function setStorage(favs) {
-        if (typeof favs !== 'string') favs = JSON.stringify(favs);
-        localStorage.setItem('telescienceFavorites', favs);
+    function tileMath(x, y) {
+        return [1 + (x - (x % 32)) / 32, 300 - (y - (y % 32)) / 32];
     }
 
-    function getStorage() {
-        let data = localStorage.getItem('telescienceFavorites');
-        if (!data) return false;
-        return JSON.parse(data);
+    function tilePosition(x, y) {
+        if (!y && typeof x === 'object') [x, y] = x;
+        return {
+            left: (x - 1) * 32 * scale + tf.pos[0],
+            top: -(y - 300) * 32 * scale + tf.pos[1],
+        };
+    }
+
+    function imgCoords(x, y, funcScale = scale, pos = tf.pos) {
+        return [x - pos[0], y - pos[1]].map(i => i / funcScale);
     }
 
     function mouseClick(e) {
         const { clientX, clientY } = e;
         // Detect if we moved
         if (tf.mouse[0] !== clientX || tf.mouse[1] !== clientY) return;
-        const [imageX, imageY] = imgCoords(clientX, clientY);
         return transform(tf => {
-            tf.selectedTile = tileMath(imageX, imageY);
+            tf.selectedTile = tileMath(...imgCoords(clientX, clientY));
             return tf;
         });
     }
@@ -270,7 +274,7 @@ const Main = props => {
 
     function centerCoords(centerScale = 12, modifier = [0, 0], newTile) {
         const tile = newTile ? newTile : tf.selectedTile;
-        // Default to max 1.2 scale, optional arg to change this
+        // Default to 1.2 scale, optional arg to change this
         setZoom(centerScale);
         const newScale = centerScale / 10;
         const [tileX, tileY] = [
@@ -339,11 +343,10 @@ const Main = props => {
 
     function menuButtonClick(e) {
         closeMenu();
-        const [imageX, imageY] = imgCoords(menu.mouse[0], menu.mouse[1]);
         return modFavorites(prev => {
             prev[selectedMap].push({
                 name: `Favorite #${prev[selectedMap].length + 1}`,
-                location: tileMath(imageX, imageY),
+                location: tileMath(...imgCoords(menu.mouse[0], menu.mouse[1])),
             });
             return prev;
         });
@@ -356,20 +359,15 @@ const Main = props => {
         });
     }
 
-    function tileMath(x, y) {
-        return [1 + (x - (x % 32)) / 32, 300 - (y - (y % 32)) / 32];
+    function setStorage(favs) {
+        if (typeof favs !== 'string') favs = JSON.stringify(favs);
+        localStorage.setItem('telescienceFavorites', favs);
     }
 
-    function tilePosition(x, y) {
-        if (!y && typeof x === 'object') [x, y] = x;
-        return {
-            left: (x - 1) * 32 * scale + tf.pos[0],
-            top: -(y - 300) * 32 * scale + tf.pos[1],
-        };
-    }
-
-    function imgCoords(x, y, funcScale = scale, pos = tf.pos) {
-        return [x - pos[0], y - pos[1]].map(i => i / funcScale);
+    function getStorage() {
+        let data = localStorage.getItem('telescienceFavorites');
+        if (!data) return false;
+        return JSON.parse(data);
     }
 };
 
