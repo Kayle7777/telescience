@@ -58,7 +58,7 @@ const styles = theme => ({
     },
     popOverText: {
         margin: theme.spacing.unit,
-        maxWidth: 257 + theme.spacing.unit * 5,
+        maxWidth: 257 + theme.spacing.unit * 30,
     },
     goto: {
         zIndex: 2,
@@ -307,17 +307,33 @@ const Overlay = props => {
                         horizontal: 'right',
                     }}
                 >
-                    <Typography align="center" variant="caption" className={classes.popOverText}>
+                    <Typography variant="caption" className={classes.popOverText}>
                         Stuck? Check the SS13 wiki on
                         <Button
+                            color="secondary"
+                            variant="outlined"
                             size="small"
                             href="https://wiki.ss13.co/Telescience#Decoding_the_teleporter"
-                            target="_blank"
                             rel="noopener noreferrer"
+                            target="_blank"
                         >
                             decoding the teleporter
                         </Button>
                         <HelperText />
+                        <p>
+                            Need more info?{`\t`}
+                            <Button
+                                color="secondary"
+                                variant="outlined"
+                                size="small"
+                                href="https://github.com/Kayle7777/telescience"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                Click here
+                            </Button>
+                            {`\t`}for a detailed readme.
+                        </p>
                     </Typography>
                 </Popover>
                 <IconButton tabIndex={-1} className={classes.goto} onClick={() => centerCoords()}>
