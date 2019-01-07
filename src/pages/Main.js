@@ -208,10 +208,12 @@ const Main = props => {
         </div>
     );
 
+    // This is used to place each tile selector over the image container just as if it had the 300/300 grid the game does.
     function tileMath(x, y) {
         return [1 + (x - (x % 32)) / 32, 300 - (y - (y % 32)) / 32];
     }
 
+    // This is used to position each tile selector correctly, this is the CSS value applied to its absolute position.
     function tilePosition(x, y) {
         if (!y && typeof x === 'object') [x, y] = x;
         return {
@@ -220,6 +222,7 @@ const Main = props => {
         };
     }
 
+    // This is used to find the absolute pixel value of where a user clicked. The positioning of the image needs to be subtracted from the X and Y value of a users click, and the scale needs to be removed to find this value.
     function imgCoords(x, y, funcScale = scale, pos = tf.pos) {
         return [x - pos[0], y - pos[1]].map(i => i / funcScale);
     }
