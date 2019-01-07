@@ -20,7 +20,7 @@ This is an out of game helper app for one specific aspect of the game. Scientist
 
 Every round, a new set of X and Y modifiers and divisors are added to obfuscate the "true coordinates" for the game grid in the telescience computer. A set of algebraic equations can be used to solve these, which my website will handily do for you.
 
-Simply send one GPS through to any set of working coordinates, record where it actually went in the relevant table, then do then send another GPS to a set of coordinates exactly n+1. I.E, send one at 50X, 100Y, then another at 51X, 100Y.
+Simply send one GPS through to any set of working coordinates, record where it actually went in the relevant table, then send another GPS to a set of coordinates exactly n+1. I.E, send one at 50X, 100Y, then another at 51X, 101Y.
 
 ### Extra Info
 
