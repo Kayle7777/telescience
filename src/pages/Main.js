@@ -222,7 +222,8 @@ const Main = props => {
         };
     }
 
-    // This is used to find the absolute pixel value of where a user clicked. The positioning of the image needs to be subtracted from the X and Y value of a users click, and the scale needs to be removed to find this value.
+    // This is used to find the absolute pixel value of where a user clicked. The positioning of the image needs to be
+    // subtracted from the X and Y value of a users click, and the scale needs to be removed to find this value.
     function imgCoords(x, y, funcScale = scale, pos = tf.pos) {
         return [x - pos[0], y - pos[1]].map(i => i / funcScale);
     }
