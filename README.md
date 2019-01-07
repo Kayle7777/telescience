@@ -1,4 +1,4 @@
-## Goonstation SS13 [Telescience Map]
+## Goonstation SS13 [Telescience Map][github pages]
 
 This is a map designed for doing telescience on SS13, specifically on the Goonstation servers.
 
