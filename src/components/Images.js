@@ -44,6 +44,11 @@ const Images = ({ selectedMap, image }) => {
                 nH: 8,
                 url: `https://goonhub.com/images/maps/clarion/z1`,
             },
+            samedi: {
+                nW: 8,
+                nH: 8,
+                url: `https://goonhub.com/images/maps/samedi/z1`,
+            },
         };
         return info[selectedMap];
     }

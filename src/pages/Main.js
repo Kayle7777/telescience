@@ -43,6 +43,7 @@ const Main = props => {
         faintSignal: [{ name: 'RobustTec Implants', location: [266, 132] }, { name: 'Phaser', location: [285, 162] }],
         oshan: [{ name: 'AI Core', location: [196, 160] }, { name: 'Telescience', location: [181, 174] }],
         clarion: [{ name: 'AI Core', location: [133, 99] }, { name: 'Telescience', location: [153, 107] }],
+        samedi: [],
     });
     const [zoom, setZoom] = useState(7);
     const scale = zoom / 10;
@@ -371,7 +372,28 @@ const Main = props => {
     function getStorage() {
         let data = localStorage.getItem('telescienceFavorites');
         if (!data) return false;
-        return JSON.parse(data);
+        data = JSON.parse(data);
+        let localKeys = Object.keys(data),
+            stateKeys = Object.keys(favorites);
+        if (localKeys.length !== stateKeys.length) {
+            let missingKey = checkStorage(localKeys, stateKeys);
+            if (missingKey.length) {
+                missingKey.forEach(key => {
+                    let obj = {};
+                    obj[key] = favorites[key];
+                    data = { ...data, ...obj };
+                });
+            }
+        }
+        return data;
+    }
+
+    function checkStorage(localKeys, stateKeys) {
+        if (localKeys.length !== stateKeys.length) {
+            // Find which one it's missing
+            return stateKeys.filter(oKey => !localKeys.includes(oKey));
+        }
+        return [];
     }
 };
 
