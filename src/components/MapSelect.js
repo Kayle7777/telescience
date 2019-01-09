@@ -39,6 +39,7 @@ const MapSelect = props => {
                 <MenuItem value="faintSignal">Debris Field</MenuItem>
                 <MenuItem value="oshan">Oshan</MenuItem>
                 <MenuItem value="clarion">Clarion</MenuItem>
+                <MenuItem value="destiny">Destiny</MenuItem>
                 <MenuItem value="samedi">Samedi</MenuItem>
             </TextField>
         </Paper>
