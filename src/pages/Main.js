@@ -18,6 +18,12 @@ const styles = theme => ({
         width: 1200,
         height: 1200,
     },
+    imageUnclicked: {
+        cursor: 'grab',
+    },
+    imageClicked: {
+        cursor: 'grabbing',
+    },
     noClick: {
         userSelect: 'none',
     },
@@ -145,7 +151,12 @@ const Main = props => {
                 onWheel={mouseWheel}
             >
                 <div className={classes.main} style={iStyles.divStyle}>
-                    <Images image={`${classes.image} ${classes.noClick}`} selectedMap={selectedMap} />
+                    <Images
+                        image={`${classes.image} ${classes.noClick} ${
+                            mousedown ? classes.imageClicked : classes.imageUnclicked
+                        }`}
+                        selectedMap={selectedMap}
+                    />
                 </div>
                 {favorites[selectedMap].length > 0 &&
                     favorites[selectedMap].map(fav => {
