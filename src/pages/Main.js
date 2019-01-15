@@ -85,22 +85,6 @@ const Main = props => {
             position: 'fixed',
             ...tilePosition(tf.selectedTile),
         },
-        oceanMan: {
-            zIndex: 2,
-            position: 'absolute',
-            left: 149 * 32 * scale + tf.pos[0],
-            top: 150 * 32 * scale + tf.pos[1],
-            width: 32 * scale,
-            height: 32 * scale,
-        },
-        babyShark: {
-            zIndex: 2,
-            position: 'absolute',
-            left: 4 * 32 * scale + tf.pos[0],
-            top: 6 * 32 * scale + tf.pos[1],
-            width: 32 * scale,
-            height: 32 * scale,
-        },
     };
     const Svg = props => (
         <svg
