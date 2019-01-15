@@ -93,6 +93,14 @@ const Main = props => {
             width: 32 * scale,
             height: 32 * scale,
         },
+        babyShark: {
+            zIndex: 2,
+            position: 'absolute',
+            left: 4 * 32 * scale + tf.pos[0],
+            top: 6 * 32 * scale + tf.pos[1],
+            width: 32 * scale,
+            height: 32 * scale,
+        },
     };
     const Svg = props => (
         <svg
@@ -119,14 +127,26 @@ const Main = props => {
     return (
         <div className={classes.noClick} onKeyDown={e => keyDown(e)} tabIndex={0}>
             {selectedMap === 'oshan' && (
-                <a
-                    style={{ color: 'inherit' }}
-                    href="https://www.youtube.com/watch?v=6E5m_XtCX3c"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                >
-                    <Info style={iStyles.oceanMan} />
-                </a>
+                <>
+                    {/* Ocean Man! */}
+                    <a
+                        style={{ color: 'inherit' }}
+                        href="https://www.youtube.com/watch?v=6E5m_XtCX3c"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                    >
+                        <Info style={easterEggPos(149, 150)} />
+                    </a>
+                    {/* Baby shark! */}
+                    <a
+                        style={{ color: 'inherit' }}
+                        href="https://youtu.be/dJBD0F-1V00?t=21"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                    >
+                        <Info style={{ ...easterEggPos(2, 296), color: '#6D7373' }} />
+                    </a>
+                </>
             )}
             <Overlay
                 selectedTile={tf.selectedTile}
@@ -410,6 +430,17 @@ const Main = props => {
             }
         }
         return data;
+    }
+
+    function easterEggPos(x, y) {
+        return {
+            zIndex: 2,
+            position: 'absolute',
+            left: x * 32 * scale + tf.pos[0],
+            top: y * 32 * scale + tf.pos[1],
+            width: 32 * scale,
+            height: 32 * scale,
+        };
     }
 };
 
