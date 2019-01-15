@@ -8,13 +8,10 @@ const HelperText = () => {
                 your new console coordinates will be shown under "CONSOLE COORDINATES"
             </p>
             <p>When you're done, you can close the math table by clicking the "DO TELESCIENCE MATH" header.</p>
+
             <p>
-                If you want to center the screen on custom coordinates, input any coordinate you want under the "REAL
-                COORDINATES" table, then click the center button icon, inbetween the two rows.
-            </p>
-            <p>
-                You can move the tile selector by keyboard as long as the mouse is not in the control panel. Try WASD,
-                Arrow Keys, or Numpad. Numpad 5 will center screen
+                You can move the tile selector by keyboard as long as the mouse is not in the control panel, and{' '}
+                <strong>ALT</strong> is held down. Try WASD, Arrow Keys, or Numpad. Numpad 5 will center screen
             </p>
             <p>
                 Click the "EXPEDITION LOCATIONS" header for a list of telescience expedition locations, their values

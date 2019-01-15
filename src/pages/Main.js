@@ -112,8 +112,10 @@ const Main = props => {
         <div className={classes.noClick} onKeyDown={e => keyDown(e)} tabIndex={0}>
             {selectedMap === 'oshan' &&
                 easterEgg(
-                    { link: 'https://www.youtube.com/watch?v=6E5m_XtCX3c', pos: [149, 150] },
-                    { link: 'https://youtu.be/dJBD0F-1V00?t=21', pos: [2, 296], color: '#6D7373' }
+                    // Ocean man
+                    { link: 'https://www.youtube.com/watch?v=6E5m_XtCX3c', pos: [150, 150] },
+                    // Tiburón bebé
+                    { link: 'https://youtu.be/dJBD0F-1V00?t=21', pos: [3, 4], color: '#6D7373' }
                 )}
             <Overlay
                 selectedTile={tf.selectedTile}
@@ -296,7 +298,8 @@ const Main = props => {
 
     function keyDown(e) {
         if (!focussed) return;
-        let { key } = e;
+        let { key, altKey } = e;
+        if (!altKey) return;
         if (key === '5' || key === ' ') return centerCoords(zoom);
         let acceptableKeys = {
             w: [0, 1],
@@ -402,7 +405,10 @@ const Main = props => {
     function easterEgg(...args) {
         return (
             <>
-                {args.map(info => {
+                {args.map((info, i) => {
+                    if (!info.pos) info.pos = [150 + i, 151 + i];
+                    info.pos[0]--;
+                    info.pos[1] = 300 - info.pos[1];
                     return (
                         <a style={{ color: 'inherit' }} href={info.link} rel="noopener noreferrer" target="_blank">
                             <Info style={{ ...easterEggPos(...info.pos), color: info.color }} />
