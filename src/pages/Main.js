@@ -110,28 +110,11 @@ const Main = props => {
     );
     return (
         <div className={classes.noClick} onKeyDown={e => keyDown(e)} tabIndex={0}>
-            {selectedMap === 'oshan' && (
-                <>
-                    {/* Ocean Man! */}
-                    <a
-                        style={{ color: 'inherit' }}
-                        href="https://www.youtube.com/watch?v=6E5m_XtCX3c"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                    >
-                        <Info style={easterEggPos(149, 150)} />
-                    </a>
-                    {/* Baby shark! */}
-                    <a
-                        style={{ color: 'inherit' }}
-                        href="https://youtu.be/dJBD0F-1V00?t=21"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                    >
-                        <Info style={{ ...easterEggPos(2, 296), color: '#6D7373' }} />
-                    </a>
-                </>
-            )}
+            {selectedMap === 'oshan' &&
+                easterEgg(
+                    { link: 'https://www.youtube.com/watch?v=6E5m_XtCX3c', pos: [149, 150] },
+                    { link: 'https://youtu.be/dJBD0F-1V00?t=21', pos: [2, 296], color: '#6D7373' }
+                )}
             <Overlay
                 selectedTile={tf.selectedTile}
                 transform={transform}
@@ -414,6 +397,20 @@ const Main = props => {
             }
         }
         return data;
+    }
+
+    function easterEgg(...args) {
+        return (
+            <>
+                {args.map(info => {
+                    return (
+                        <a style={{ color: 'inherit' }} href={info.link} rel="noopener noreferrer" target="_blank">
+                            <Info style={{ ...easterEggPos(...info.pos), color: info.color }} />
+                        </a>
+                    );
+                })}
+            </>
+        );
     }
 
     function easterEggPos(x, y) {
