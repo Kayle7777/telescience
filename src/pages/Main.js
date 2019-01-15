@@ -105,6 +105,7 @@ const Main = props => {
             width={32 * scale}
             height={32 * scale}
             style={props.style}
+            className={classes.imageUnclicked}
         >
             <rect
                 width={`${32 * scale}px`}
@@ -176,7 +177,7 @@ const Main = props => {
                                     position: 'fixed',
                                     ...tilePosition(fav.location),
                                 }}
-                                className={classes.noClick}
+                                className={`${classes.noClick} ${classes.imageUnclicked}`}
                                 width={32 * scale}
                                 height={32 * scale}
                             >
