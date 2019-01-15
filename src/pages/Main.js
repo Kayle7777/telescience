@@ -93,11 +93,10 @@ const Main = props => {
             onMouseDown={props.mouseDown}
             onMouseEnter={() => focus(true)}
             onContextMenu={props.onContextMenu ? props.onContextMenu : e => e.preventDefault()}
-            className={classes.noClick}
+            className={`${classes.noClick} ${classes.imageUnclicked}`}
             width={32 * scale}
             height={32 * scale}
             style={props.style}
-            className={classes.imageUnclicked}
         >
             <rect
                 width={`${32 * scale}px`}

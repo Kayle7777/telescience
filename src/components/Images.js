@@ -6,55 +6,28 @@ const Images = ({ selectedMap, image }) => {
         <div onDragStart={e => e.preventDefault()}>
             {(() => {
                 const arr = [];
-                for (let i = 0; i < info.nW; i++) {
-                    for (let g = 0; g < info.nH; g++) {
+                for (let i = 0; i < 8; i++) {
+                    for (let g = 0; g < 8; g++) {
                         arr.push(`${i},${g}`);
                     }
                 }
                 return arr;
             })().map(url => {
-                return <img className={image} key={url} alt={url} src={`${info.url}/${url}.png`} />;
+                return <img className={image} key={url} alt={url} src={`${info}/${url}.png`} />;
             })}
         </div>
     );
     function mapInfo(selectedMap) {
         const info = {
-            cogmap1: {
-                nW: 8,
-                nH: 8,
-                url: `https://goonhub.com/images/maps/cogmap/z1`,
-            },
-            cogmap2: {
-                nW: 8,
-                nH: 8,
-                url: `https://goonhub.com/images/maps/cogmap2/z1`,
-            },
-            faintSignal: {
-                nW: 8,
-                nH: 8,
-                url: `https://goonhub.com/images/maps/cogmap2/z3`,
-            },
-            oshan: {
-                nW: 8,
-                nH: 8,
-                url: `https://goonhub.com/images/maps/oshan/z1`,
-            },
-            clarion: {
-                nW: 8,
-                nH: 8,
-                url: `https://goonhub.com/images/maps/clarion/z1`,
-            },
-            destiny: {
-                nW: 8,
-                nH: 8,
-                url: `https://goonhub.com/images/maps/destiny/z1`,
-            },
-            samedi: {
-                nW: 8,
-                nH: 8,
-                url: `https://goonhub.com/images/maps/samedi/z1`,
-            },
+            cogmap1: `https://goonhub.com/images/maps/cogmap/z1`,
+            cogmap2: `https://goonhub.com/images/maps/cogmap2/z1`,
+            faintSignal: `https://goonhub.com/images/maps/cogmap2/z3`,
+            oshan: `https://goonhub.com/images/maps/oshan/z1`,
+            clarion: `https://goonhub.com/images/maps/clarion/z1`,
+            destiny: `https://goonhub.com/images/maps/destiny/z1`,
+            samedi: `https://goonhub.com/images/maps/samedi/z1`,
         };
+        if (!info[selectedMap]) return info['cogmap1'];
         return info[selectedMap];
     }
 };
