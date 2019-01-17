@@ -114,23 +114,25 @@ const Overlay = props => {
                                 <TableRow>
                                     <TableCell>
                                         <TextField
-                                            data-testid="input-1-0"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'input', 0)}
                                             value={gpsValues.input[0]}
                                             InputProps={{
                                                 startAdornment: <InputAdornment position="start">X1</InputAdornment>,
+                                                'data-testid': 'input-1-0',
                                             }}
                                         />
                                     </TableCell>
                                     <TableCell>
                                         <TextField
-                                            data-testid="actual-x-0"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'actualX', 0)}
                                             value={gpsValues.actualX[0]}
+                                            InputProps={{
+                                                'data-testid': 'actual-x-0',
+                                            }}
                                         />
                                     </TableCell>
                                 </TableRow>
@@ -140,23 +142,25 @@ const Overlay = props => {
                                 <TableRow>
                                     <TableCell>
                                         <TextField
-                                            data-testid="input-1-1"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'input', 1)}
                                             value={gpsValues.input[1]}
                                             InputProps={{
                                                 startAdornment: <InputAdornment position="start">Y1</InputAdornment>,
+                                                'data-testid': 'input-1-1',
                                             }}
                                         />
                                     </TableCell>
                                     <TableCell>
                                         <TextField
-                                            data-testid="actual-y-0"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'actualY', 0)}
                                             value={gpsValues.actualY[0]}
+                                            InputProps={{
+                                                'data-testid': 'actual-y-0',
+                                            }}
                                         />
                                     </TableCell>
                                 </TableRow>
@@ -166,22 +170,24 @@ const Overlay = props => {
                                 <TableRow>
                                     <TableCell>
                                         <TextField
-                                            data-testid="input-2-0"
                                             className={classes.textField}
                                             value={gpsValues.input[0] + 1}
                                             disabled
                                             InputProps={{
                                                 startAdornment: <InputAdornment position="start">X2</InputAdornment>,
+                                                'data-testid': 'input-2-0',
                                             }}
                                         />
                                     </TableCell>
                                     <TableCell>
                                         <TextField
-                                            data-testid="actual-x-1"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'actualX', 1)}
                                             value={gpsValues.actualX[1]}
+                                            InputProps={{
+                                                'data-testid': 'actual-x-1',
+                                            }}
                                         />
                                     </TableCell>
                                 </TableRow>
@@ -191,22 +197,24 @@ const Overlay = props => {
                                 <TableRow>
                                     <TableCell>
                                         <TextField
-                                            data-testid="input-2-1"
                                             className={classes.textField}
                                             value={gpsValues.input[1] + 1}
                                             disabled
                                             InputProps={{
                                                 startAdornment: <InputAdornment position="start">Y2</InputAdornment>,
+                                                'data-testid': 'input-2-1',
                                             }}
                                         />
                                     </TableCell>
                                     <TableCell>
                                         <TextField
-                                            data-testid="actual-y-1"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'actualY', 1)}
                                             value={gpsValues.actualY[1]}
+                                            InputProps={{
+                                                'data-testid': 'actual-y-1',
+                                            }}
                                         />
                                     </TableCell>
                                 </TableRow>
@@ -247,6 +255,7 @@ const Overlay = props => {
                                         }}
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start">X</InputAdornment>,
+                                            'data-testid': 'selected-x',
                                         }}
                                     />
                                 </TableCell>
@@ -264,6 +273,7 @@ const Overlay = props => {
                                         }}
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start">Y</InputAdornment>,
+                                            'data-testid': 'selected-y',
                                         }}
                                     />
                                 </TableCell>
@@ -283,6 +293,7 @@ const Overlay = props => {
                                         value={selectedTile[0] / xDivisor + xModifier}
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start">X</InputAdornment>,
+                                            'data-testid': 'console-x',
                                         }}
                                     />
                                 </TableCell>
@@ -293,6 +304,7 @@ const Overlay = props => {
                                         value={selectedTile[1] / yDivisor + yModifier}
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start">Y</InputAdornment>,
+                                            'data-testid': 'console-y',
                                         }}
                                     />
                                 </TableCell>

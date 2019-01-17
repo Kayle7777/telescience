@@ -20,25 +20,53 @@ const overlayTestProps = {
 
 describe('testing Overlay.js', () => {
     const overlay = render(<Overlay {...overlayTestProps} />);
+    const id = arg => overlay.getByTestId(arg);
+
+    // If it has an inputadornment, it selects children[1]
+    const [inputX0, inputY0, inputX1, inputY1, selectedX, selectedY, consoleX, consoleY] = [
+        id('input-1-0'),
+        id('input-1-1'),
+        id('input-2-0'),
+        id('input-2-1'),
+        id('selected-x'),
+        id('selected-y'),
+        id('console-x'),
+        id('console-y'),
+    ].map(inputContainer => inputContainer.children[1]);
+
+    // If it has no inputadornment, it selects children[0]
+    const [actualX0, actualY0, actualX1, actualY1] = [
+        id('actual-x-0'),
+        id('actual-y-0'),
+        id('actual-x-1'),
+        id('actual-y-1'),
+    ].map(inputContainer => inputContainer.children[0]);
 
     test('checking values of gps inputs', () => {
-        const [inputX1, inputY1, inputX2, inputY2] = [
-            overlay.getByTestId('input-1-0'),
-            overlay.getByTestId('input-1-1'),
-            overlay.getByTestId('input-2-0'),
-            overlay.getByTestId('input-2-1'),
-        ].map(e => e.children[0].children[1]);
-
-        expect(inputX1.value).toBe('100');
-        expect(inputY1.value).toBe('50');
-        expect(inputX2.value).toBe('101');
-        expect(inputY2.value).toBe('51');
+        expect(inputX0.value).toBe('100');
+        expect(inputY0.value).toBe('50');
+        expect(inputX1.value).toBe('101');
+        expect(inputY1.value).toBe('51');
         // Change first two inputs
-        eventChange({ name: inputX1, value: '150' }, { name: inputY1, value: '100' });
-        // X2 and Y2 should still be one above X1 and Y1
-        expect(inputX2.value).toBe('151');
-        expect(inputY2.value).toBe('101');
+        eventChange({ name: inputX0, value: '150' }, { name: inputY0, value: '100' });
+        // X1 and Y1 should still be one above X0 and Y0
+        expect(inputX1.value).toBe('151');
+        expect(inputY1.value).toBe('101');
     });
+
+    test('checking if math is right', () => {
+        const selectedTile = [selectedX.value, selectedY.value];
+        expect([consoleX.value, consoleY.value].map(str => Number(str))).toEqual(calculateConsole(selectedTile));
+    });
+
+    function calculateConsole(coords) {
+        coords = coords.map(str => parseInt(str));
+        const xDivisor = actualX1.value - actualX0.value,
+            yDivisor = actualY1.value - actualY0.value,
+            xModifier = inputX0.value - actualX0.value / xDivisor,
+            yModifier = inputY0.value - actualY0.value / yDivisor;
+        return [coords[0] / xDivisor + xModifier, coords[1] / yDivisor + yModifier];
+    }
 });
 
 function eventChange(...args) {
