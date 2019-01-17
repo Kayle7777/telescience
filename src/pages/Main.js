@@ -38,7 +38,7 @@ const Main = props => {
         pos: [-2200, -2000],
         selectedTile: [139, 192],
     });
-    const [selectedMap, selectMap] = useState('cogmap1');
+    const [selectedMap, selectMap] = useState('oshan');
     const [favorites, modFavorites] = useState({
         cogmap1: [
             { name: 'Telescience', location: [112, 123] },
@@ -111,8 +111,14 @@ const Main = props => {
         <div className={classes.noClick} onKeyDown={e => keyDown(e)} tabIndex={0}>
             {selectedMap === 'oshan' &&
                 easterEgg(
-                    // Ocean man
-                    { link: 'https://www.youtube.com/watch?v=6E5m_XtCX3c', pos: [150, 150] },
+                    // Ocean man OR sea of love
+                    {
+                        link:
+                            Math.round(Math.random()) === 0
+                                ? 'https://www.youtube.com/watch?v=6E5m_XtCX3c'
+                                : 'https://youtu.be/3PgwDlbdew8?t=10',
+                        pos: [150, 150],
+                    },
                     // Tiburón bebé
                     { link: 'https://youtu.be/dJBD0F-1V00?t=21', pos: [3, 4], color: '#6D7373' }
                 )}
