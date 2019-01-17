@@ -414,7 +414,13 @@ const Main = props => {
                     info.pos[0]--;
                     info.pos[1] = 300 - info.pos[1];
                     return (
-                        <a style={{ color: 'inherit' }} href={info.link} rel="noopener noreferrer" target="_blank">
+                        <a
+                            key={`easteregg#${i + 1}`}
+                            style={{ color: 'inherit' }}
+                            href={info.link}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
                             <Info style={{ ...easterEggPos(...info.pos), color: info.color }} />
                         </a>
                     );

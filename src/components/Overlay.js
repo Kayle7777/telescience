@@ -13,7 +13,6 @@ import {
     Typography,
     IconButton,
     Popover,
-    Button,
 } from '@material-ui/core';
 import { Help, KeyboardArrowDown as Arrow, VerticalAlignCenter as GoTo } from '@material-ui/icons';
 import Locations from './Locations';
@@ -314,32 +313,7 @@ const Overlay = props => {
                     }}
                 >
                     <Typography variant="caption" className={classes.popOverText}>
-                        Stuck? Check the SS13 wiki on
-                        <Button
-                            color="secondary"
-                            variant="outlined"
-                            size="small"
-                            href="https://wiki.ss13.co/Telescience#Decoding_the_teleporter"
-                            rel="noopener noreferrer"
-                            target="_blank"
-                        >
-                            decoding the teleporter
-                        </Button>
                         <HelperText />
-                        <p>
-                            Need more info?{`\t`}
-                            <Button
-                                color="secondary"
-                                variant="outlined"
-                                size="small"
-                                href="https://github.com/Kayle7777/telescience"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                Click here
-                            </Button>
-                            {`\t`}for a detailed readme.
-                        </p>
                     </Typography>
                 </Popover>
                 <IconButton tabIndex={-1} className={classes.goto} onClick={() => centerCoords()}>

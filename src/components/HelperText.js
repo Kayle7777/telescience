@@ -1,25 +1,42 @@
 import React from 'react';
+import { Button } from '@material-ui/core';
 
 const HelperText = () => {
     return (
         <>
             <p>
-                Fill in the relevant fields under "DO TELESCIENCE MATH". The website will handle the math for you, and
-                your new console coordinates will be shown under "CONSOLE COORDINATES"
+                Send two Space GPS's through the teleporter at the console coord values, and record their actual
+                position under GPS coord.
             </p>
             <p>When you're done, you can close the math table by clicking the "DO TELESCIENCE MATH" header.</p>
-
+            <p>ALT + WASD, Arrow Keys, or Numpad to navigate via keyboard.</p>
+            <p>Right click anywhere to add favorites.</p>
             <p>
-                You can move the tile selector by keyboard as long as the mouse is not in the control panel, and{' '}
-                <strong>ALT</strong> is held down. Try WASD, Arrow Keys, or Numpad. Numpad 5 will center screen
+                Stuck? Check the SS13 wiki on{`\t`}
+                <Button
+                    color="secondary"
+                    variant="outlined"
+                    size="small"
+                    href="https://wiki.ss13.co/Telescience#Decoding_the_teleporter"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    decoding the teleporter
+                </Button>
             </p>
             <p>
-                Click the "EXPEDITION LOCATIONS" header for a list of telescience expedition locations, their values
-                will already have the math applied to them.
-            </p>
-            <p>
-                Right click anywhere on the map to add a favorite. You can quick go-to it or remove it from the
-                favorites menu
+                Need more info?{`\t`}
+                <Button
+                    color="secondary"
+                    variant="outlined"
+                    size="small"
+                    href="https://github.com/Kayle7777/telescience"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    Click here
+                </Button>
+                {`\t`}for a detailed readme.
             </p>
         </>
     );
