@@ -56,11 +56,18 @@ describe('testing Overlay.js', () => {
 
     test('checking if math is right', () => {
         const selectedTile = [selectedX.value, selectedY.value];
-        expect([consoleX.value, consoleY.value].map(str => Number(str))).toEqual(calculateConsole(selectedTile));
+        const consoleCoords = [consoleX.value, consoleY.value].map(str => Number(str));
+        const calculatedValue = calculateConsole(selectedTile);
+
+        // Expect the math to work
+        expect(calculatedValue).toEqual(consoleCoords);
+
+        // But the old value will not work if we change it and recalculate it.
+        expect(calculateConsole([139, 185])).not.toEqual(consoleCoords);
     });
 
     function calculateConsole(coords) {
-        coords = coords.map(str => parseInt(str));
+        coords = coords.map(str => Number(str));
         const xDivisor = actualX1.value - actualX0.value,
             yDivisor = actualY1.value - actualY0.value,
             xModifier = inputX0.value - actualX0.value / xDivisor,
