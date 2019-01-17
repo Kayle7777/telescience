@@ -84,7 +84,6 @@ const Overlay = props => {
         yDivisor = gpsValues.actualY[1] - gpsValues.actualY[0],
         xModifier = gpsValues.input[0] - gpsValues.actualX[0] / xDivisor,
         yModifier = gpsValues.input[1] - gpsValues.actualY[0] / yDivisor;
-
     return (
         <>
             <div className={classes.main}>
@@ -110,12 +109,13 @@ const Overlay = props => {
                                     <TableCell align="center">GPS coord</TableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
+                            <TableBody data-testid="telescience-gps">
                                 {/* CONSOLE X1 // ACTUAL X1 */}
 
                                 <TableRow>
                                     <TableCell>
                                         <TextField
+                                            data-testid="input-1-0"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'input', 0)}
@@ -127,6 +127,7 @@ const Overlay = props => {
                                     </TableCell>
                                     <TableCell>
                                         <TextField
+                                            data-testid="actual-x-0"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'actualX', 0)}
@@ -140,6 +141,7 @@ const Overlay = props => {
                                 <TableRow>
                                     <TableCell>
                                         <TextField
+                                            data-testid="input-1-1"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'input', 1)}
@@ -151,6 +153,7 @@ const Overlay = props => {
                                     </TableCell>
                                     <TableCell>
                                         <TextField
+                                            data-testid="actual-y-0"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'actualY', 0)}
@@ -164,8 +167,8 @@ const Overlay = props => {
                                 <TableRow>
                                     <TableCell>
                                         <TextField
+                                            data-testid="input-2-0"
                                             className={classes.textField}
-                                            key="gpsX1"
                                             value={gpsValues.input[0] + 1}
                                             disabled
                                             InputProps={{
@@ -175,6 +178,7 @@ const Overlay = props => {
                                     </TableCell>
                                     <TableCell>
                                         <TextField
+                                            data-testid="actual-x-1"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'actualX', 1)}
@@ -188,6 +192,7 @@ const Overlay = props => {
                                 <TableRow>
                                     <TableCell>
                                         <TextField
+                                            data-testid="input-2-1"
                                             className={classes.textField}
                                             value={gpsValues.input[1] + 1}
                                             disabled
@@ -198,6 +203,7 @@ const Overlay = props => {
                                     </TableCell>
                                     <TableCell>
                                         <TextField
+                                            data-testid="actual-y-1"
                                             className={classes.textField}
                                             disabled={!mathIn}
                                             onChange={e => update(e, 'actualY', 1)}

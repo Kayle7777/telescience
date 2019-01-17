@@ -124,7 +124,6 @@ const Main = props => {
                 )}
             <Overlay
                 selectedTile={tf.selectedTile}
-                transform={transform}
                 centerCoords={centerCoords}
                 selectMap={selectMap}
                 selectedMap={selectedMap}
