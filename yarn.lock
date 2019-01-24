@@ -4144,6 +4144,13 @@ ignore@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
 
+image-downloader@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/image-downloader/-/image-downloader-3.4.2.tgz#0b1909f2437899583286a46fe55691df8ced5f83"
+  integrity sha512-2nAJuZVn9nRqYuX1cT9iBlb6RviI1HGfGa0cL2H8HupbSkFDWOooa5x2oYzydjnQEV+R/YVum2uRXst2UII0yw==
+  dependencies:
+    request "^2.88.0"
+
 immer@1.7.2:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.7.2.tgz#a51e9723c50b27e132f6566facbec1c85fc69547"
