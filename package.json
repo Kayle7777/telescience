@@ -27,6 +27,7 @@
         "not op_mini all"
     ],
     "devDependencies": {
+        "image-downloader": "^3.4.2",
         "react-testing-library": "^5.4.2"
     }
 }
