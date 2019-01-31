@@ -1,9 +1,11 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
+import { Button, Popover, Typography } from '@material-ui/core';
 
 const HelperText = () => {
     return (
         <>
+            <h3>Help, I'm stuck!</h3>
+            <hr />
             <p>
                 Send two Space GPS's through the teleporter at the console coord values, and record their actual
                 position under GPS coord.
@@ -38,8 +40,39 @@ const HelperText = () => {
                 </Button>
                 {`\t`}for a detailed readme.
             </p>
+            <hr />
+            <p>Check out the alpha version of my ChemHelper site. Plenty more features are in store!</p>
+            <Button
+                color="secondary"
+                variant="outlined"
+                size="small"
+                href="https://kayle7777.github.io/chemhelper/"
+                rel="noopener noreferrer"
+                target="_blank"
+            >
+                ChemHelper
+            </Button>
         </>
     );
 };
 
-export default HelperText;
+const HelperPopover = props => {
+    const { classes, open, anchorEl, onClose, anchorOrigin } = props;
+    return (
+        <Popover
+            className={classes.popOver}
+            aria-label="Math help"
+            id="math-tips"
+            open={open}
+            anchorEl={anchorEl}
+            onClose={onClose}
+            anchorOrigin={anchorOrigin}
+        >
+            <Typography variant="caption" className={classes.popOverText}>
+                <HelperText />
+            </Typography>
+        </Popover>
+    );
+};
+
+export default HelperPopover;

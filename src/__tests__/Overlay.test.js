@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, cleanup } from 'react-testing-library';
+import { render, fireEvent } from 'react-testing-library';
 import Overlay from '../components/Overlay';
 
 const overlayTestProps = {
@@ -55,10 +55,10 @@ describe('testing Overlay.js', () => {
     });
 
     test('checking if math is right', () => {
+        const calculatedValue = calculateConsole(selectedTile);
+        // Current selected tile ["150", "150"], and current calculated coordinates as present on the DOM
         const selectedTile = [selectedX.value, selectedY.value];
         const consoleCoords = [consoleX.value, consoleY.value].map(str => Number(str));
-        const calculatedValue = calculateConsole(selectedTile);
-
         // Expect the math to work
         expect(calculatedValue).toEqual(consoleCoords);
 

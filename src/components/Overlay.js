@@ -12,13 +12,13 @@ import {
     InputAdornment,
     Typography,
     IconButton,
-    Popover,
+    Fab,
 } from '@material-ui/core';
 import { Help, KeyboardArrowDown as Arrow, VerticalAlignCenter as GoTo } from '@material-ui/icons';
 import Locations from './Locations';
 import MapSelect from './MapSelect';
 import FavoritesMenu from './FavoritesMenu';
-import HelperText from './HelperText';
+import HelperPopover from './HelperPopover';
 
 const styles = theme => ({
     textField: {
@@ -70,11 +70,18 @@ const styles = theme => ({
         right: 0,
         width: 300,
     },
+    helpButton: {
+        position: 'fixed',
+        bottom: 0,
+        right: 0,
+        marginBottom: theme.spacing.unit * 2,
+        marginRight: theme.spacing.unit * 2,
+    },
 });
 
 const Overlay = props => {
     const { classes, selectedTile, centerCoords, selectMap, selectedMap, zoom, favorites, modFavorites } = props;
-    // anchorEl / doAnchor used for HelperText popover
+    // anchorEl / doAnchor used for HelperPopover popover
     const [anchorEl, doAnchor] = useState(null);
     // mathIn / toggleMath used for math menu collapse
     const [mathIn, toggleMath] = useState(true);
@@ -223,20 +230,8 @@ const Overlay = props => {
                     </Collapse>
                 </Paper>
                 <Paper className={classes.resultsPos}>
-                    <Typography
-                        className={classes.headerText}
-                        variant="overline"
-                        align="center"
-                        id="tableTitle"
-                        onClick={event => {
-                            let val = event.currentTarget;
-                            doAnchor(val);
-                        }}
-                    >
+                    <Typography className={classes.headerText} variant="overline" align="center" id="tableTitle">
                         Real Coordinates
-                        <IconButton disabled>
-                            <Help />
-                        </IconButton>
                     </Typography>
                     <Table padding="dense">
                         <TableBody>
@@ -312,10 +307,8 @@ const Overlay = props => {
                         </TableBody>
                     </Table>
                 </Paper>
-                <Popover
-                    className={classes.popOver}
-                    aria-label="Math help"
-                    id="math-tips"
+                <HelperPopover
+                    classes={classes}
                     open={Boolean(anchorEl)}
                     anchorEl={anchorEl}
                     onClose={() => doAnchor(null)}
@@ -323,11 +316,7 @@ const Overlay = props => {
                         vertical: 'top',
                         horizontal: 'right',
                     }}
-                >
-                    <Typography variant="caption" className={classes.popOverText}>
-                        <HelperText />
-                    </Typography>
-                </Popover>
+                />
                 <IconButton tabIndex={-1} className={classes.goto} onClick={() => centerCoords()}>
                     <GoTo />
                 </IconButton>
@@ -343,6 +332,15 @@ const Overlay = props => {
                     modFavorites={modFavorites}
                     math={{ divisors: [xDivisor, yDivisor], modifiers: [xModifier, yModifier] }}
                 />
+                <Fab
+                    className={classes.helpButton}
+                    onClick={event => {
+                        let val = event.currentTarget;
+                        doAnchor(val);
+                    }}
+                >
+                    <Help style={{ height: '100%', width: '100%', transform: 'scale(1.2, 1.2)' }} />
+                </Fab>
             </div>
         </>
     );
