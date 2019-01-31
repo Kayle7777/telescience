@@ -339,7 +339,7 @@ const Overlay = props => {
                         doAnchor(val);
                     }}
                 >
-                    <Help style={{ height: '100%', width: '100%', transform: 'scale(1.2, 1.2)' }} />
+                    <Help style={{ height: '100%', width: '100%', transform: 'scale(1.21, 1.21)' }} />
                 </Fab>
             </div>
         </>

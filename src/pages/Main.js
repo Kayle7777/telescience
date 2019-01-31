@@ -38,7 +38,7 @@ const Main = props => {
         pos: [-2200, -2000],
         selectedTile: [139, 192],
     });
-    const [selectedMap, selectMap] = useState('oshan');
+    const [selectedMap, selectMap] = useState('cogmap1');
     const [favorites, modFavorites] = useState({
         cogmap1: [
             { name: 'Telescience', location: [112, 123] },
