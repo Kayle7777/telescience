@@ -80,7 +80,17 @@ const styles = theme => ({
 });
 
 const Overlay = props => {
-    const { classes, selectedTile, centerCoords, selectMap, selectedMap, zoom, favorites, modFavorites } = props;
+    const {
+        classes,
+        selectedTile,
+        centerCoords,
+        selectMap,
+        selectedMap,
+        zoom,
+        favorites,
+        modFavorites,
+        transform,
+    } = props;
     // anchorEl / doAnchor used for HelperPopover popover
     const [anchorEl, doAnchor] = useState(null);
     // mathIn / toggleMath used for math menu collapse
@@ -243,7 +253,7 @@ const Overlay = props => {
                                         onChange={e => {
                                             let val = parseInt(e.target.value);
                                             if (!val) val = 0;
-                                            return props.transform(prev => {
+                                            return transform(prev => {
                                                 prev.selectedTile[0] = val;
                                                 return prev;
                                             });
@@ -261,7 +271,7 @@ const Overlay = props => {
                                         onChange={e => {
                                             let val = parseInt(e.target.value);
                                             if (!val) val = 0;
-                                            return props.transform(prev => {
+                                            return transform(prev => {
                                                 prev.selectedTile[1] = val;
                                                 return prev;
                                             });
