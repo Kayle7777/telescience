@@ -130,7 +130,7 @@ const Main = props => {
                 zoom={zoom}
                 favorites={favorites}
                 modFavorites={modFavorites}
-                // transform={transform}
+                transform={transform}
             />
             <div
                 onMouseLeave={() => {
