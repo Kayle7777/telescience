@@ -49,15 +49,12 @@ describe('testing Overlay.js', () => {
         expect(inputY1.value).toBe('51');
         // Change first two inputs
         eventChange({ name: inputX0, value: '150' }, { name: inputY0, value: '100' });
-        // X1 and Y1 should still be one above X0 and Y0
-        expect(inputX1.value).toBe('151');
-        expect(inputY1.value).toBe('101');
     });
 
     test('checking if math is right', () => {
-        const calculatedValue = calculateConsole(selectedTile);
-        // Current selected tile ["150", "150"], and current calculated coordinates as present on the DOM
         const selectedTile = [selectedX.value, selectedY.value];
+        // Current selected tile ["150", "150"], and current calculated coordinates as present on the DOM
+        const calculatedValue = calculateConsole(selectedTile);
         const consoleCoords = [consoleX.value, consoleY.value].map(str => Number(str));
         // Expect the math to work
         expect(calculatedValue).toEqual(consoleCoords);
@@ -76,7 +73,7 @@ describe('testing Overlay.js', () => {
     }
 });
 
-function eventChange(...args) {
+async function eventChange(...args) {
     return args.forEach(each => {
         return fireEvent.change(each.name, { target: { value: each.value } });
     });
