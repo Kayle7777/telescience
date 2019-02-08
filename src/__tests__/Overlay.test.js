@@ -52,9 +52,9 @@ describe('testing Overlay.js', () => {
     });
 
     test('checking if math is right', () => {
-        const selectedTile = [selectedX.value, selectedY.value];
-        // Current selected tile ["150", "150"], and current calculated coordinates as present on the DOM
         const calculatedValue = calculateConsole(selectedTile);
+        // Current selected tile ["150", "150"], and current calculated coordinates as present on the DOM
+        const selectedTile = [selectedX.value, selectedY.value];
         const consoleCoords = [consoleX.value, consoleY.value].map(str => Number(str));
         // Expect the math to work
         expect(calculatedValue).toEqual(consoleCoords);
