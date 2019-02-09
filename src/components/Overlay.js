@@ -243,10 +243,10 @@ const Overlay = props => {
                                         onChange={e => {
                                             let val = parseInt(e.target.value);
                                             if (!val) val = 0;
-                                            return props.transform(prev => {
-                                                prev.selectedTile[0] = val;
-                                                return prev;
-                                            });
+                                            return props.transform(tf => ({
+                                                ...tf,
+                                                selectedTile: [val, tf.selectedTile[1]],
+                                            }));
                                         }}
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start">X</InputAdornment>,
@@ -261,10 +261,10 @@ const Overlay = props => {
                                         onChange={e => {
                                             let val = parseInt(e.target.value);
                                             if (!val) val = 0;
-                                            return props.transform(prev => {
-                                                prev.selectedTile[1] = val;
-                                                return prev;
-                                            });
+                                            return props.transform(tf => ({
+                                                ...tf,
+                                                selectedTile: [tf.selectedTile[0], val],
+                                            }));
                                         }}
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start">Y</InputAdornment>,

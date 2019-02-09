@@ -101,12 +101,12 @@ const FavoritesMenu = props => {
                                                 <IconButton
                                                     onClick={() => {
                                                         if (favorites.length === 1) handleCollapse(false);
-                                                        return modFavorites(favs => {
-                                                            favs[selectedMap] = favs[selectedMap].filter(
+                                                        return modFavorites(favs => ({
+                                                            ...favs,
+                                                            [selectedMap]: favs[selectedMap].filter(
                                                                 items => items !== each
-                                                            );
-                                                            return favs;
-                                                        });
+                                                            ),
+                                                        }));
                                                     }}
                                                     aria-label="delete"
                                                 >

@@ -12,6 +12,9 @@ const styles = theme => ({
         display: 'block',
         width: 1200 * 8,
         height: 1200 * 8,
+        // transition: theme.transitions.create(['transform'], {
+        //     duration: 100,
+        // }),
     },
     image: {
         verticalAlign: 'middle',
@@ -86,6 +89,7 @@ const Main = props => {
             ...tilePosition(tf.selectedTile),
         },
     };
+
     const Svg = props => (
         <svg
             onClick={props.onClick}
@@ -107,6 +111,7 @@ const Main = props => {
             />
         </svg>
     );
+
     return (
         <div className={classes.noClick} onKeyDown={e => keyDown(e)} tabIndex={0}>
             {selectedMap === 'oshan' &&
@@ -161,10 +166,10 @@ const Main = props => {
                                 onContextMenu={e => {
                                     e.stopPropagation();
                                     e.preventDefault();
-                                    return modFavorites(prev => {
-                                        prev[selectedMap] = prev[selectedMap].filter(items => items !== fav);
-                                        return prev;
-                                    });
+                                    return modFavorites(prev => ({
+                                        ...prev,
+                                        [selectedMap]: prev[selectedMap].filter(item => item !== fav),
+                                    }));
                                 }}
                                 style={{
                                     zIndex: 1,
@@ -189,12 +194,7 @@ const Main = props => {
             <Svg
                 color="white"
                 style={iStyles.selectorStyle}
-                onClick={() =>
-                    transform(tf => {
-                        tf.selectedTile = [1, 1];
-                        return tf;
-                    })
-                }
+                onClick={() => transform(tf => ({ ...tf, selectedTile: [1, 1] }))}
                 onContextMenu={contextMenu}
             />
             <Menu
@@ -240,29 +240,19 @@ const Main = props => {
         const { clientX, clientY } = e;
         // Detect if we moved
         if (tf.mouse[0] !== clientX || tf.mouse[1] !== clientY) return;
-        return transform(tf => {
-            tf.selectedTile = tileMath(...imgCoords(clientX, clientY));
-            return tf;
-        });
+        return transform(tf => ({ ...tf, selectedTile: tileMath(...imgCoords(clientX, clientY)) }));
     }
 
     function mouseDown(e) {
         clickDown(true);
         const { clientX, clientY } = e;
-        return transform(tf => {
-            tf.mouse = [clientX, clientY];
-            tf.initial = imgCoords(clientX, clientY, 1);
-            return tf;
-        });
+        return transform(tf => ({ ...tf, mouse: [clientX, clientY], initial: imgCoords(clientX, clientY, 1) }));
     }
 
     function mouseMove(e) {
         if (!mousedown) return;
         const { clientX, clientY } = e;
-        return transform(tf => {
-            tf.pos = imgCoords(clientX, clientY, 1, tf.initial);
-            return tf;
-        });
+        return transform(tf => ({ ...tf, pos: imgCoords(clientX, clientY, 1, tf.initial) }));
     }
 
     function mouseWheel(e, val = 1) {
@@ -275,13 +265,9 @@ const Main = props => {
             if (zoom === 15) return;
             setZoom(zoom + val);
         }
-        return transform(tf => {
-            const newScale = (deltaY > 0 ? zoom - val : zoom + val) / 10;
-            const [imageX, imageY] = imgCoords(clientX, clientY);
-            tf.pos[0] = -imageX * newScale + clientX;
-            tf.pos[1] = -imageY * newScale + clientY;
-            return tf;
-        });
+        const newScale = (deltaY > 0 ? zoom - val : zoom + val) / 10;
+        const [imageX, imageY] = imgCoords(clientX, clientY);
+        return transform(tf => ({ ...tf, pos: [-imageX * newScale + clientX, -imageY * newScale + clientY] }));
     }
 
     function centerCoords(centerScale = 12, modifier = [0, 0], newTile) {
@@ -294,11 +280,7 @@ const Main = props => {
             -(tile[1] - 303 + modifier[1]) * 32 * newScale,
         ];
         const [centerX, centerY] = [window.screen.width / 2, window.screen.height / 2];
-        return transform(tf => {
-            tf.pos[0] = -tileX + centerX;
-            tf.pos[1] = -tileY + centerY;
-            return tf;
-        });
+        return transform(tf => ({ ...tf, pos: [-tileX + centerX, -tileY + centerY] }));
     }
 
     function keyDown(e) {
@@ -336,22 +318,17 @@ const Main = props => {
                 return centerCoords(zoom + val);
             }
             centerCoords(zoom, val);
-            return transform(tf => {
-                tf.selectedTile[0] += val[0];
-                tf.selectedTile[1] += val[1];
-                return tf;
-            });
+            return transform(tf => ({
+                ...tf,
+                selectedTile: [tf.selectedTile[0] + val[0], tf.selectedTile[1] + val[1]],
+            }));
         }
     }
 
     function contextMenu(e) {
         e.preventDefault();
         const { clientX, clientY, target } = e;
-        return doMenu(prev => {
-            prev.target = target;
-            prev.mouse = [clientX, clientY];
-            return prev;
-        });
+        return doMenu(prev => ({ ...prev, target: target, mouse: [clientX, clientY] }));
     }
 
     function menuButtonClick(e) {
@@ -366,10 +343,7 @@ const Main = props => {
     }
 
     function closeMenu() {
-        return doMenu(prev => {
-            prev.target = null;
-            return prev;
-        });
+        return doMenu(prev => ({ ...prev, target: null }));
     }
 
     function setStorage(favs) {
