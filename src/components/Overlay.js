@@ -348,7 +348,6 @@ const Overlay = props => {
         let val = parseInt(e.target.value);
         if (!val) val = 0;
         return setValue(prev => {
-            console.log(prev[target][index], target, index);
             let newArr = prev[target];
             newArr[index] = val;
             return { ...prev, [target]: newArr };
