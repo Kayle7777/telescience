@@ -26,6 +26,7 @@ const Images = ({ selectedMap, image }) => {
             clarion: `https://goonhub.com/images/maps/clarion/z1`,
             destiny: `https://goonhub.com/images/maps/destiny/z1`,
             samedi: `https://goonhub.com/images/maps/samedi/z1`,
+            horizon: `https://goonhub.com/images/maps/horizon/z1`,
         };
         if (!info[selectedMap]) return info['cogmap1'];
         return info[selectedMap];

@@ -41,6 +41,7 @@ const MapSelect = props => {
                 <MenuItem value="clarion">Clarion</MenuItem>
                 <MenuItem value="destiny">Destiny</MenuItem>
                 <MenuItem value="samedi">Samedi</MenuItem>
+                <MenuItem value="horizon">Horizon</MenuItem>
             </TextField>
         </Paper>
     );
