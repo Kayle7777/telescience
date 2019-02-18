@@ -4,7 +4,7 @@
     "private": true,
     "homepage": "https://kayle777.github.io/telescience",
     "dependencies": {
-        "@material-ui/core": "^3.7.1",
+        "@material-ui/core": "^3.9.2",
         "@material-ui/icons": "^3.0.1",
         "@material-ui/styles": "^3.0.0-alpha.4",
         "react": "^16.8.1",

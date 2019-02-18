@@ -1,6 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { TextField, MenuItem, Paper } from '@material-ui/core';
+import { FormControl, Select, Paper } from '@material-ui/core';
 
 const styles = theme => ({
     paper: {
@@ -18,7 +18,27 @@ const MapSelect = props => {
     const { classes, selectMap, selectedMap } = props;
     return (
         <Paper className={classes.paper}>
-            <TextField
+            <FormControl className={classes.textField}>
+                <Select
+                    MenuProps={classes.menu}
+                    native
+                    value={selectedMap}
+                    onChange={e => {
+                        let val = e.target.value;
+                        return selectMap(val);
+                    }}
+                >
+                    <option value="cogmap1">Cogmap 1</option>
+                    <option value="cogmap2">Cogmap 2</option>
+                    <option value="faintSignal">Debris Field</option>
+                    <option value="oshan">Oshan</option>
+                    <option value="clarion">Clarion</option>
+                    <option value="destiny">Destiny</option>
+                    <option value="samedi">Samedi</option>
+                    <option value="horizon">Horizon</option>
+                </Select>
+            </FormControl>
+            {/* <TextField
                 InputProps={{ inputProps: { tabIndex: -1 } }}
                 className={classes.textField}
                 select
@@ -42,7 +62,7 @@ const MapSelect = props => {
                 <MenuItem value="destiny">Destiny</MenuItem>
                 <MenuItem value="samedi">Samedi</MenuItem>
                 <MenuItem value="horizon">Horizon</MenuItem>
-            </TextField>
+            </TextField> */}
         </Paper>
     );
 };
