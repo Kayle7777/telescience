@@ -38,31 +38,6 @@ const MapSelect = props => {
                     <option value="horizon">Horizon</option>
                 </Select>
             </FormControl>
-            {/* <TextField
-                InputProps={{ inputProps: { tabIndex: -1 } }}
-                className={classes.textField}
-                select
-                label="Select Map"
-                value={selectedMap}
-                onChange={e => {
-                    let val = e.target.value;
-                    return selectMap(val);
-                }}
-                SelectProps={{
-                    MenuProps: {
-                        className: classes.menu,
-                    },
-                }}
-            >
-                <MenuItem value="cogmap1">Cogmap 1</MenuItem>
-                <MenuItem value="cogmap2">Cogmap 2</MenuItem>
-                <MenuItem value="faintSignal">Debris Field</MenuItem>
-                <MenuItem value="oshan">Oshan</MenuItem>
-                <MenuItem value="clarion">Clarion</MenuItem>
-                <MenuItem value="destiny">Destiny</MenuItem>
-                <MenuItem value="samedi">Samedi</MenuItem>
-                <MenuItem value="horizon">Horizon</MenuItem>
-            </TextField> */}
         </Paper>
     );
 };

@@ -54,7 +54,7 @@ const Main = props => {
         clarion: [{ name: 'AI Core', location: [133, 99] }, { name: 'Telescience', location: [153, 107] }],
         destiny: [],
         samedi: [],
-        horizon: []
+        horizon: [],
     });
     const [zoom, setZoom] = useState(7);
     const scale = zoom / 10;
@@ -126,7 +126,7 @@ const Main = props => {
                         pos: [150, 150],
                     },
                     // Tiburón bebé
-                    { link: 'https://youtu.be/dJBD0F-1V00?t=21', pos: [3, 4], color: '#6D7373' }
+                    { link: 'https://youtu.be/XqZsoesa55w?t=12', pos: [3, 4], color: '#6D7373' }
                 )}
             <Overlay
                 selectedTile={tf.selectedTile}
