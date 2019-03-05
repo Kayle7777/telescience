@@ -54,6 +54,7 @@ const Main = props => {
         clarion: [{ name: 'AI Core', location: [133, 99] }, { name: 'Telescience', location: [153, 107] }],
         destiny: [],
         atlas: [],
+        samedi: [],
         horizon: [],
     });
     const [zoom, setZoom] = useState(7);
