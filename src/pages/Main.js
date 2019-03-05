@@ -53,7 +53,7 @@ const Main = props => {
         oshan: [{ name: 'AI Core', location: [196, 160] }, { name: 'Telescience', location: [181, 174] }],
         clarion: [{ name: 'AI Core', location: [133, 99] }, { name: 'Telescience', location: [153, 107] }],
         destiny: [],
-        samedi: [],
+        atlas: [],
         horizon: [],
     });
     const [zoom, setZoom] = useState(7);

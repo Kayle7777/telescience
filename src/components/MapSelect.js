@@ -34,7 +34,7 @@ const MapSelect = props => {
                     <option value="oshan">Oshan</option>
                     <option value="clarion">Clarion</option>
                     <option value="destiny">Destiny</option>
-                    <option value="samedi">Samedi</option>
+                    <option value="atlas">Atlas</option>
                     <option value="horizon">Horizon</option>
                 </Select>
             </FormControl>
