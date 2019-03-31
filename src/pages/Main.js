@@ -5,6 +5,7 @@ import { Info } from '@material-ui/icons';
 import spaceTile from '../space.png';
 import Images from '../components/Images';
 import Overlay from '../components/Overlay';
+import Mapinfo from '../components/Mapinfo';
 
 const styles = theme => ({
     main: {
@@ -54,6 +55,7 @@ const Main = props => {
         clarion: [{ name: 'AI Core', location: [133, 99] }, { name: 'Telescience', location: [153, 107] }],
         destiny: [],
         atlas: [],
+        samedi: [],
         horizon: [],
     });
     const [zoom, setZoom] = useState(7);
@@ -72,12 +74,9 @@ const Main = props => {
     }, []);
 
     // Set a new localStorage item every time a favorite is added or removed
-    useEffect(
-        () => {
-            setStorage(favorites);
-        },
-        [JSON.stringify(favorites)]
-    );
+    useEffect(() => {
+        setStorage(favorites);
+    }, [JSON.stringify(favorites)]);
 
     const iStyles = {
         divStyle: {
@@ -91,7 +90,7 @@ const Main = props => {
         },
     };
 
-    const Svg = props => (
+    const SelectorSvg = props => (
         <svg
             onClick={props.onClick}
             onWheel={props.onWheel ? props.onWheel : mouseWheel}
@@ -128,6 +127,7 @@ const Main = props => {
                     // Tiburón bebé
                     { link: 'https://youtu.be/XqZsoesa55w?t=12', pos: [3, 4], color: '#6D7373' }
                 )}
+            <Mapinfo selectedMap={selectedMap} tileMath={tileMath} imgCoords={imgCoords} tilePosition={tilePosition} />
             <Overlay
                 selectedTile={tf.selectedTile}
                 centerCoords={centerCoords}
@@ -192,7 +192,7 @@ const Main = props => {
                         );
                     })}
             </div>
-            <Svg
+            <SelectorSvg
                 color="white"
                 style={iStyles.selectorStyle}
                 onClick={() => transform(tf => ({ ...tf, selectedTile: [1, 1] }))}
