@@ -37,13 +37,10 @@ const FavoritesMenu = props => {
     const [collapseIn, handleCollapse] = useState(false);
     const [permaCollapse, doPermaCollapse] = useState(false);
 
-    useEffect(
-        () => {
-            if (favorites[selectedMap].length >= 1 && !collapseIn && !permaCollapse) return handleCollapse(true);
-            else if (favorites[selectedMap].length < 1) return handleCollapse(false);
-        },
-        [props]
-    );
+    useEffect(() => {
+        if (favorites[selectedMap].length >= 1 && !collapseIn && !permaCollapse) return handleCollapse(true);
+        else if (favorites[selectedMap].length < 1) return handleCollapse(false);
+    }, [props]);
 
     return (
         <Paper className={classes.paper}>
@@ -75,9 +72,10 @@ const FavoritesMenu = props => {
                                     value={each.name}
                                     onChange={e => {
                                         let val = e.target.value;
+
                                         return modFavorites(favorites => {
                                             favorites[selectedMap][index].name = val;
-                                            return favorites;
+                                            return { ...favorites };
                                         });
                                     }}
                                     FormHelperTextProps={{ style: { textAlign: 'center' } }}
