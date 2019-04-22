@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {
     Table,
@@ -80,7 +80,17 @@ const styles = theme => ({
 });
 
 const Overlay = props => {
-    const { classes, selectedTile, centerCoords, selectMap, selectedMap, zoom, favorites, modFavorites } = props;
+    const {
+        classes,
+        selectedTile,
+        centerCoords,
+        selectMap,
+        selectedMap,
+        zoom,
+        favorites,
+        modFavorites,
+        overlayCallback,
+    } = props;
     // anchorEl / doAnchor used for HelperPopover popover
     const [anchorEl, doAnchor] = useState(null);
     // mathIn / toggleMath used for math menu collapse
@@ -90,6 +100,9 @@ const Overlay = props => {
         yDivisor = gpsValues.actualY[1] - gpsValues.actualY[0],
         xModifier = gpsValues.input[0] - gpsValues.actualX[0] / xDivisor,
         yModifier = gpsValues.input[1] - gpsValues.actualY[0] / yDivisor;
+
+    useEffect(() => overlayCallback(gpsValues), []);
+
     return (
         <>
             <div className={classes.main}>
@@ -350,6 +363,7 @@ const Overlay = props => {
         return setValue(prev => {
             let newArr = prev[target];
             newArr[index] = val;
+            overlayCallback({ ...prev, [target]: newArr });
             return { ...prev, [target]: newArr };
         });
     }

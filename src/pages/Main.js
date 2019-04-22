@@ -66,6 +66,9 @@ const Main = props => {
     // menu / doMenu used for menu events (obviously)
     const [menu, doMenu] = useState({ mouse: [0, 0], target: null });
 
+    // Debugging handleUrlParameters
+    useEffect(() => handleUrlParameters());
+
     // Check for an existing localStorage item, if it is different than the existing state localStorage item, set it as the state.
     useEffect(() => {
         const data = getStorage();
@@ -73,12 +76,9 @@ const Main = props => {
     }, []);
 
     // Set a new localStorage item every time a favorite is added or removed
-    useEffect(
-        () => {
-            setStorage(favorites);
-        },
-        [JSON.stringify(favorites)]
-    );
+    useEffect(() => {
+        setStorage(favorites);
+    }, [JSON.stringify(favorites)]);
 
     const iStyles = {
         divStyle: {
@@ -138,6 +138,7 @@ const Main = props => {
                 favorites={favorites}
                 modFavorites={modFavorites}
                 transform={transform}
+                overlayCallback={overlayCallback}
             />
             <div
                 onMouseLeave={() => {
@@ -217,6 +218,16 @@ const Main = props => {
             </Menu>
         </div>
     );
+
+    function overlayCallback(overlayStatus) {
+        console.log(overlayStatus);
+    }
+
+    function handleUrlParameters() {
+        // In this function, I will need to not only change the URL parameters as the state changes, but also the reverse -- change the state as the URL parameters change.
+        // Link state + url params here.
+        console.log();
+    }
 
     // This is used to place each tile selector over the image container just as if it had the 300/300 grid the game does.
     function tileMath(x, y) {
