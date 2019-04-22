@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import {
     Table,
@@ -101,7 +101,8 @@ const Overlay = props => {
         xModifier = gpsValues.input[0] - gpsValues.actualX[0] / xDivisor,
         yModifier = gpsValues.input[1] - gpsValues.actualY[0] / yDivisor;
 
-    useEffect(() => overlayCallback(gpsValues), []);
+    // Maybe we don't need this.
+    // useEffect(() => overlayCallback(gpsValues), []);
 
     return (
         <>

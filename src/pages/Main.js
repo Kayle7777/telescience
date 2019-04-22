@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import * as queryString from 'query-string';
 import { withStyles } from '@material-ui/core/styles';
 import { Menu, Button } from '@material-ui/core';
 import { Info } from '@material-ui/icons';
@@ -65,9 +66,11 @@ const Main = props => {
     const [focussed, focus] = useState(false);
     // menu / doMenu used for menu events (obviously)
     const [menu, doMenu] = useState({ mouse: [0, 0], target: null });
-
-    // Debugging handleUrlParameters
-    useEffect(() => handleUrlParameters());
+    const [gpsCallbackValue, updategpsCallbackValue] = useState({
+        actualX: [6, 7],
+        actualY: [49, 51],
+        input: [100, 50],
+    });
 
     // Check for an existing localStorage item, if it is different than the existing state localStorage item, set it as the state.
     useEffect(() => {
@@ -79,6 +82,10 @@ const Main = props => {
     useEffect(() => {
         setStorage(favorites);
     }, [JSON.stringify(favorites)]);
+
+    useEffect(() => {
+        doUrlParams();
+    }, [tf.selectedTile, gpsCallbackValue]);
 
     const iStyles = {
         divStyle: {
@@ -219,14 +226,20 @@ const Main = props => {
         </div>
     );
 
-    function overlayCallback(overlayStatus) {
-        console.log(overlayStatus);
+    // Likely a better way to do this, hack for now
+    // This returns the urlParameterString
+    function overlayCallback(gpsValues = gpsCallbackValue) {
+        const xDivisor = gpsValues.actualX[1] - gpsValues.actualX[0],
+            yDivisor = gpsValues.actualY[1] - gpsValues.actualY[0],
+            xModifier = gpsValues.input[0] - gpsValues.actualX[0] / xDivisor,
+            yModifier = gpsValues.input[1] - gpsValues.actualY[0] / yDivisor;
+        const urlParamsInfo = { selectorPos: tf.selectedTile, XMod: xModifier, YMod: yModifier };
+        updategpsCallbackValue(gpsValues);
+        return queryString.stringify(urlParamsInfo, { arrayFormat: 'comma' });
     }
 
-    function handleUrlParameters() {
-        // In this function, I will need to not only change the URL parameters as the state changes, but also the reverse -- change the state as the URL parameters change.
-        // Link state + url params here.
-        console.log();
+    function doUrlParams() {
+        return (window.location.hash = overlayCallback());
     }
 
     // This is used to place each tile selector over the image container just as if it had the 300/300 grid the game does.
