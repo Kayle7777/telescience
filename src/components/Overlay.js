@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import * as queryString from 'query-string';
 import { withStyles } from '@material-ui/core/styles';
 import {
     Table,
@@ -364,9 +365,17 @@ const Overlay = props => {
         return setValue(prev => {
             let newArr = prev[target];
             newArr[index] = val;
-            overlayCallback({ ...prev, [target]: newArr });
+            overlayCallback({
+                gpsValues: { ...prev, [target]: newArr },
+                console: [selectedTile[0] / xDivisor + xModifier, selectedTile[1] / yDivisor + yModifier],
+            });
             return { ...prev, [target]: newArr };
         });
+    }
+
+    function getModifiers() {
+        const hashInfo = queryString.parse(window.location.hash);
+        return [hashInfo.XMod, hashInfo.YMod];
     }
 };
 

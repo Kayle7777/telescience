@@ -228,13 +228,14 @@ const Main = props => {
 
     // Likely a better way to do this, hack for now
     // This returns the urlParameterString
-    function overlayCallback(gpsValues = gpsCallbackValue) {
-        const xDivisor = gpsValues.actualX[1] - gpsValues.actualX[0],
-            yDivisor = gpsValues.actualY[1] - gpsValues.actualY[0],
-            xModifier = gpsValues.input[0] - gpsValues.actualX[0] / xDivisor,
-            yModifier = gpsValues.input[1] - gpsValues.actualY[0] / yDivisor;
-        const urlParamsInfo = { selectorPos: tf.selectedTile, XMod: xModifier, YMod: yModifier };
-        updategpsCallbackValue(gpsValues);
+    function overlayCallback(callbackReturn = gpsCallbackValue) {
+        const { gpsValues } = callbackReturn;
+        const urlParamsInfo = {
+            selector: tf.selectedTile,
+            XMod: callbackReturn.console[0] - tf.selectedTile[0],
+            YMod: callbackReturn.console[1] - tf.selectedTile[1],
+        };
+        updategpsCallbackValue({ ...callbackReturn });
         return queryString.stringify(urlParamsInfo, { arrayFormat: 'comma' });
     }
 
