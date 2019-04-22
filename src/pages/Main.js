@@ -72,7 +72,7 @@ const Main = props => {
             actualY: [49, 51],
             input: [100, 50],
         },
-        console: [],
+        console: [233, 121.5],
     });
 
     // Check for an existing localStorage item, if it is different than the existing state localStorage item, set it as the state.
