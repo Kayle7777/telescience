@@ -67,9 +67,12 @@ const Main = props => {
     // menu / doMenu used for menu events (obviously)
     const [menu, doMenu] = useState({ mouse: [0, 0], target: null });
     const [gpsCallbackValue, updategpsCallbackValue] = useState({
-        actualX: [6, 7],
-        actualY: [49, 51],
-        input: [100, 50],
+        gpsValues: {
+            actualX: [6, 7],
+            actualY: [49, 51],
+            input: [100, 50],
+        },
+        console: [],
     });
 
     // Check for an existing localStorage item, if it is different than the existing state localStorage item, set it as the state.
