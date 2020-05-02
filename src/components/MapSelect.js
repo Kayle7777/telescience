@@ -36,6 +36,11 @@ const MapSelect = props => {
                     <option value="destiny">Destiny</option>
                     <option value="atlas">Atlas</option>
                     <option value="horizon">Horizon</option>
+                    <option value="mushroom">Mushroom</option>
+                    <option value="manta">Manta</option>
+                    <option value="kondaru">Kondaru</option>
+                    <option value="donut2">Donut 2</option>
+                    <option value="fleet">Bellerophon Fleet</option>
                 </Select>
             </FormControl>
         </Paper>

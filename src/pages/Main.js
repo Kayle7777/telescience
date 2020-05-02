@@ -56,6 +56,11 @@ const Main = props => {
         atlas: [],
         samedi: [],
         horizon: [],
+        mushroom: [],
+        manta: [],
+        kondaru: [],
+        donut2: [],
+        fleet: [],
     });
     const [zoom, setZoom] = useState(7);
     const scale = zoom / 10;

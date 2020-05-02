@@ -27,6 +27,11 @@ const Images = ({ selectedMap, image }) => {
             destiny: `https://goonhub.com/images/maps/destiny/z1`,
             atlas: `https://goonhub.com/images/maps/atlas/z1`,
             horizon: `https://goonhub.com/images/maps/horizon/z1`,
+            mushroom: `https://goonhub.com/images/maps/mushroom/z1`,
+            manta: `https://goonhub.com/images/maps/manta/z1`,
+            kondaru: `https://goonhub.com/images/maps/kondaru/z1`,
+            donut2: `https://goonhub.com/images/maps/donut2/z1`,
+            fleet: `https://goonhub.com/images/maps/bellerophon%20fleet/z1`,
         };
         if (!info[selectedMap]) return info['cogmap1'];
         return info[selectedMap];
