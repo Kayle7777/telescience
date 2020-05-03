@@ -85,4 +85,4 @@ function imgCoords(x, y, funcScale = scale, pos = tf.pos) {
 [ss13 wiki]: https://wiki.ss13.co/Main_Page
 [github link]: https://github.com/kayle7777
 [github repo]: https://github.com/Kayle7777/telescience
-[github pages]: https://kayle7777.github.io/telescience/
+[github pages]: https://vortex1942.github.io/telescience/
