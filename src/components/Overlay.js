@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import useQueryString from 'use-query-string';
 import {
     Table,
     TableBody,
@@ -85,11 +86,47 @@ const Overlay = props => {
     const [anchorEl, doAnchor] = useState(null);
     // mathIn / toggleMath used for math menu collapse
     const [mathIn, toggleMath] = useState(true);
-    const [gpsValues, setValue] = useState({ input: [100, 50], actualX: [6, 7], actualY: [49, 51] });
-    const xDivisor = gpsValues.actualX[1] - gpsValues.actualX[0],
-        yDivisor = gpsValues.actualY[1] - gpsValues.actualY[0],
-        xModifier = gpsValues.input[0] - gpsValues.actualX[0] / xDivisor,
-        yModifier = gpsValues.input[1] - gpsValues.actualY[0] / yDivisor;
+    function updateQuery(path) {
+        window.history.pushState(null, document.title, path);
+    }
+    const [
+        {
+            inputx,
+            inputy,
+            actualx1,
+            actualx2,
+            actualy1,
+            actualy2,
+            xdiv,
+            ydiv,
+            xmod,
+            ymod,
+        },
+        setQueryString,
+    ] = useQueryString(window.location, updateQuery, { parseNumbers: true });
+    useEffect(() => {
+        const xDivisor = gpsValues.actualX[1] - gpsValues.actualX[0],
+            yDivisor = gpsValues.actualY[1] - gpsValues.actualY[0],
+            xModifier = gpsValues.input[0] - gpsValues.actualX[0] / xDivisor,
+            yModifier = gpsValues.input[1] - gpsValues.actualY[0] / yDivisor;
+        return setQueryString({
+            inputx: gpsValues.input[0],
+            inputy: gpsValues.input[1],
+            actualx1: gpsValues.actualX[0],
+            actualx2: gpsValues.actualX[1],
+            actualy1: gpsValues.actualY[0],
+            actualy2: gpsValues.actualY[1],
+            xdiv: xDivisor,
+            ydiv: yDivisor,
+            xmod: xModifier,
+            ymod: yModifier,
+        });
+    });
+    const [gpsValues, setValue] = useState({
+        input: [inputx || 100, inputy || 50],
+        actualX: [actualx1 || 6, actualx2 || 7],
+        actualY: [actualy1 || 48, actualy2 || 51],
+    });
     return (
         <>
             <div className={classes.main}>
@@ -285,7 +322,7 @@ const Overlay = props => {
                                     <TextField
                                         disabled
                                         className={classes.textField}
-                                        value={selectedTile[0] / xDivisor + xModifier}
+                                        value={selectedTile[0] / xdiv + xmod}
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start">X</InputAdornment>,
                                             'data-testid': 'console-x',
@@ -296,7 +333,7 @@ const Overlay = props => {
                                     <TextField
                                         disabled
                                         className={classes.textField}
-                                        value={selectedTile[1] / yDivisor + yModifier}
+                                        value={selectedTile[1] / ydiv + ymod}
                                         InputProps={{
                                             startAdornment: <InputAdornment position="start">Y</InputAdornment>,
                                             'data-testid': 'console-y',
@@ -320,7 +357,7 @@ const Overlay = props => {
                 <IconButton tabIndex={-1} className={classes.goto} onClick={() => centerCoords()}>
                     <GoTo />
                 </IconButton>
-                <Locations math={{ divisors: [xDivisor, yDivisor], modifiers: [xModifier, yModifier] }} />
+                <Locations math={{ divisors: [xdiv, ydiv], modifiers: [xmod, ymod] }} />
             </div>
             <div className={classes.rightPanel}>
                 <MapSelect selectMap={selectMap} selectedMap={selectedMap} />
@@ -330,7 +367,7 @@ const Overlay = props => {
                     favorites={favorites}
                     selectedMap={selectedMap}
                     modFavorites={modFavorites}
-                    math={{ divisors: [xDivisor, yDivisor], modifiers: [xModifier, yModifier] }}
+                    math={{ divisors: [xdiv, ydiv], modifiers: [xmod, ymod] }}
                 />
                 <Fab
                     className={classes.helpButton}

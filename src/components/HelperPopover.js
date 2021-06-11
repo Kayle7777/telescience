@@ -26,32 +26,6 @@ const HelperText = () => {
                     decoding the teleporter
                 </Button>
             </p>
-            <p>
-                Need more info?{`\t`}
-                <Button
-                    color="secondary"
-                    variant="outlined"
-                    size="small"
-                    href="https://github.com/Kayle7777/telescience"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                >
-                    Click here
-                </Button>
-                {`\t`}for a detailed readme.
-            </p>
-            <hr />
-            <p>Check out the alpha version of my ChemHelper site. Plenty more features are in store!</p>
-            <Button
-                color="secondary"
-                variant="outlined"
-                size="small"
-                href="https://kayle7777.github.io/chemhelper/"
-                rel="noopener noreferrer"
-                target="_blank"
-            >
-                ChemHelper
-            </Button>
         </>
     );
 };
