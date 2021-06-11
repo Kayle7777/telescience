@@ -8,7 +8,6 @@ branches:
     only:
         - master
 script:
-    - yarn test
     - yarn build
 deploy:
     provider: pages
